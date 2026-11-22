@@ -1,66 +1,87 @@
-# Baraim Nursery (براعم)
+# Baraim — Nursery Management SaaS
 
-Multi-tenant nursery management SaaS for Egypt and the Gulf. Each nursery is a
-tenant; every record is tenant-scoped server-side.
+**Status:** v1 prototype. Functional and test-covered, not production-hardened.
+**Brand:** "Baraim" (براعم) is provisional and under review after same-category name collisions surfaced; the repo slug `rawda-nursery` is unchanged for now.
 
-Name: Baraim (براعم), approved by the owner 22 Nov 2026 after the Rawda/rawdahapp.com collision. The repo slug rawda-nursery is unchanged for now.
+Baraim is a multi-tenant web application that runs a nursery's day: children,
+guardians, attendance with authorized pickup, daily logs, incident reports,
+tuition billing, and a full audit trail. It is built for private nurseries and
+preschools in Egypt and the Gulf, with per-tenant timezone and currency.
 
-## What v1 does
+Every tenant's data is isolated server-side: all tenant-owned queries pass
+through a global scope, and cross-tenant IDs resolve to 404.
 
-- Tenant registration: a nursery signs up with its timezone and currency and
-  gets an owner account.
-- Roles: owner (everything, including staff accounts), manager (records and
-  billing), teacher (attendance, daily logs, incident reports).
-- Children register with classrooms, guardians, allergies and restricted
-  health notes.
-- Authorized pickup: a child can only be checked out to an active pickup
-  person authorized for that specific child. This is a recorded authorization,
-  not identity verification; staff must still verify identity at the door.
-- Attendance: same-day check-in/check-out on the nursery's calendar (tenant
-  timezone, not UTC).
-- Daily logs: meals, naps, mood, activities, notes per child per day.
-- Incidents with severity (minor/moderate/severe) and a staff-recorded
-  guardian acknowledgement (no guardian login in v1).
-- Billing: tuition plans, draft → sent → paid/void invoices, manually recorded
-  payments (cash/transfer/wallet reference), outstanding and overdue tracking.
-  No online payment collection in v1.
-- Audit log of every mutating action, including health-data changes.
+## Features (implemented)
 
-Out of scope for v1 (see docs/plan.md): parent app, photo sharing, messaging,
-online payments, bus tracking, enrolment funnel, multi-branch.
+| Area | What it does |
+| --- | --- |
+| Tenancy & roles | Nursery signs up with its own timezone and currency; roles are owner, manager, teacher, each with scoped permissions. |
+| Children & guardians | Child profiles with classrooms, guardians, allergies, and restricted health notes. |
+| Authorized pickup | A child can be checked out only to an active pickup person authorized for that specific child. Deactivated persons keep history. |
+| Attendance | Same-day check-in/check-out on the nursery's own calendar (tenant timezone, not UTC), with who-picked-up recorded. |
+| Daily logs | Meals, naps, mood, activities and notes per child per day. |
+| Incidents | Severity levels (minor/moderate/severe) and a staff-recorded guardian acknowledgement. |
+| Billing | Tuition plans, draft → sent → paid/void invoices, manually recorded payments (cash/transfer/wallet reference), outstanding and overdue tracking. |
+| Audit log | Every mutating action is recorded, including health-data changes. |
+
+## Deliberate safety decisions
+
+- **Pickup is recorded authorization, not identity verification.** Staff must
+  still verify identity at the door; the app never claims otherwise.
+- **Health notes** are visible to owner/manager only; **allergies** stay
+  visible to all staff because they are safety-critical.
+- **No guardian login in v1**, so incident acknowledgement is recorded by
+  staff and labeled as such in the UI.
+- **No online payments in v1**; payments are recorded manually.
+- Development uses **synthetic demo data only** (`DemoSeeder`); no real child
+  or guardian data belongs in this repository.
 
 ## Stack
 
-- PHP 8.3+ / Laravel 13, Inertia + Vue 3, Tailwind.
-- MySQL 8 in production and in the test suite (feature tests run against a
-  real MySQL 8 server, not SQLite).
+- PHP 8.3+ / Laravel 13, Inertia.js + Vue 3, Tailwind CSS
+- MySQL 8 — in production **and** in the test suite (feature tests run against
+  a real MySQL 8 server, not SQLite)
 
-## Development setup
+## Getting started
 
-1. Install PHP 8.3+ with Composer, Node 22+, and MySQL 8.
-2. `cp .env.example .env`, set `DB_*` for your MySQL, `php artisan key:generate`.
-3. `composer install`, `npm install`, `npm run build` (or `npm run dev`).
-4. `php artisan migrate`, then `php artisan serve`.
+Requirements: PHP 8.3+ with Composer, Node 22+, MySQL 8.
 
-## Tests
-
-Feature tests expect MySQL on `127.0.0.1:33306` (see phpunit.xml) and a
-`rawda_test` database:
-
+```bash
+cp .env.example .env          # set DB_* for your MySQL
+php artisan key:generate
+composer install
+npm install && npm run build  # or: npm run dev
+php artisan migrate
+php artisan db:seed           # optional synthetic demo data
+php artisan serve
 ```
+
+## Testing
+
+Feature tests expect MySQL on `127.0.0.1:33306` and a `rawda_test` database
+(see `phpunit.xml`):
+
+```bash
 php artisan test
 ```
 
-42 tests cover tenant isolation, pickup authorization boundaries, attendance
-rules, role permissions, billing state transitions, health-data visibility and
-audit logging.
+42 tests / 138 assertions, all passing on MySQL 8. They cover tenant
+isolation, pickup authorization boundaries, attendance rules, role gates,
+the billing state machine, health-data visibility, and audit logging.
 
-## Data and safety rules baked in
+## Documentation
 
-- All tenant-owned queries are filtered by the authenticated user's tenant via
-  a global scope; cross-tenant ids resolve to 404.
-- Health notes are visible to owner/manager only; allergies stay visible to
-  all staff because they are safety-critical.
-- Pickup persons are deactivated, never deleted, so past attendance rows keep
-  their meaning.
-- Use synthetic data only in development.
+- [`docs/market-study.md`](docs/market-study.md) — Egypt + all six Gulf
+  states, vendor-sourced with links.
+- [`docs/plan.md`](docs/plan.md) — phased product plan and open decisions.
+- [`docs/database.md`](docs/database.md) — schema design and data rules.
+
+## Roadmap (not in v1)
+
+Guardian portal/app, online payments (Paymob/Fawry for Egypt; ZATCA e-invoicing
+for Saudi needs official verification first), announcements and messaging,
+enrolment funnel, Excel import, multi-branch, Arabic-first UI option.
+
+## License
+
+Proprietary. Private repository; all rights reserved.
