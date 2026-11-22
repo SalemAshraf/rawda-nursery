@@ -1,4 +1,5 @@
 <script setup>
+import ApplicationLogo from "@/Components/ApplicationLogo.vue";
 import { computed, ref } from "vue";
 import { Link, usePage } from "@inertiajs/vue3";
 import Icon from "@/Components/Icon.vue";
@@ -27,7 +28,15 @@ const nav = computed(() => [
         ? [{ label: "Activity history", route: "audit.index", icon: "logs" }]
         : []),
     ...(user.value.role === "owner"
-        ? [{ label: "Staff", route: "staff.index", icon: "staff" }, { label: "Subscription", route: "subscription.index", icon: "billing" }, { label: "Setup guide", route: "setup.index", icon: "overview" }]
+        ? [
+              { label: "Staff", route: "staff.index", icon: "staff" },
+              {
+                  label: "Subscription",
+                  route: "subscription.index",
+                  icon: "billing",
+              },
+              { label: "Setup guide", route: "setup.index", icon: "overview" },
+          ]
         : []),
 ]);
 const active = (n) =>
@@ -45,17 +54,12 @@ const active = (n) =>
         ></button>
         <aside class="sidebar" :class="{ 'is-open': open }">
             <Link :href="route('dashboard')" class="brand"
-                ><span class="brand-mark">✳</span
-                ><span
-                    >{{ t("Nursery")
-                    }}<small>{{ t("Nursery workspace") }}</small></span
-                ></Link
-            >
+                ><ApplicationLogo
+            /></Link>
             <div class="nursery-label">
                 <span class="nursery-avatar">{{
                     (page.props.auth.nursery?.name || "B")[0]
-                }}</span
-                ><span
+                }}</span><span
                     >{{ page.props.auth.nursery?.name
                     }}<small>{{ t(user.role) }}</small></span
                 >
@@ -108,8 +112,9 @@ const active = (n) =>
                 </div>
                 <div class="flex items-center gap-2">
                     <button class="utility-button" @click="toggleLocale">
-                        {{ locale === "ar" ? "English" : "العربية" }}</button
-                    ><Link
+                        {{
+                            locale === "ar" ? "English" : "العربية"
+                        }}</button><Link
                         :href="route('logout')"
                         method="post"
                         as="button"
@@ -119,7 +124,17 @@ const active = (n) =>
                 </div>
             </header>
             <main>
-                <p v-if="page.props.auth.subscription === false" class="subscription-banner" role="status">{{ locale === 'ar' ? 'مساحة العمل للعرض فقط حالياً. على المالك مراجعة الاشتراك لطلب التفعيل.' : 'This workspace is currently read-only. The owner can request activation from Subscription.' }}</p>
+                <p
+                    v-if="page.props.auth.subscription === false"
+                    class="subscription-banner"
+                    role="status"
+                >
+                    {{
+                        locale === "ar"
+                            ? "مساحة العمل للعرض فقط حالياً. على المالك مراجعة الاشتراك لطلب التفعيل."
+                            : "This workspace is currently read-only. The owner can request activation from Subscription."
+                    }}
+                </p>
                 <p
                     v-if="page.props.flash?.success"
                     role="status"

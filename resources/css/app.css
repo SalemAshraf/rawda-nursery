@@ -1849,3 +1849,24 @@
 .landing-faq details p {
     color: #66745e;
 }
+
+.application-logo {
+    display: block;
+    width: 160px;
+    height: auto;
+    max-width: 100%;
+}
+.sidebar {
+    overflow-y: auto;
+}
+.sidebar .brand {
+    flex-shrink: 0;
+}
+@media (max-width: 600px) {
+    .landing-nav .application-logo {
+        width: 132px;
+    }
+    .platform-top .application-logo {
+        width: 140px;
+    }
+}

@@ -6,16 +6,16 @@
 
         <title inertia>{{ config('app.name', 'Laravel') }}</title>
 
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+        <link rel="icon" type="image/svg+xml" href="/brand/nursery-icon.svg">
+        <link rel="icon" type="image/png" sizes="32x32" href="/brand/nursery-favicon-32.png">
+        <link rel="apple-touch-icon" sizes="180x180" href="/brand/nursery-touch-180.png">
 
         <!-- Scripts -->
         @routes
         @vite(['resources/js/app.js', "resources/js/Pages/{$page['component']}.vue"])
         @inertiaHead
     </head>
-    <body class="font-sans antialiased">
+    <body class="antialiased">
         @inertia
     </body>
 </html>

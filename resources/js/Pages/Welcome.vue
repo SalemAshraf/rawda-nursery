@@ -1,4 +1,5 @@
 <script setup>
+import ApplicationLogo from "@/Components/ApplicationLogo.vue";
 import { Head, Link, useForm, usePage } from "@inertiajs/vue3";
 import { ref } from "vue";
 import { useI18n } from "@/lib/i18n";
@@ -93,15 +94,7 @@ function submit() {
     /></Head>
     <div class="landing">
         <header class="landing-nav">
-            <Link href="/" class="brand"
-                ><span class="brand-mark">✳</span
-                ><span
-                    >{{ L("Nursery", "Nursery")
-                    }}<small>{{
-                        L("مساحة إدارة الحضانة", "Nursery workspace")
-                    }}</small></span
-                ></Link
-            >
+            <Link href="/" class="brand"><ApplicationLogo /></Link>
             <nav class="landing-links">
                 <a href="#features">{{
                     L("داخل Nursery", "Inside Nursery")
@@ -655,10 +648,7 @@ function submit() {
             </section>
         </main>
         <footer class="landing-footer">
-            <Link href="/" class="brand"
-                ><span class="brand-mark">✳</span
-                ><span>{{ L("Nursery", "Nursery") }}</span></Link
-            >
+            <Link href="/" class="brand"><ApplicationLogo /></Link>
             <p>
                 {{
                     L(

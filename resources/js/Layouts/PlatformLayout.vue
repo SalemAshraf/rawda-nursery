@@ -1,4 +1,5 @@
 <script setup>
+import ApplicationLogo from "@/Components/ApplicationLogo.vue";
 import { Link, usePage } from "@inertiajs/vue3";
 import { useI18n } from "@/lib/i18n";
 const { locale, toggleLocale } = useI18n();
@@ -7,21 +8,10 @@ const page = usePage();
 <template>
     <div class="platform-shell">
         <header class="platform-top">
-            <Link href="/" class="brand"
-                ><span class="brand-mark">✳</span
-                ><span
-                    >{{ locale === "ar" ? "Nursery" : "Nursery"
-                    }}<small>{{
-                        locale === "ar"
-                            ? "إدارة منصة البيع"
-                            : "Platform administration"
-                    }}</small></span
-                ></Link
-            >
+            <Link href="/" class="brand"><ApplicationLogo /></Link>
             <div class="flex gap-2">
                 <button @click="toggleLocale" class="utility-button">
-                    {{ locale === "ar" ? "English" : "العربية" }}</button
-                ><Link
+                    {{ locale === "ar" ? "English" : "العربية" }}</button><Link
                     v-if="page.url != '/platform/login'"
                     :href="route('platform.logout')"
                     as="button"

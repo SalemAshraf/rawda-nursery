@@ -1,4 +1,5 @@
 <script setup>
+import ApplicationLogo from "@/Components/ApplicationLogo.vue";
 import { Link } from "@inertiajs/vue3";
 import { useI18n } from "@/lib/i18n";
 const { t, locale, toggleLocale } = useI18n();
@@ -8,12 +9,7 @@ const { t, locale, toggleLocale } = useI18n();
         <header
             class="flex items-center justify-between max-w-6xl mx-auto w-full p-6"
         >
-            <Link href="/" class="brand"
-                ><span class="brand-mark">✳</span
-                ><span
-                    >{{ t("Nursery")
-                    }}<small>{{ t("Nursery workspace") }}</small></span
-                ></Link
+            <Link href="/" class="brand"><ApplicationLogo /></Link
             ><button class="utility-button" @click="toggleLocale">
                 {{ locale === "ar" ? "English" : "العربية" }}
             </button>
