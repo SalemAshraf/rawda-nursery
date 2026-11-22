@@ -23,16 +23,16 @@ function addStaff() {
 
         <div class="py-8">
             <div class="mx-auto max-w-4xl space-y-6 px-4 sm:px-6 lg:px-8">
-                <section class="rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
-                    <table class="min-w-full divide-y divide-gray-200 text-sm">
+                <section class="record-table-wrap rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
+                    <table role="table" class="record-table staff-table min-w-full divide-y divide-gray-200 text-sm">
                         <thead class="bg-gray-50 text-left text-xs uppercase text-gray-500">
                             <tr><th class="px-3 py-2">{{ t("Name") }}</th><th class="px-3 py-2">{{ t("Email") }}</th><th class="px-3 py-2">{{ t("Role") }}</th></tr>
                         </thead>
                         <tbody class="divide-y divide-gray-100">
                             <tr v-for="s in staff" :key="s.id">
-                                <td class="px-3 py-2 font-medium text-navy-900">{{ s.name }}</td>
-                                <td class="px-3 py-2">{{ s.email }}</td>
-                                <td class="px-3 py-2">{{ t(s.role) }}</td>
+                                <td :data-label="t('Name')" class="px-3 py-2 font-medium text-navy-900">{{ s.name }}</td>
+                                <td :data-label="t('Email')" class="px-3 py-2">{{ s.email }}</td>
+                                <td :data-label="t('Role')" class="px-3 py-2">{{ t(s.role) }}</td>
                             </tr>
                         </tbody>
                     </table>

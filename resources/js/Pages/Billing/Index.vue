@@ -40,7 +40,7 @@ function addPayment(id) {
             <h2 class="text-xl font-semibold leading-tight text-navy-900">{{ t("Billing") }}</h2>
         </template>
 
-        <div class="py-8">
+        <div class="py-8 billing-page">
             <div class="mx-auto max-w-7xl space-y-6 px-4 sm:px-6 lg:px-8">
                 <p class="text-xs text-gray-500">{{ t("Payments are recorded manually (cash, transfer, wallet reference). Online collection is not part of this version.") }}</p>
 
@@ -96,8 +96,8 @@ function addPayment(id) {
                         <InputError :message="invoiceForm.errors.child_id || invoiceForm.errors.amount" />
                     </form>
 
-                    <div class="overflow-x-auto">
-                        <table class="min-w-full divide-y divide-gray-200 text-sm">
+                    <div class="overflow-x-auto record-table-wrap">
+                        <table role="table" class="record-table invoice-table min-w-full divide-y divide-gray-200 text-sm">
                             <thead class="bg-gray-50 text-left text-xs uppercase text-gray-500">
                                 <tr>
                                     <th class="px-3 py-2">{{ t("Child") }}</th>
@@ -112,12 +112,12 @@ function addPayment(id) {
                             <tbody class="divide-y divide-gray-100">
                                 <template v-for="i in invoices" :key="i.id">
                                     <tr>
-                                        <td class="px-3 py-2 font-medium text-navy-900">{{ i.child }}</td>
-                                        <td class="px-3 py-2">{{ i.due_date }}</td>
-                                        <td class="px-3 py-2">{{ i.amount }}</td>
-                                        <td class="px-3 py-2">{{ i.paid }}</td>
-                                        <td class="px-3 py-2">{{ i.outstanding }}</td>
-                                        <td class="px-3 py-2">
+                                        <td :data-label="t('Child')" class="px-3 py-2 font-medium text-navy-900">{{ i.child }}</td>
+                                        <td :data-label="t('Due')" class="px-3 py-2"><span dir="ltr" class="inline-block">{{ i.due_date }}</span></td>
+                                        <td :data-label="t('Amount')" class="px-3 py-2"><span dir="ltr" class="inline-block">{{ i.amount }}</span></td>
+                                        <td :data-label="t('Paid')" class="px-3 py-2"><span dir="ltr" class="inline-block">{{ i.paid }}</span></td>
+                                        <td :data-label="t('Outstanding')" class="px-3 py-2"><span dir="ltr" class="inline-block">{{ i.outstanding }}</span></td>
+                                        <td :data-label="t('Status')" class="px-3 py-2">
                                             <span :class="{
                                                 'bg-gray-100 text-gray-600': i.status === 'draft',
                                                 'bg-blue-100 text-blue-800': i.status === 'sent' && !i.overdue,
@@ -128,15 +128,15 @@ function addPayment(id) {
                                                 {{ t(i.overdue ? 'overdue' : i.status) }}
                                             </span>
                                         </td>
-                                        <td class="px-3 py-2">
-                                            <div class="flex gap-2 text-xs">
+                                        <td class="record-actions px-3 py-2">
+                                            <div class="flex flex-wrap gap-2 text-xs">
                                                 <button v-if="i.status === 'draft'" class="text-navy-700 hover:underline" @click="post('billing.invoices.send', i.id)">{{ t("Send") }}</button>
                                                 <button v-if="i.status !== 'paid' && i.status !== 'void'" class="text-navy-700 hover:underline" @click="openPayments = openPayments === i.id ? null : i.id">{{ t("Payment") }}</button>
                                                 <button v-if="(i.status === 'draft' || i.status === 'sent') && i.payments.length === 0" class="text-red-600 hover:underline" @click="post('billing.invoices.void', i.id)">{{ t("Void") }}</button>
                                             </div>
                                         </td>
                                     </tr>
-                                    <tr v-if="openPayments === i.id">
+                                    <tr v-if="openPayments === i.id" class="record-details">
                                         <td colspan="7" class="bg-gray-50 px-3 py-2">
                                             <form class="flex flex-wrap items-center gap-2 text-xs" @submit.prevent="addPayment(i.id)">
                                                 <input v-model="paymentForms[i.id].amount" :placeholder='t("Amount")' class="w-24 rounded-lg border-gray-300 py-1" required />

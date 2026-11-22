@@ -82,7 +82,7 @@ function reportIncident() {
                         <p v-else class="col-span-2 text-xs text-gray-400">{{ t("Health notes are restricted to owner and manager roles.") }}</p>
                     </dl>
 
-                    <form v-else class="grid grid-cols-2 gap-3 text-sm" @submit.prevent="saveEdit">
+                    <form v-else class="child-detail-form grid grid-cols-2 gap-3 text-sm" @submit.prevent="saveEdit">
                         <div><label class="text-xs text-gray-500">{{ t("First name") }}</label><input v-model="editForm.first_name" class="w-full rounded-lg border-gray-300" required /></div>
                         <div><label class="text-xs text-gray-500">{{ t("Last name") }}</label><input v-model="editForm.last_name" class="w-full rounded-lg border-gray-300" required /></div>
                         <div><label class="text-xs text-gray-500">{{ t("Date of birth") }}</label><input v-model="editForm.dob" type="date" class="w-full rounded-lg border-gray-300" /></div>
@@ -111,7 +111,7 @@ function reportIncident() {
                         </li>
                         <li v-if="guardians.length === 0" class="text-gray-400">{{ t("No guardians recorded.") }}</li>
                     </ul>
-                    <form v-if="canManage" class="grid grid-cols-2 gap-2 text-sm" @submit.prevent="addGuardian">
+                    <form v-if="canManage" class="child-detail-form grid grid-cols-2 gap-2 text-sm" @submit.prevent="addGuardian">
                         <input v-model="guardianForm.name" :placeholder='t("Name")' class="rounded-lg border-gray-300" required />
                         <input v-model="guardianForm.relation" :placeholder='t("Relation (e.g. mother)")' class="rounded-lg border-gray-300" required />
                         <input v-model="guardianForm.phone" :placeholder='t("Phone")' class="rounded-lg border-gray-300" required />
@@ -134,7 +134,7 @@ function reportIncident() {
                         </li>
                         <li v-if="pickupPersons.length === 0" class="text-amber-700">{{ t("Nobody is authorized yet. The child cannot be checked out until someone is added.") }}</li>
                     </ul>
-                    <form v-if="canManage" class="grid grid-cols-3 gap-2 text-sm" @submit.prevent="addPickup">
+                    <form v-if="canManage" class="child-detail-form grid grid-cols-3 gap-2 text-sm" @submit.prevent="addPickup">
                         <input v-model="pickupForm.name" :placeholder='t("Name")' class="rounded-lg border-gray-300" required />
                         <input v-model="pickupForm.relation" :placeholder='t("Relation")' class="rounded-lg border-gray-300" required />
                         <input v-model="pickupForm.phone" :placeholder='t("Phone")' class="rounded-lg border-gray-300" />
@@ -161,7 +161,7 @@ function reportIncident() {
                         </li>
                         <li v-if="incidents.length === 0" class="text-gray-400">{{ t("No incidents recorded.") }}</li>
                     </ul>
-                    <form class="grid grid-cols-2 gap-2 text-sm" @submit.prevent="reportIncident">
+                    <form class="child-detail-form grid grid-cols-2 gap-2 text-sm" @submit.prevent="reportIncident">
                         <input v-model="incidentForm.occurred_at" type="datetime-local" class="rounded-lg border-gray-300" required />
                         <select v-model="incidentForm.severity" class="rounded-lg border-gray-300">
                             <option value="minor">{{ t("minor") }}</option>
