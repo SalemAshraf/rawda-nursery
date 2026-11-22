@@ -1,9 +1,9 @@
-# Rawda (working name)
+# Baraim Nursery (براعم)
 
 Multi-tenant nursery management SaaS for Egypt and the Gulf. Each nursery is a
 tenant; every record is tenant-scoped server-side.
 
-"Rawda" (روضة, kindergarten) is a provisional name. Change it before launch.
+Name: Baraim (براعم), approved by the owner 22 Nov 2026 after the Rawda/rawdahapp.com collision. The repo slug rawda-nursery is unchanged for now.
 
 ## What v1 does
 

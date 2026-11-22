@@ -1,6 +1,6 @@
 # Product plan
 
-Working name: Rawda. Target buyers: private nurseries/preschools in Egypt
+Name: Baraim (براعم), approved. Target buyers: private nurseries/preschools in Egypt
 first, Gulf (Saudi, UAE) as a second phase. Evidence base: docs/market-study.md.
 
 ## Positioning
@@ -58,7 +58,7 @@ buyer asks.
 
 ## Open decisions for the owner
 
-1. Final product name (Rawda is provisional AND taken by an existing Kuwaiti nursery product, rawdahapp.com - a rename is required before launch).
+1. ~~Final product name~~ RESOLVED 22 Nov 2026: Baraim (براعم). Rawda collided with rawdahapp.com (Kuwait). Domain check pending (separate workstream).
 2. Arabic-first vs English-first UI. Competitors' parent apps are Arabic.
 3. Pricing: per-child-per-month (Kindaria's model) vs flat per-nursery. Needs
    buyer conversations, not assumption.
