@@ -32,6 +32,14 @@ Never run `migrate:fresh`, reset or blanket seeds on existing records. Preserve 
 
 No application queue worker or cron task is required for implemented nursery workflows. `/up` is the health route. Sales inquiries persist only and do not trigger email or SMS.
 
+## Existing cPanel PHP handler
+
+On the current shared host, the domain-level PHP metadata alone did not change the actual web runtime from PHP 8.1. The deployment owner verified that the cPanel-generated `ea-php83` handler in the domain document root was also required.
+
+The non-secret handler is recorded in [the host-specific example](hosting/cpanel-php83-handler.htaccess.example). It belongs above Laravel's rewrite rules in the host's `public/.htaccess`. This is a reference for this host, not a portable application default. Leave the generic application `public/.htaccess` unchanged in source.
+
+Before applying a release that includes `public/.htaccess`, back up and preserve the host-generated handler and any host-owned HTTPS redirect. Restore them above the app rewrite rules after the source file is updated, then verify the actual web PHP version and HTTPS response. Do not replace them blindly, change account-wide PHP, or copy them into sibling applications. Host changes remain with the deployment owner; this example contains no credentials or account identifiers.
+
 ## HTTPS and browser verification
 
 Verify HTTPS asset/redirect origins, login, logout, sessions, CSRF-protected forms and tenant isolation on the real host. Do not fix a proxy mismatch by trusting every forwarded header without understanding the host. No unconditional proxy or forced-scheme override is built into the app.
