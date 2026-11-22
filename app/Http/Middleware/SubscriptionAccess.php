@@ -14,6 +14,10 @@ class SubscriptionAccess
             $sub = TenantSubscription::forTenant($r->user()->tenant_id);
             // Missing rows are pre-platform nurseries. Never expire or rewrite their access.
             if ($sub && ! $sub->writable()) {
+                if ($r->expectsJson()) {
+                    return response()->json(['message' => 'The nursery is currently read-only.'], 423);
+                }
+
                 return redirect()->route('dashboard')->with('success', 'مساحة العمل للعرض فقط حالياً. على المالك مراجعة صفحة الاشتراك لطلب التفعيل.');
             }
         }

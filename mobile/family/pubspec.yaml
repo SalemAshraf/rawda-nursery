@@ -1,0 +1,31 @@
+name: nursery_family
+description: Nursery family app connected to the child-scoped Nursery API.
+publish_to: none
+version: 1.0.0+1
+environment:
+  sdk: ^3.14.0
+dependencies:
+  flutter:
+    sdk: flutter
+  http: ^1.6.0
+  flutter_secure_storage: ^11.2.0
+  qr_flutter: ^4.1.0
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/brand/nursery-icon.png
+  fonts:
+    - family: Cairo
+      fonts:
+        - asset: assets/fonts/cairo-arabic-400.ttf
+        - asset: assets/fonts/cairo-arabic-700.ttf
+          weight: 700
+    - family: CairoLatin
+      fonts:
+        - asset: assets/fonts/cairo-latin-400.ttf
+        - asset: assets/fonts/cairo-latin-700.ttf
+          weight: 700

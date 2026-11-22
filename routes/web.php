@@ -10,6 +10,7 @@ use App\Http\Controllers\ClassroomController;
 use App\Http\Controllers\CommercialController;
 use App\Http\Controllers\DailyLogController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Family\PickupController;
 use App\Http\Controllers\GuardianController;
 use App\Http\Controllers\IncidentController;
 use App\Http\Controllers\McpController;
@@ -17,16 +18,28 @@ use App\Http\Controllers\OauthController;
 use App\Http\Controllers\PickupPersonController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReportsController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\SetupController;
 use App\Http\Controllers\StaffController;
 use App\Http\Middleware\SubscriptionAccess;
 use Illuminate\Support\Facades\Route;
 
+Route::get('/sitemap.xml', [SearchController::class, 'sitemap'])->name('sitemap');
 Route::get('/', [CommercialController::class, 'landing'])->name('home');
 Route::post('/sales-inquiries', [CommercialController::class, 'inquiry'])->middleware('throttle:5,10')->name('sales.inquiry');
 require __DIR__.'/platform.php';
 
 Route::middleware(['auth:web', SubscriptionAccess::class])->group(function () {
+    Route::get('/pickup-scan', [PickupController::class, 'page'])->name('pickup.scan');
+    Route::post('/pickup-scan/verify', [PickupController::class, 'verify'])->middleware('throttle:20,1')->name('pickup.verify');
+    Route::post('/pickup-scan/checkout', [PickupController::class, 'checkout'])->middleware('throttle:10,1')->name('pickup.checkout');
+    Route::get('/families', [App\Http\Controllers\Family\StaffController::class, 'index'])->name('families.index');
+    Route::post('/families/invite', [App\Http\Controllers\Family\StaffController::class, 'invite'])->middleware('throttle:10,1')->name('families.invite');
+    Route::post('/families/access/{access}/revoke', [App\Http\Controllers\Family\StaffController::class, 'revoke'])->name('families.revoke');
+    Route::post('/families/publish/{type}/{record}', [App\Http\Controllers\Family\StaffController::class, 'publish'])->name('families.publish');
+    Route::post('/families/reply', [App\Http\Controllers\Family\StaffController::class, 'reply'])->name('families.reply');
+    Route::post('/families/announcements', [App\Http\Controllers\Family\StaffController::class, 'announcement'])->name('families.announcement');
+    Route::post('/families/tasks', [App\Http\Controllers\Family\StaffController::class, 'task'])->name('families.task');
     Route::get('/setup', [SetupController::class, 'index'])->name('setup.index');
     Route::post('/setup', [SetupController::class, 'update'])->name('setup.update');
     Route::get('/subscription', [CommercialController::class, 'subscription'])->name('subscription.index');
@@ -94,3 +107,5 @@ Route::middleware('auth:web')->group(function () {
     Route::post('/ai', [AiSettingsController::class, 'update'])->name('ai.update');
     Route::delete('/ai/connections/{family}', [AiSettingsController::class, 'revoke'])->name('ai.revoke');
 });
+
+require __DIR__.'/family.php';

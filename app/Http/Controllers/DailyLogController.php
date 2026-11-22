@@ -60,6 +60,7 @@ class DailyLogController extends Controller
                 'meals' => $data['meals'] ?? '', 'naps' => $data['naps'] ?? '', 'mood' => $data['mood'] ?? '',
                 'activities' => $data['activities'] ?? '', 'notes' => $data['notes'] ?? '',
                 'created_by' => $request->user()->id,
+                'family_visible' => false,
             ])->save();
             Audit::record('save-daily-log', 'child', $child->id, 'Care log saved for '.$date);
         });

@@ -1,6 +1,9 @@
 import { ref, watchEffect } from "vue";
-const locale = ref(localStorage.getItem("baraim-locale") || "ar");
+const urlLocale = new URLSearchParams(window.location.search).get('lang');
+const locale = ref(['ar','en'].includes(urlLocale) ? urlLocale : (localStorage.getItem("baraim-locale") || "ar"));
 const ar = {
+    "Families": "مساحة الأسرة",
+    "Pickup QR": "رمز الاستلام",
     'Please wait before retrying.': 'يرجى الانتظار قليلاً قبل المحاولة مرة أخرى.',
     'Reset your password': 'استعادة كلمة المرور',
     'Choose a new password': 'اختر كلمة مرور جديدة',

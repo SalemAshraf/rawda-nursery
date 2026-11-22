@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\FamilyAccount;
+use App\Models\PlatformAdmin;
 use App\Models\User;
 
 return [
@@ -38,6 +40,7 @@ return [
     */
 
     'guards' => [
+        'family' => ['driver' => 'session', 'provider' => 'family_accounts'],
         'platform' => ['driver' => 'session', 'provider' => 'platform_admins'],
         'web' => [
             'driver' => 'session',
@@ -63,7 +66,8 @@ return [
     */
 
     'providers' => [
-        'platform_admins' => ['driver' => 'eloquent', 'model' => \App\Models\PlatformAdmin::class],
+        'family_accounts' => ['driver' => 'eloquent', 'model' => FamilyAccount::class],
+        'platform_admins' => ['driver' => 'eloquent', 'model' => PlatformAdmin::class],
         'users' => [
             'driver' => 'eloquent',
             'model' => env('AUTH_MODEL', User::class),

@@ -10,7 +10,7 @@ class DailyLog extends Model
 {
     use BelongsToTenant;
 
-    protected $fillable = ['tenant_id', 
+    protected $fillable = ['tenant_id', 'family_visible',
         'child_id', 'date', 'meals', 'naps', 'mood', 'activities', 'notes', 'created_by',
     ];
 

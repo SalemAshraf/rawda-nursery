@@ -31,13 +31,15 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        $family = $request->is('family', 'family/*');
+
         return [
             ...parent::share($request),
             'flash' => ['success' => fn () => $request->session()->get('success')],
             'auth' => [
-                'user' => $request->user(),
-                'subscription' => fn () => $request->user() instanceof User ? (TenantSubscription::forTenant($request->user()->tenant_id)?->writable() ?? true) : true,
-                'nursery' => $request->user()?->tenant?->only('name', 'currency', 'timezone', 'is_demo'),
+                'user' => $family ? null : $request->user(),
+                'subscription' => fn () => ! $family && $request->user() instanceof User ? (TenantSubscription::forTenant($request->user()->tenant_id)?->writable() ?? true) : true,
+                'nursery' => $family ? null : $request->user()?->tenant?->only('name', 'currency', 'timezone', 'is_demo'),
             ],
         ];
     }

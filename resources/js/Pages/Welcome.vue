@@ -84,6 +84,7 @@ function submit() {
             )
         "
         ><meta
+            head-key="description"
             name="description"
             :content="
                 L(

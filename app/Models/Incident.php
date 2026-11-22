@@ -12,7 +12,7 @@ class Incident extends Model
 
     public const SEVERITIES = ['minor', 'moderate', 'severe'];
 
-    protected $fillable = ['tenant_id', 
+    protected $fillable = ['tenant_id', 'family_visible',
         'child_id', 'occurred_at', 'severity', 'description', 'reported_by',
         'guardian_acknowledged_at', 'guardian_acknowledged_by',
     ];

@@ -16,13 +16,15 @@ const nav = computed(() => [
     { label: "Classrooms", route: "classrooms.index", icon: "overview" },
     { label: "Children", route: "children.index", icon: "children" },
     { label: "Attendance", route: "attendance.index", icon: "attendance" },
+    { label: "Pickup QR", route: "pickup.scan", icon: "attendance" },
     { label: "Daily log", route: "logs.index", icon: "logs" },
     { label: "Incidents", route: "incidents.index", icon: "incidents" },
     ...(user.value.role !== "teacher"
         ? [{ label: "Billing", route: "billing.index", icon: "billing" }]
         : []),
     ...(user.value.role !== "teacher"
-        ? [{ label: "Reports", route: "reports", icon: "overview" }]
+        ? [{ label: "Families", route: "families.index", icon: "children" },
+            { label: "Reports", route: "reports", icon: "overview" }]
         : []),
     ...(user.value.role !== "teacher"
         ? [{ label: "Activity history", route: "audit.index", icon: "logs" }]
