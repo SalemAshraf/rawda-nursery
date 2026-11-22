@@ -98,7 +98,10 @@ function submit() {
             <nav class="landing-links">
                 <a href="#features">{{
                     L("داخل Nursery", "Inside Nursery")
-                }}</a><a href="#plans">{{ L("الباقات", "Plans") }}</a
+                }}</a><a href="#ai">{{
+                    L("الذكاء الاصطناعي", "AI insights")
+                }}</a
+                ><a href="#plans">{{ L("الباقات", "Plans") }}</a
                 ><a href="#questions">{{ L("أسئلة شائعة", "Questions") }}</a>
             </nav>
             <div class="landing-nav-actions">
@@ -244,6 +247,165 @@ function submit() {
                         <h3>{{ locale === "ar" ? f[1] : f[2] }}</h3>
                         <p>{{ locale === "ar" ? f[3] : f[4] }}</p>
                     </article>
+                </div>
+            </section>
+            <section id="ai" class="nursery-ai">
+                <div class="ai-heading">
+                    <p class="ai-kicker">
+                        NURSERY × CLAUDE
+                        <span>{{
+                            L(
+                                "قراءة فقط · باختيار المالك",
+                                "READ ONLY · OWNER OPT-IN",
+                            )
+                        }}</span>
+                    </p>
+                    <h2>
+                        {{ L("سؤال بسيط.", "A simple question.") }}<br /><em>{{
+                            L(
+                                "وراءه صورة أوضح.",
+                                "A clearer picture behind it.",
+                            )
+                        }}</em>
+                    </h2>
+                    <p>
+                        {{
+                            L(
+                                "اسأل Claude عن أرقام حضانتك بدل التنقل بين التقارير. ربط مخصص يقرأ إجماليات الحضور والقبول والسعة والرسوم، دون كشف ملفات الأطفال.",
+                                "Ask Claude about your nursery numbers instead of moving between reports. A custom connection reads attendance, admissions, capacity and fee aggregates, without exposing child records.",
+                            )
+                        }}
+                    </p>
+                    <a :href="route('ai.index')" class="ai-link"
+                        >{{
+                            L("اكتشف إعداد الربط", "Explore connection setup")
+                        }}
+                        ↗</a
+                    >
+                </div>
+                <div class="ai-questions">
+                    <div class="ai-chat-top">
+                        <span class="ai-orbit">✧</span
+                        ><span
+                            >{{
+                                L(
+                                    "أسئلة من يوم الإدارة",
+                                    "Questions from a manager’s day",
+                                )
+                            }}<small>{{
+                                L(
+                                    "أمثلة لما يمكن سؤاله، وليست إجابات فعلية",
+                                    "Example questions, not live answers",
+                                )
+                            }}</small></span
+                        >
+                    </div>
+                    <article>
+                        <b>01</b>
+                        <div>
+                            <h3>
+                                {{
+                                    L(
+                                        "كم طفل وصل النهارده؟",
+                                        "How many children arrived today?",
+                                    )
+                                }}
+                            </h3>
+                            <p>
+                                {{
+                                    L(
+                                        "إجمالي الوصول والانصراف ومن لم يسجل انصرافه، بتاريخ الحضانة المحلي.",
+                                        "Arrival, departure and not-yet-checked-out totals on the nursery’s local date.",
+                                    )
+                                }}
+                            </p>
+                        </div>
+                    </article>
+                    <article>
+                        <b>02</b>
+                        <div>
+                            <h3>
+                                {{
+                                    L(
+                                        "القبول واقف فين؟",
+                                        "Where do admissions stand?",
+                                    )
+                                }}
+                            </h3>
+                            <p>
+                                {{
+                                    L(
+                                        "عدد الاستفسارات والزيارات وقائمة الانتظار والمتابعات المستحقة، دون أسماء أو هواتف.",
+                                        "Inquiry, visit, waitlist and due-follow-up counts, without names or phone numbers.",
+                                    )
+                                }}
+                            </p>
+                        </div>
+                    </article>
+                    <article>
+                        <b>03</b>
+                        <div>
+                            <h3>
+                                {{
+                                    L(
+                                        "حصلنا كام خلال الشهر؟",
+                                        "How much did we collect this month?",
+                                    )
+                                }}
+                            </h3>
+                            <p>
+                                {{
+                                    L(
+                                        "إجمالي الدفعات اليدوية والفواتير خلال الفترة، مع فصل المتبقي الحالي عن إجمالي الفترة.",
+                                        "Manual collections and issued fees in the period, with current outstanding balances shown separately.",
+                                    )
+                                }}
+                            </p>
+                        </div>
+                    </article>
+                    <article>
+                        <b>04</b>
+                        <div>
+                            <h3>
+                                {{
+                                    L(
+                                        "السعة المسجلة قدام عدد الأطفال إيه؟",
+                                        "How does entered capacity compare with enrollment?",
+                                    )
+                                }}
+                            </h3>
+                            <p>
+                                {{
+                                    L(
+                                        "مقارنة إجمالية للسعة التي أدخلتها الإدارة والأطفال المقيدين. ليست شهادة ترخيص أو التزام قانوني.",
+                                        "Aggregate entered capacity and current enrollment. Not a licensing or legal compliance assessment.",
+                                    )
+                                }}
+                            </p>
+                        </div>
+                    </article>
+                </div>
+                <div class="ai-boundary">
+                    <strong>{{
+                        L(
+                            "الخصوصية جزء من الميزة.",
+                            "Privacy is part of the feature.",
+                        )
+                    }}</strong>
+                    <p>
+                        {{
+                            L(
+                                "للـمالك فقط، مع تفعيل اختياري وموافقة منفصلة وإلغاء في أي وقت. لا أسماء أطفال أو أولياء أمور، ولا بيانات صحة أو استلام أو حوادث أو ملاحظات. لا تعديل أو إرسال رسائل أو تحصيل أموال.",
+                                "Owner-only, with opt-in, separate consent and revocation. No child or guardian identities, health, pickup, incident or free-text records. No edits, messages or charges.",
+                            )
+                        }}
+                    </p>
+                    <small>{{
+                        L(
+                            "ربط خارجي مخصص، وليس شات مدمجاً. يتطلب حساب Claude يدعم الموصلات وإعداد الاتصال والتحقق منه بعد النشر. تخضع الأرقام المشاركة لشروط مزود AI، وراجع الإجابات دائماً في تقارير Nursery.",
+                            "A custom external connection, not embedded chat. Requires a Claude account with connector support, setup and verification after deployment. Shared aggregates are subject to the AI provider’s terms. Always check answers against Nursery reports.",
+                        )
+                    }}</small>
                 </div>
             </section>
             <section id="workspace" class="landing-workflow">
@@ -663,3 +825,160 @@ function submit() {
         </footer>
     </div>
 </template>
+
+<style scoped>
+.nursery-ai {
+    margin: 35px auto 80px;
+    max-width: 1320px;
+    padding: 64px;
+    display: grid;
+    grid-template-columns: 1fr 1.05fr;
+    gap: 48px;
+    background: #193e30;
+    color: #f4f5e9;
+    border-radius: 32px;
+    scroll-margin-top: 100px;
+}
+.ai-kicker {
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    font-weight: 800;
+    color: #bfd9bd;
+}
+.ai-kicker span {
+    display: block;
+    letter-spacing: 0;
+    margin-top: 14px;
+    font-size: 11px;
+    border: 1px solid #70927b;
+    width: fit-content;
+    padding: 6px 10px;
+    border-radius: 30px;
+}
+.ai-heading h2 {
+    font-size: clamp(35px, 4vw, 58px);
+    line-height: 1.45;
+    margin: 25px 0;
+}
+.ai-heading h2 em {
+    font-style: normal;
+    color: #d3dcab;
+}
+.ai-heading > p:not(.ai-kicker) {
+    color: #ccdacb;
+    line-height: 2;
+    font-size: 16px;
+    max-width: 430px;
+}
+.ai-link {
+    display: inline-block;
+    background: #d5e1b9;
+    color: #193e30;
+    padding: 13px 22px;
+    border-radius: 10px;
+    margin-top: 28px;
+    font-weight: 800;
+}
+.ai-questions {
+    background: #244d3c;
+    border: 1px solid #4c725b;
+    border-radius: 22px;
+    padding: 26px;
+}
+.ai-chat-top {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 22px;
+}
+.ai-chat-top small {
+    display: block;
+    font-size: 10px;
+    color: #c6d4bf;
+    margin-top: 5px;
+    font-weight: 400;
+}
+.ai-orbit {
+    font-size: 32px;
+    color: #d3dcab;
+}
+.ai-questions article {
+    display: flex;
+    gap: 16px;
+    border-top: 1px solid #52705b;
+    padding: 18px 0 0;
+    margin-top: 18px;
+}
+.ai-questions article > b {
+    font-size: 11px;
+    color: #cfdda9;
+    padding-top: 5px;
+}
+.ai-questions h3 {
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.7;
+}
+.ai-questions article p {
+    font-size: 12px;
+    color: #c9d9ca;
+    line-height: 1.9;
+    margin-top: 7px;
+}
+.ai-boundary {
+    grid-column: 1/-1;
+    border-top: 1px solid #52705b;
+    padding-top: 28px;
+}
+.ai-boundary strong {
+    font-size: 20px;
+}
+.ai-boundary p {
+    color: #d1dfce;
+    line-height: 2;
+    font-size: 14px;
+    max-width: 1050px;
+    margin: 12px 0;
+}
+.ai-boundary small {
+    color: #b7cbb9;
+    line-height: 1.9;
+    display: block;
+    max-width: 1050px;
+}
+@media (max-width: 1000px) {
+    .nursery-ai {
+        margin: 30px 24px 55px;
+        padding: 36px;
+        gap: 28px;
+    }
+    .ai-heading h2 {
+        font-size: 38px;
+    }
+}
+@media (max-width: 700px) {
+    .nursery-ai {
+        margin: 25px 16px 40px;
+        padding: 26px 20px;
+        grid-template-columns: 1fr;
+        border-radius: 22px;
+    }
+    .ai-heading h2 {
+        font-size: 38px;
+    }
+    .ai-heading > p:not(.ai-kicker) {
+        font-size: 14px;
+    }
+    .ai-questions {
+        padding: 20px 16px;
+    }
+    .ai-boundary {
+        grid-column: auto;
+    }
+    .ai-kicker {
+        font-size: 11px;
+    }
+}
+</style>

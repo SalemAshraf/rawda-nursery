@@ -36,6 +36,11 @@ const nav = computed(() => [
                   icon: "billing",
               },
               { label: "Setup guide", route: "setup.index", icon: "overview" },
+              {
+                  label: "Claude connection",
+                  route: "ai.index",
+                  icon: "overview",
+              },
           ]
         : []),
 ]);
@@ -124,6 +129,17 @@ const active = (n) =>
                 </div>
             </header>
             <main>
+                <p
+                    v-if="page.props.auth.nursery?.is_demo"
+                    class="subscription-banner"
+                    role="status"
+                >
+                    {{
+                        locale === "ar"
+                            ? "عرض تجريبي: كل الأسماء والبيانات اصطناعية. لا تستخدمه لسجلات أطفال حقيقيين أو للتواصل أو التحصيل الفعلي."
+                            : "Demonstration: all names and records are synthetic. Do not use this workspace for real child records, messages or payments."
+                    }}
+                </p>
                 <p
                     v-if="page.props.auth.subscription === false"
                     class="subscription-banner"

@@ -19,6 +19,10 @@ class DemoSeeder extends Seeder
 {
     public function run(): void
     {
+        if (app()->isProduction()) {
+            throw new \RuntimeException('Development seeds are disabled in production. Use the isolated nursery:demo command.');
+        }
+
         $tenant = Tenant::create([
             'name' => 'Sunny Nursery (Demo)',
             'slug' => 'sunny-demo',

@@ -1,34 +1,42 @@
 <?php
 
+use App\Http\Controllers\AdmissionController;
+use App\Http\Controllers\AiSettingsController;
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\AuditController;
 use App\Http\Controllers\BillingController;
 use App\Http\Controllers\ChildController;
 use App\Http\Controllers\ClassroomController;
+use App\Http\Controllers\CommercialController;
 use App\Http\Controllers\DailyLogController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GuardianController;
 use App\Http\Controllers\IncidentController;
+use App\Http\Controllers\McpController;
+use App\Http\Controllers\OauthController;
 use App\Http\Controllers\PickupPersonController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReportsController;
+use App\Http\Controllers\SetupController;
 use App\Http\Controllers\StaffController;
+use App\Http\Middleware\SubscriptionAccess;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
-Route::get('/', [\App\Http\Controllers\CommercialController::class, 'landing'])->name('home');
-Route::post('/sales-inquiries', [\App\Http\Controllers\CommercialController::class, 'inquiry'])->middleware('throttle:5,10')->name('sales.inquiry');
+Route::get('/', [CommercialController::class, 'landing'])->name('home');
+Route::post('/sales-inquiries', [CommercialController::class, 'inquiry'])->middleware('throttle:5,10')->name('sales.inquiry');
 require __DIR__.'/platform.php';
 
-Route::middleware(['auth:web', \App\Http\Middleware\SubscriptionAccess::class])->group(function () {
-    Route::get('/setup', [\App\Http\Controllers\SetupController::class,'index'])->name('setup.index');
-    Route::post('/setup', [\App\Http\Controllers\SetupController::class,'update'])->name('setup.update');
-    Route::get('/subscription', [\App\Http\Controllers\CommercialController::class,'subscription'])->name('subscription.index');
-    Route::post('/subscription/request', [\App\Http\Controllers\CommercialController::class,'requestPlan'])->middleware('throttle:5,10')->name('subscription.request');
-    Route::get('/reports', \App\Http\Controllers\ReportsController::class)->name('reports');
-    Route::get('/admissions', [\App\Http\Controllers\AdmissionController::class, 'index'])->name('admissions.index');
-    Route::post('/admissions', [\App\Http\Controllers\AdmissionController::class, 'store'])->name('admissions.store');
-    Route::put('/admissions/{admission}', [\App\Http\Controllers\AdmissionController::class, 'update'])->name('admissions.update');
-    Route::post('/admissions/{admission}/enroll', [\App\Http\Controllers\AdmissionController::class, 'enroll'])->name('admissions.enroll');
-    Route::get('/audit', \App\Http\Controllers\AuditController::class)->name('audit.index');
+Route::middleware(['auth:web', SubscriptionAccess::class])->group(function () {
+    Route::get('/setup', [SetupController::class, 'index'])->name('setup.index');
+    Route::post('/setup', [SetupController::class, 'update'])->name('setup.update');
+    Route::get('/subscription', [CommercialController::class, 'subscription'])->name('subscription.index');
+    Route::post('/subscription/request', [CommercialController::class, 'requestPlan'])->middleware('throttle:5,10')->name('subscription.request');
+    Route::get('/reports', ReportsController::class)->name('reports');
+    Route::get('/admissions', [AdmissionController::class, 'index'])->name('admissions.index');
+    Route::post('/admissions', [AdmissionController::class, 'store'])->name('admissions.store');
+    Route::put('/admissions/{admission}', [AdmissionController::class, 'update'])->name('admissions.update');
+    Route::post('/admissions/{admission}/enroll', [AdmissionController::class, 'enroll'])->name('admissions.enroll');
+    Route::get('/audit', AuditController::class)->name('audit.index');
     Route::get('/dashboard', DashboardController::class)->name('dashboard');
 
     Route::get('/children', [ChildController::class, 'index'])->name('children.index');
@@ -71,3 +79,18 @@ Route::middleware(['auth:web', \App\Http\Middleware\SubscriptionAccess::class])-
 });
 
 require __DIR__.'/auth.php';
+
+// Protocol endpoints use bearer OAuth, never the browser session for data access.
+Route::get('/.well-known/oauth-protected-resource/{any?}', [OauthController::class, 'resourceMetadata'])->where('any', '.*');
+Route::get('/.well-known/oauth-authorization-server/{any?}', [OauthController::class, 'serverMetadata'])->where('any', '.*');
+Route::post('/oauth/register', [OauthController::class, 'register'])->middleware('throttle:20,1');
+Route::post('/oauth/token', [OauthController::class, 'token'])->middleware('throttle:60,1');
+Route::post('/oauth/revoke', [OauthController::class, 'revoke'])->middleware('throttle:60,1');
+Route::post('/mcp', [McpController::class, 'handle'])->middleware('throttle:60,1')->name('mcp');
+Route::middleware('auth:web')->group(function () {
+    Route::get('/oauth/authorize', [OauthController::class, 'authorizeForm'])->name('oauth.authorize');
+    Route::post('/oauth/authorize', [OauthController::class, 'decide'])->name('oauth.decide');
+    Route::get('/ai', [AiSettingsController::class, 'index'])->name('ai.index');
+    Route::post('/ai', [AiSettingsController::class, 'update'])->name('ai.update');
+    Route::delete('/ai/connections/{family}', [AiSettingsController::class, 'revoke'])->name('ai.revoke');
+});

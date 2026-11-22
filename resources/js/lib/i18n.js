@@ -1,6 +1,7 @@
 import { ref, watchEffect } from "vue";
 const locale = ref(localStorage.getItem("baraim-locale") || "ar");
 const ar = {
+    "Claude connection": "ربط Claude",
     "Setup guide": "دليل الإعداد",
     "New accounts request manual activation. Registration does not take payment or promise a free trial.": "الحساب الجديد يبدأ بطلب تفعيل يدوي. التسجيل لا يحصّل مبلغاً ولا يعد بمدة تجربة مجانية.",
     Subscription: "الاشتراك",

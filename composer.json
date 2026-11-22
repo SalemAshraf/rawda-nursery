@@ -1,10 +1,16 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
-    "name": "laravel/laravel",
+    "name": "salemashraf/nursery",
     "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
-    "keywords": ["laravel", "framework"],
-    "license": "MIT",
+    "description": "Arabic-first nursery operations with tenant-safe care, attendance, admissions, manual billing and aggregate Claude reporting.",
+    "keywords": [
+        "nursery",
+        "childcare",
+        "arabic",
+        "laravel",
+        "saas"
+    ],
+    "license": "proprietary",
     "require": {
         "php": "^8.3",
         "inertiajs/inertia-laravel": "^2.0",
@@ -83,6 +89,9 @@
         "allow-plugins": {
             "pestphp/pest-plugin": true,
             "php-http/discovery": true
+        },
+        "platform": {
+            "php": "8.3.0"
         }
     },
     "minimum-stability": "stable",

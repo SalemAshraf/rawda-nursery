@@ -2,6 +2,8 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\TenantSubscription;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -34,8 +36,8 @@ class HandleInertiaRequests extends Middleware
             'flash' => ['success' => fn () => $request->session()->get('success')],
             'auth' => [
                 'user' => $request->user(),
-                'subscription' => fn()=> $request->user() instanceof \App\Models\User ? (\App\Models\TenantSubscription::forTenant($request->user()->tenant_id)?->writable() ?? true) : true,
-                'nursery' => $request->user()?->tenant?->only('name', 'currency', 'timezone'),
+                'subscription' => fn () => $request->user() instanceof User ? (TenantSubscription::forTenant($request->user()->tenant_id)?->writable() ?? true) : true,
+                'nursery' => $request->user()?->tenant?->only('name', 'currency', 'timezone', 'is_demo'),
             ],
         ];
     }

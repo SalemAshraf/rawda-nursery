@@ -1,108 +1,190 @@
-# Nursery — Nursery Management SaaS
+<div align="center">
+  <img src="public/brand/nursery-lockup-light.svg" alt="Nursery" width="240" />
+  <h1>A calmer nursery day.</h1>
+  <p>Arabic-first nursery operations, from the first inquiry to the last handover.</p>
+  <p>حضور ورعاية وقبول ورسوم، في مساحة واحدة للحضانة.</p>
+  <p><strong>Laravel 13</strong> · PHP 8.3+ · Vue 3 · Inertia · Arabic / English · RTL / LTR</p>
+  <p><a href="#the-workspace">Workspace</a> · <a href="#claude-connection">Claude</a> · <a href="#quick-start">Quick start</a> · <a href="#configuration">Configuration</a> · <a href="#deployment">Deployment</a> · <a href="#testing">Testing</a></p>
+</div>
 
-**Status:** Product upgrade in progress. Operational workspace implemented and tested, not a production-readiness claim.
-**Brand:** Nursery, selected November 22, 2026. Repository slug `rawda-nursery` is unchanged.
+---
 
-Nursery is a multi-tenant web application that runs a nursery's day: children,
-guardians, attendance with authorized pickup, daily logs, incident reports,
-tuition billing, and a full audit trail. It is built for private nurseries and
-preschools in Egypt and the Gulf, with per-tenant timezone and currency.
+## What Nursery is
 
-Every tenant's data is isolated server-side: all tenant-owned queries pass
-through a global scope, and cross-tenant IDs resolve to 404.
+A nursery day is a series of handovers. Who arrived? Who can collect them? Has the daily care record been saved? Which admissions need a call back? What has been collected, and what is still due?
 
-## Features (implemented)
+Nursery keeps those records together, with access shaped around owners, managers and teachers. It is a multi-tenant application for private nurseries and preschools in Egypt and the Gulf, with a nursery-local timezone and an existing two-decimal fee ledger.
 
-| Area | What it does |
+The interface is bilingual and responsive. The product does not replace staff identity checks, medical judgment, licensing requirements or safeguarding procedures.
+
+## Screenshots
+
+The workspace below uses synthetic demonstration data. It is not a real nursery or a testimonial.
+
+![Nursery operational dashboard with synthetic records](public/images/workspace-preview.png)
+
+## The workspace
+
+| Area | Implemented workflow |
 | --- | --- |
-| Tenancy & roles | Nursery signs up with its own timezone and currency; roles are owner, manager, teacher, each with scoped permissions. |
-| Children & guardians | Child profiles with classrooms, guardians, allergies, and restricted health notes. |
-| Authorized pickup | A child can be checked out only to an active pickup person authorized for that specific child. Deactivated persons keep history. |
-| Attendance | Same-day check-in/check-out on the nursery's own calendar (tenant timezone, not UTC), with who-picked-up recorded. |
-| Daily logs | Meals, naps, mood, activities and notes per child per day. |
-| Incidents | Severity levels (minor/moderate/severe) and a staff-recorded guardian acknowledgement. |
-| Billing | Tuition plans, draft → sent → paid/void invoices, manually recorded payments (cash/transfer/wallet reference), outstanding and overdue tracking. |
-| Audit log | Every mutating action is recorded, including health-data changes. |
+| Daily overview | Arrivals, children still on site, missing care records, pickup-list gaps and classroom capacity. Money is restricted to management. |
+| Children and guardians | Child profiles, guardian links, classroom assignment, allergies and role-restricted general health notes. |
+| Attendance and pickup | Nursery-local dates and a recorded handover to an active, child-specific authorized pickup person. |
+| Daily care | Meals, naps, mood, activities and notes, with validation, saved state and unsaved-change indicators. |
+| Admissions | Inquiries, visits, waitlists and follow-ups. Confirmed enrollment creates one child and guardian link without silently granting pickup permission. |
+| Billing | Tuition plans, draft/sent/paid/void invoices, exact two-decimal parsing, manually recorded payments and overpayment protection. |
+| Reports | Date-range arrivals, care logs, collections and ledger trends, with current outstanding fees labeled separately. |
+| Team and history | Owner-managed staff roles and tenant-scoped administrative activity history. |
+| First-run guide | Saved nursery details, rooms, first child/guardian and pickup setup, with continue-later and revisit support. |
+| Commercial platform | A separate platform guard, sales inquiry inbox, configurable plans and explicit manual activation/renewal. No prices or trials are invented. |
 
-## Deliberate safety decisions
+### Boundaries that matter
 
-- **Pickup is recorded authorization, not identity verification.** Staff must
-  still verify identity at the door; the app never claims otherwise.
-- **Health notes** are visible to owner/manager only; **allergies** stay
-  visible to all staff because they are safety-critical.
-- **No guardian login in v1**, so incident acknowledgement is recorded by
-  staff and labeled as such in the UI.
-- **No online payments in v1**; payments are recorded manually.
-- Development uses **synthetic demo data only** (`DemoSeeder`); no real child
-  or guardian data belongs in this repository.
+- A guardian link is **not** pickup permission. A recorded pickup permission is **not** physical identity verification.
+- Teachers can see safety-critical allergies, but not general medical notes, billing totals or prospective-family contacts.
+- Operational records are tenant-scoped. Cross-tenant identifiers are rejected rather than redirected to another nursery's record.
+- Classroom capacities are entered by the nursery. They are not a legal staffing or licensing assessment.
+- Payments are manual records. No online gateway, automatic charge or external family messaging is implemented.
+- New registrations start pending/read-only. They do not receive an implied free trial or paid plan.
+
+## Claude connection
+
+Ask an external Claude account about aggregate nursery records through a custom, read-only MCP connection. This is not an embedded chatbot or a public connector-directory listing.
+
+![Nursery Claude section with example questions, not live answers](public/images/ai-preview.png)
+
+| Tool | What it returns |
+| --- | --- |
+| `attendance_summary` | Arrival, departure and not-yet-checked-out counts on a nursery-local date, with current enrollment labeled separately. |
+| `classroom_occupancy` | Aggregate entered capacity, classroom count and current assigned/unassigned enrollment. |
+| `admissions_summary` | Counts by admission stage and due follow-ups. |
+| `fees_summary` | Manual collections and issued fees for a bounded range, with current outstanding fees separately labeled. |
+
+**No child or guardian identities, contacts, health records, pickup details, incidents or free-text notes are exposed through these tools.** No tool changes a record or sends a message.
+
+An owner must first enable access with their password and an explicit data-sharing acknowledgment. Each connection then has its own consent screen. OAuth uses authorization code + PKCE S256, hashed access/refresh tokens, refresh rotation and revocation. Access is bound to the approving owner, nursery and host; role loss, tenant changes, expiry, disabling AI and ineligible subscription status stop reads. Disabling access also revokes outstanding connections.
+
+After deployment on HTTPS:
+
+1. The owner opens **Claude connection** in Nursery and enables connections.
+2. In a Claude account that supports custom connectors, add the exact `/mcp` address shown in Nursery.
+3. Sign in to Nursery and review the nursery, account, requesting app and aggregate scope before consenting.
+4. Ask a question, then check the answer against Nursery reports. Disconnect from Nursery when finished.
+
+Requested aggregates go to the external AI provider under the user's account terms. Revocation stops future access, not past conversations. Account availability and a successful connection on a particular deployment still need live verification. No paid AI API is required by this server implementation.
 
 ## Stack
 
-- PHP 8.3+ / Laravel 13, Inertia.js + Vue 3, Tailwind CSS
-- MySQL 8 — in production **and** in the test suite (feature tests run against
-  a real MySQL 8 server, not SQLite)
+| Layer | Technology |
+| --- | --- |
+| Server | PHP 8.3+, Laravel 13, Sanctum |
+| UI | Vue 3, Inertia, Tailwind CSS, bundled Cairo font |
+| Data | MySQL-compatible database; upgrade tests verified on MariaDB 10.6.23 |
+| Authentication | Nursery user roles plus a separate platform-administrator guard |
+| AI access | Read-only JSON-RPC/MCP over HTTP, OAuth authorization code + PKCE |
+| Assets | Vite, built before deployment |
 
-## Getting started
+### Repository layout
 
-Requirements: PHP 8.3+ with Composer, Node 22+, MySQL 8.
+| Path | Purpose |
+| --- | --- |
+| `app/Http/Controllers` | Nursery workflows, commercial administration and connector endpoints |
+| `app/Models` | Tenant-owned records and access relationships |
+| `resources/js` | Bilingual product UI and landing page |
+| `database/migrations` | Forward-only schema changes for existing installations |
+| `tests` | Role, tenant, workflow, monetary, setup, demo and connector regression tests |
+| `docs` | Deployment, data model, product plan and competitor evidence |
 
-```bash
-cp .env.example .env          # set DB_* for your MySQL
-php artisan key:generate
+## Quick start
+
+Use PHP 8.3+ with Composer, Node 22.12+ and a MySQL-compatible database. Production dependencies are pinned to a PHP 8.3 platform target; do not replace the lock with a resolution made for a newer PHP runtime.
+
+```sh
+git clone https://github.com/SalemAshraf/rawda-nursery.git
+cd rawda-nursery
+cp .env.example .env
+# Set DB_CONNECTION=mysql and your local DB_* values.
 composer install
-npm install && npm run build  # or: npm run dev
+php artisan key:generate
+npm ci
+npm run build
 php artisan migrate
-php artisan db:seed           # optional synthetic demo data
 php artisan serve
 ```
 
-## Testing
+Open the local address printed by Artisan. Register a nursery account to inspect the pending/setup workflow. Manual activation is a separate administrative decision, not evidence of payment.
 
-Feature tests expect MySQL on `127.0.0.1:33306` and a `rawda_test` database
-(see `phpunit.xml`):
+## Configuration
 
-```bash
-php artisan test
+| Variable | Purpose |
+| --- | --- |
+| `APP_NAME`, `APP_URL` | Product label and exact application origin. Connector metadata uses this origin. |
+| `APP_ENV`, `APP_DEBUG` | Use production / false on a live deployment. |
+| `APP_KEY` | Generate a unique key for each installation; never commit it. |
+| `DB_CONNECTION`, `DB_*` | Isolated database and least-privilege application credentials. |
+| `SESSION_COOKIE`, `SESSION_DOMAIN` | Distinct host-only session cookie; avoid sharing sessions with sibling applications. |
+| `SESSION_SECURE_COOKIE` | Enable for an HTTPS deployment. |
+| `SESSION_DRIVER`, `CACHE_STORE` | Database defaults have migrations included. |
+| `MAIL_MAILER` | Keep `log` until real email delivery is configured and approved. |
+
+Use [`.env.production.example`](.env.production.example) as a placeholder-only deployment template. Secrets belong in the deployment environment, never source control or screenshots.
+
+## Deployment
+
+Serve only `public/`. Keep `.env`, application source, storage and database credentials outside the web document root. Use a separate app directory, database and database user. Build vendor/assets before uploading to a host without Composer or Node.
+
+For an **existing** installation: back up the database, preserve `.env`, existing data and storage, install the reviewed locked dependencies/build and run `php artisan migrate --force`. Never use `migrate:fresh`, reset migrations or demo seeds on an existing nursery.
+
+No queue or scheduled application work is required by the implemented workflows. Verify the host's PHP extensions, HTTPS redirects, asset URLs, sessions, CSRF and OAuth behavior on the actual deployment. A successful command-line health check is not a browser or Claude connection test.
+
+See [deployment instructions](docs/deployment.md) and [commercial administration](docs/commercial-platform.md).
+
+### Synthetic demonstration nursery
+
+The versioned `nursery:demo` command creates a separate, clearly labeled synthetic nursery with 18 children, three classrooms, guardian/pickup examples, recent attendance and care, admissions and manual fee records. It does not send messages, create a real business administrator or overwrite existing records. Re-running it refuses an existing demo/login.
+
+An operator supplies an explicitly synthetic `.test` email and a protected file containing a securely provisioned password of at least 12 characters:
+
+```sh
+php artisan nursery:demo --confirm-synthetic --email=owner@nursery.example.test --password-file=/protected/path/password
 ```
 
-80 tests / 507 assertions passed in the latest upgrade verification on MariaDB 10.6.23 (PHP 8.4). The original MySQL 8 setup remains supported, but this upgrade was not re-run on MySQL 8. They cover tenant
-isolation, pickup authorization boundaries, attendance rules, role gates,
-the billing state machine, health-data visibility, and audit logging.
+Delete the temporary credential file after use. No default demo password is published. The demo is for inspection, never real child records. The older development seeder refuses to run in production.
 
-## Operational workspace upgrade
+### Platform administrator
 
-- Live daily overview with on-site, collected and not-arrived children, care-log gaps, pickup-list gaps, classroom capacity and incident follow-ups.
-- Search/filter attendance by name, room and state. Allergy details are visible at handoff. Checkout still requires an active authorized pickup person; physical identity verification remains the staff's responsibility.
-- Classroom capacity editing with over-capacity warnings. Capacity is nursery-entered operational data, not a claim of legal staffing or licensing compliance.
-- Care logs persist all entered fields and selected dates, show unsaved changes and validation errors, and record saves in activity history.
-- Child editing preserves the current classroom and allows reassignment within the same nursery.
-- Admissions now tracks inquiries, nursery visits, waitlists and staff-recorded follow-ups. Confirmed enrollment creates one child profile and primary guardian, without pickup permission, fees or outgoing messages. Retries of the same inquiry return the same child.
-- Managers have date-ranged care/collection reports, daily ledgers, method breakdowns and current classroom enrollment. Date-ranged activity and current open fees are labeled separately to avoid misleading totals.
-- Payment recording rejects overpayments and invalid input leaves draft invoices unchanged. Invoice transitions and attendance handoffs use row-lock transactions. This is manual recordkeeping, not a payment processor. Amounts use this existing ledger's two-decimal storage, not full ISO currency precision; three-decimal Gulf currencies need a separately reviewed data migration before production use. The parser now rejects extra decimals, exponent syntax and values outside the database limit instead of silently rounding.
-- Managers can inspect tenant-scoped, paginated activity history. Teachers never receive financial dashboard totals or general medical notes.
-- Responsive child cards on phone, mobile navigation, Arabic/English workspace and bundled Cairo font. No font CDN requests.
+Platform administration is separate from a nursery demo account. Create one only after the actual operator's identity is chosen:
 
-The operational workspace has no schema changes. The admissions increment adds only the `admissions` table through a forward migration; run `php artisan migrate` on an existing install after backing up its database. For an existing install, keep its `.env` and database, run `composer install`, `npm ci`, and `npm run build` after switching to the reviewed upgrade code. Do not reset or seed an existing nursery database.
+```sh
+php artisan platform:admin APPROVED_EMAIL --name=APPROVED_NAME
+```
 
-## Commercial platform and setup upgrade
+The command asks for a password through hidden prompts, requires at least 12 characters and refuses an existing administrator. No real administrator, prices, plans or trials are seeded.
 
-The public landing, sales-inquiry inbox, separate platform administrator guard, configurable plan catalog and manual subscriptions are implemented. Prices/trials remain unconfigured. Existing nurseries keep their access; new accounts request manual activation. A resumable first-run nursery guide now leads new owners through details, classrooms, child/guardian and pickup setup, then gets out of the dashboard. No production deployment or live charging is included.
+## Testing
 
-See [`docs/commercial-platform.md`](docs/commercial-platform.md) for safe forward migrations, operator setup, access behavior and explicit limits, and [`docs/competitor-priorities-2026-11.md`](docs/competitor-priorities-2026-11.md) for current feature evidence and remaining gaps.
+Feature tests use a dedicated MySQL-compatible test database, configured in `phpunit.xml`. Never point tests at an installation with real records.
 
-## Documentation
+```sh
+php artisan test
+npm run build
+```
 
-- [`docs/market-study.md`](docs/market-study.md) — Egypt + all six Gulf
-  states, vendor-sourced with links.
-- [`docs/plan.md`](docs/plan.md) — phased product plan and open decisions.
-- [`docs/database.md`](docs/database.md) — schema design and data rules.
+The latest implementation check passed **96 tests / 675 assertions** on PHP 8.3.32 and MariaDB 10.6.23. Coverage includes tenant and role negatives, exact money, pickup authorization, idempotent enrollment, pending/expired subscriptions, setup progress, synthetic demo isolation, OAuth replay/revocation and aggregate privacy exclusions. This is test evidence, not a claim of full production or legal readiness.
 
-## Roadmap (not in v1)
+## Current limits
 
-Guardian portal/app, online payments (Paymob/Fawry for Egypt; ZATCA e-invoicing
-for Saudi needs official verification first), announcements and messaging,
-Excel import, multi-branch. The operational workspace now has an Arabic-first RTL interface with an English switch; account/profile/password screens are localized too. Server validation messages still depend on the Laravel locale.
+Parent accounts/apps, automatic family messaging, online payments, recurring collections, medication workflows, transport tracking, staff scheduling and multi-branch management are not implemented. Staff-recorded incident acknowledgment is not a guardian's digital signature. Three-decimal Gulf currencies need a separately reviewed ledger migration; the current ledger is two-decimal.
 
-## License
+## Further reading
 
-Proprietary. Private repository; all rights reserved.
+- [Commercial platform and setup](docs/commercial-platform.md)
+- [Competitor-grounded priorities](docs/competitor-priorities-2026-11.md)
+- [Market study](docs/market-study.md)
+- [Data model](docs/database.md)
+- [Product plan](docs/plan.md)
+- [Third-party notices](THIRD_PARTY_NOTICES.md)
+
+## Rights
+
+Nursery application code is proprietary, all rights reserved. Source visibility does not grant a new reuse license. Third-party dependencies retain their own licenses. No license or branding from a reference project is adopted by this README.
