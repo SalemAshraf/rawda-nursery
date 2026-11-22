@@ -70,14 +70,29 @@ function addPayment(id) {
                 <section class="rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
                     <h3 class="mb-3 font-semibold text-navy-900">Invoices</h3>
                     <form class="mb-4 flex flex-wrap items-end gap-2 text-sm" @submit.prevent="addInvoice">
-                        <select v-model="invoiceForm.child_id" class="rounded-lg border-gray-300" required>
-                            <option value="" disabled>Child</option>
-                            <option v-for="c in children" :key="c.id" :value="c.id">{{ c.name }}</option>
-                        </select>
-                        <input v-model="invoiceForm.description" placeholder="Description" class="rounded-lg border-gray-300" />
-                        <input v-model="invoiceForm.issue_date" type="date" class="rounded-lg border-gray-300" required />
-                        <input v-model="invoiceForm.due_date" type="date" class="rounded-lg border-gray-300" required />
-                        <input v-model="invoiceForm.amount" placeholder="Amount" class="w-28 rounded-lg border-gray-300" required />
+                        <label class="block">
+                            <span class="mb-0.5 block text-xs text-gray-500">Child</span>
+                            <select v-model="invoiceForm.child_id" class="rounded-lg border-gray-300" required>
+                                <option value="" disabled>Select child</option>
+                                <option v-for="c in children" :key="c.id" :value="c.id">{{ c.name }}</option>
+                            </select>
+                        </label>
+                        <label class="block">
+                            <span class="mb-0.5 block text-xs text-gray-500">Description</span>
+                            <input v-model="invoiceForm.description" placeholder="e.g. November tuition" class="rounded-lg border-gray-300" />
+                        </label>
+                        <label class="block">
+                            <span class="mb-0.5 block text-xs text-gray-500">Issue date</span>
+                            <input v-model="invoiceForm.issue_date" type="date" class="rounded-lg border-gray-300" required />
+                        </label>
+                        <label class="block">
+                            <span class="mb-0.5 block text-xs text-gray-500">Due date</span>
+                            <input v-model="invoiceForm.due_date" type="date" class="rounded-lg border-gray-300" required />
+                        </label>
+                        <label class="block">
+                            <span class="mb-0.5 block text-xs text-gray-500">Amount ({{ currency }})</span>
+                            <input v-model="invoiceForm.amount" placeholder="0.00" class="w-28 rounded-lg border-gray-300" required />
+                        </label>
                         <button class="rounded-lg bg-navy-900 px-3 py-2 text-white" :disabled="invoiceForm.processing">Create invoice</button>
                         <InputError :message="invoiceForm.errors.child_id || invoiceForm.errors.amount" />
                     </form>
