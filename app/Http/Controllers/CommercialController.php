@@ -30,7 +30,7 @@ class CommercialController extends Controller
         abort_unless($r->user()->role === 'owner', 403);
         $sub = TenantSubscription::forTenant($r->user()->tenant_id);
 
-        return Inertia::render('Subscription/Index', ['subscription' => $sub ? $sub->only('id', 'status', 'period_ends_at', 'legacy_access') + ['plan' => $sub->plan?->only('name_ar', 'name_en')] : null, 'legacy' => $sub === null, 'plans' => SaasPlan::catalog(), 'requests' => SalesInquiry::where('tenant_id', $r->user()->tenant_id)->latest()->limit(10)->get(['id', 'status', 'created_at', 'saas_plan_id'])]);
+        return Inertia::render('Subscription/Index', ['subscription' => $sub ? array_replace($sub->only('id', 'status', 'period_ends_at', 'legacy_access'), ['status' => $sub->status === 'active' && ! $sub->writable() ? 'past_due' : $sub->status]) + ['plan' => $sub->plan?->only('name_ar', 'name_en')] : null, 'legacy' => $sub === null, 'plans' => SaasPlan::catalog(), 'requests' => SalesInquiry::where('tenant_id', $r->user()->tenant_id)->latest()->limit(10)->get(['id', 'status', 'created_at', 'saas_plan_id'])]);
     }
 
     public function requestPlan(Request $r)
@@ -39,6 +39,6 @@ class CommercialController extends Controller
         $d = $r->validate(['saas_plan_id' => ['nullable', Rule::exists('saas_plans', 'id')->where('published', true)], 'message' => 'nullable|string|max:2000']);
         SalesInquiry::create($d + ['tenant_id' => $r->user()->tenant_id, 'nursery_name' => $r->user()->tenant->name, 'name' => $r->user()->name, 'email' => $r->user()->email]);
 
-        return back()->with('success','تم حفظ طلب الاشتراك للمراجعة، دون دفع أو تغيير باقتك الحالية.');
+        return back()->with('success', 'تم حفظ طلب الاشتراك للمراجعة، دون دفع أو تغيير باقتك الحالية.');
     }
 }

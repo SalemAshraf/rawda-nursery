@@ -8,6 +8,7 @@ use App\Models\Tenant;
 use App\Models\TenantSubscription;
 use App\Support\Money;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\RateLimiter;
@@ -72,7 +73,13 @@ class PlatformController extends Controller
 
         return Inertia::render('Platform/Index', [
             'stats' => ['nurseries' => DB::table('tenants')->count(), 'pending' => DB::table('tenant_subscriptions')->where('status', 'pending')->count(), 'inquiries' => SalesInquiry::where('status', 'new')->count(), 'plans' => SaasPlan::where('published', true)->count()],
-            'nurseries' => $q->orderByDesc('tenants.id')->select(['tenants.id', 'tenants.name', 'tenants.currency', 'tenants.created_at', 's.status', 's.period_ends_at', 's.saas_plan_id', 'p.name_ar as plan_name'])->paginate(15)->withQueryString(),
+            'nurseries' => $q->orderByDesc('tenants.id')->select(['tenants.id', 'tenants.name', 'tenants.currency', 'tenants.created_at', 's.status', 's.period_ends_at', 's.saas_plan_id', 'p.name_ar as plan_name'])->paginate(15)->withQueryString()->through(function ($n) {
+                if ($n->status === 'active' && $n->period_ends_at && Carbon::parse($n->period_ends_at)->isPast()) {
+                    $n->status = 'past_due';
+                }
+
+return $n;
+            }),
             'plans' => SaasPlan::orderBy('sort')->get(),
             'inquiries' => SalesInquiry::latest()->paginate(15, ['*'], 'inquiries_page')->withQueryString(),
             'audits' => DB::table('platform_audits')->orderByDesc('id')->limit(30)->get(['action', 'subject_id', 'created_at']),
@@ -122,6 +129,6 @@ class PlatformController extends Controller
             $this->audit('inquiry.'.$d['status'], $inquiry->id);
         });
 
-        return back()->with('success','تم تحديث المتابعة.');
+        return back()->with('success', 'تم تحديث المتابعة.');
     }
 }
