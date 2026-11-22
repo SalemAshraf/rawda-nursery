@@ -187,4 +187,4 @@ Parent accounts/apps, automatic family messaging, online payments, recurring col
 
 ## Rights
 
-Nursery application code is proprietary, all rights reserved. Source visibility does not grant a new reuse license. Third-party dependencies retain their own licenses. No license or branding from a reference project is adopted by this README.
+No application reuse license has been selected. Repository visibility alone is not a permission grant; the owner can choose a license separately. Third-party dependencies retain their own licenses. No license or branding from the presentation reference is adopted by this README.

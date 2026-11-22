@@ -10,7 +10,6 @@
         "laravel",
         "saas"
     ],
-    "license": "proprietary",
     "require": {
         "php": "^8.3",
         "inertiajs/inertia-laravel": "^2.0",
