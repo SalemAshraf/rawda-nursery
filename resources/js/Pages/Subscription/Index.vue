@@ -159,8 +159,8 @@ const labels = {
                     <p class="saas-muted">
                         {{
                             L(
-                                "تتم مراجعة السعر وشروط التفعيل مع إدارة المنصة. لا توجد بوابة دفع مفعلة.",
-                                "Price and activation terms are reviewed with the platform team. No payment gateway is active.",
+                                "راجع السعر وشروط التفعيل مع إدارة المنصة. تُرتّب الدفعات خارج Nursery وتُسجّل يدوياً.",
+                                "Review pricing and activation terms with the platform team. Payments are arranged outside Nursery and recorded manually.",
                             )
                         }}
                     </p>

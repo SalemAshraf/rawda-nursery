@@ -362,8 +362,8 @@ function filter() {
                 <p v-if="!plans.length">
                     {{
                         L(
-                            "لا توجد باقات بعد. لم يتم افتراض سعر أو مدة تجربة.",
-                            "No plans yet. No price or trial period has been assumed.",
+                            "أضف باقة وحدد سعرها وشروط تفعيلها، ثم انشرها عندما تكون جاهزة.",
+                            "Add a plan with its price and activation terms, then publish it when ready.",
                         )
                     }}
                 </p>

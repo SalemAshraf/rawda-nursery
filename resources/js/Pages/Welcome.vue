@@ -48,10 +48,10 @@ const features = [
     ],
     [
         "05",
-        "الرسوم واضحة للإدارة",
-        "A clearer view of nursery fees",
-        "خطط رسوم وفواتير ودفعات مسجلة يدوياً، مع المتبقي والمتأخر وتقارير التحصيل. لا توجد بوابة دفع مفعلة.",
-        "Tuition plans, invoices and manually recorded payments, with outstanding balances and collection reports. No live payment gateway.",
+        "إدارة الرسوم بوضوح",
+        "Nursery fees, clearly recorded",
+        "خطط رسوم وفواتير ودفعات مسجلة يدوياً، مع متابعة المتبقي والمتأخر وتقارير التحصيل.",
+        "Tuition plans, invoices and manually recorded payments, with outstanding balances and collection reports.",
     ],
     [
         "06",
@@ -297,8 +297,8 @@ function submit() {
                                 )
                             }}<small>{{
                                 L(
-                                    "أمثلة لما يمكن سؤاله، وليست إجابات فعلية",
-                                    "Example questions, not live answers",
+                                    "أمثلة للأسئلة",
+                                    "Suggested questions",
                                 )
                             }}</small></span
                         >
@@ -309,7 +309,7 @@ function submit() {
                             <h3>
                                 {{
                                     L(
-                                        "كم طفل وصل النهارده؟",
+                                        "كم طفلاً وصل اليوم؟",
                                         "How many children arrived today?",
                                     )
                                 }}
@@ -330,7 +330,7 @@ function submit() {
                             <h3>
                                 {{
                                     L(
-                                        "القبول واقف فين؟",
+                                        "ما حالة طلبات القبول؟",
                                         "Where do admissions stand?",
                                     )
                                 }}
@@ -351,7 +351,7 @@ function submit() {
                             <h3>
                                 {{
                                     L(
-                                        "حصلنا كام خلال الشهر؟",
+                                        "كم بلغ التحصيل هذا الشهر؟",
                                         "How much did we collect this month?",
                                     )
                                 }}
@@ -372,7 +372,7 @@ function submit() {
                             <h3>
                                 {{
                                     L(
-                                        "السعة المسجلة قدام عدد الأطفال إيه؟",
+                                        "كيف تقارن السعة بعدد الأطفال؟",
                                         "How does entered capacity compare with enrollment?",
                                     )
                                 }}
@@ -391,22 +391,22 @@ function submit() {
                 <div class="ai-boundary">
                     <strong>{{
                         L(
-                            "الخصوصية جزء من الميزة.",
-                            "Privacy is part of the feature.",
+                            "خصوصية الأطفال. وتحكّم للمالك.",
+                            "Child privacy. Owner control.",
                         )
                     }}</strong>
                     <p>
                         {{
                             L(
-                                "للـمالك فقط، مع تفعيل اختياري وموافقة منفصلة وإلغاء في أي وقت. لا أسماء أطفال أو أولياء أمور، ولا بيانات صحة أو استلام أو حوادث أو ملاحظات. لا تعديل أو إرسال رسائل أو تحصيل أموال.",
-                                "Owner-only, with opt-in, separate consent and revocation. No child or guardian identities, health, pickup, incident or free-text records. No edits, messages or charges.",
+                                "تصل إلى Claude إجماليات فقط، بموافقة المالك. تبقى هويات الأطفال وأولياء الأمور وبيانات الصحة والاستلام والحوادث والملاحظات خارج الربط. الوصول للقراءة فقط ويمكن إلغاؤه في أي وقت.",
+                                "Only aggregates are shared with Claude, with owner consent. Child and guardian identities, health, pickup, incident and free-text records stay outside the connection. Access is read-only and can be revoked at any time.",
                             )
                         }}
                     </p>
                     <small>{{
                         L(
-                            "ربط خارجي مخصص، وليس شات مدمجاً. يتطلب حساب Claude يدعم الموصلات وإعداد الاتصال والتحقق منه بعد النشر. تخضع الأرقام المشاركة لشروط مزود AI، وراجع الإجابات دائماً في تقارير Nursery.",
-                            "A custom external connection, not embedded chat. Requires a Claude account with connector support, setup and verification after deployment. Shared aggregates are subject to the AI provider’s terms. Always check answers against Nursery reports.",
+                            "يتطلب حساب Claude يدعم الموصلات المخصصة، وتخضع الإجماليات المشاركة لشروط مزود الخدمة. بعد الإعداد، راجع الإجابات مع تقارير Nursery.",
+                            "Requires a Claude account with custom connector support. Shared aggregates follow the provider's terms. After setup, check answers against Nursery reports.",
                         )
                     }}</small>
                 </div>
@@ -567,16 +567,16 @@ function submit() {
                         <h3>
                             {{
                                 L(
-                                    "لنبدأ باحتياجاتك، لا بسعر مفترض.",
-                                    "Let’s start with your needs, not an assumed price.",
+                                    "عرض يناسب طريقة عمل حضانتك.",
+                                    "A proposal for the way your nursery works.",
                                 )
                             }}
                         </h3>
                         <p>
                             {{
                                 L(
-                                    "لم تُنشر باقات مسعّرة بعد. أخبرنا عن حضانتك لطلب عرض يناسب طريقة عملك.",
-                                    "Priced plans have not been published yet. Tell us about your nursery to request a suitable proposal.",
+                                    "أخبرنا عن فريقك واحتياجاتك، لنتفق على الباقة وشروط التفعيل المناسبة قبل أي التزام مالي.",
+                                    "Tell us about your team and needs. Review a suitable plan and activation terms before any financial commitment.",
                                 )
                             }}
                         </p>
@@ -609,8 +609,8 @@ function submit() {
                         <p>
                             {{
                                 L(
-                                    "النسخة الحالية مساحة داخلية لفريق الحضانة. لا تتضمن دخول أولياء الأمور أو رسائل وإشعارات تلقائية لهم.",
-                                    "The current version is an internal nursery staff workspace. Parent logins and automatic messages or notifications are not included.",
+                                    "Nursery مساحة داخلية لفريق الحضانة. دخول أولياء الأمور والرسائل والإشعارات التلقائية لهم غير مشمولة.",
+                                    "Nursery is an internal staff workspace. Parent logins and automatic parent messages or notifications are not included.",
                                 )
                             }}
                         </p>
@@ -627,8 +627,8 @@ function submit() {
                         <p>
                             {{
                                 L(
-                                    "لا توجد بوابة دفع مفعلة. الإدارة تسجل الدفعات يدوياً وتراجع الفواتير والمتبقي في النظام.",
-                                    "No payment gateway is active. Management records payments manually and reviews invoices and balances in the system.",
+                                    "لا. تُسجّل الإدارة الدفعات يدوياً وتتابع الفواتير والأرصدة داخل Nursery؛ التحصيل الإلكتروني غير مشمول.",
+                                    "No. Management records payments manually and tracks invoices and balances in Nursery; online payment collection is not included.",
                                 )
                             }}
                         </p>
@@ -834,6 +834,8 @@ function submit() {
 </template>
 
 <style scoped>
+.landing-faq > * { min-width: 0; }
+.landing-faq .section-heading { max-width: 100%; }
 .product-window picture { display: block; }
 .product-window img { height: auto; }
 @media (max-width: 700px) { .product-window { transform: none; } }

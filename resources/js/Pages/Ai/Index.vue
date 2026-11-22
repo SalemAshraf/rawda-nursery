@@ -173,8 +173,8 @@ function save() {
                     <p>
                         {{
                             L(
-                                "قد تختلف إتاحة الموصلات حسب حساب Claude وسياساته. هذا ربط خارجي مخصص، وليس شات مدمجاً أو إدراجاً عاماً. لم يتم اختبار اتصال هذه الحضانة على حسابك بعد.",
-                                "Connector availability depends on your Claude account and policies. This is a custom external connection, not embedded chat or a public listing. This nursery connection has not yet been tested on your account.",
+                                "يلزم حساب Claude يدعم الموصلات المخصصة. أضف الاتصال من حسابك في Claude، ثم قارن أول إجابة بتقرير Nursery للتأكد من الإعداد.",
+                                "A Claude account with custom connector support is required. Add the connection from Claude, then compare your first answer with a Nursery report to check the setup.",
                             )
                         }}
                     </p>
@@ -186,6 +186,10 @@ function save() {
                             )
                         }}
                     </p>
+                    <details class="connection-help">
+                        <summary>{{ L('متطلبات الربط واستخدامه', 'Connection requirements and use') }}</summary>
+                        <p>{{ L('المحادثة تتم في حسابك لدى Claude، لا داخل Nursery. إتاحة الموصلات تخضع لحسابك وشروط المزود. إذا تعذر إتمام الربط، راجع دعم الموصلات في حسابك، ثم عنوان الاتصال وموافقة مالك الحضانة. يمكنك إلغاء الوصول من قائمة الاتصالات أدناه.', 'Chat takes place in your Claude account, not inside Nursery. Connector access depends on your account and provider terms. If setup cannot be completed, check connector support in your account, then the endpoint and nursery owner consent. You can revoke access in the connections list below.') }}</p>
+                    </details>
                 </section>
             </div>
             <section class="ai-card connection-list">
@@ -230,6 +234,8 @@ function save() {
     </AuthenticatedLayout>
 </template>
 <style scoped>
+.connection-help { margin-top: 18px; border-top: 1px solid #e0e8e2; padding-top: 16px; }
+.connection-help summary { cursor: pointer; font-size: 14px; font-weight: 700; color: #35533d; }
 .ai-page {
     max-width: 1120px;
     margin: auto;

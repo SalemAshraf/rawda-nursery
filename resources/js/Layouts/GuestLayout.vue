@@ -19,9 +19,13 @@ const { t, locale, toggleLocale } = useI18n();
             <h1 class="text-2xl font-bold text-green-900 mb-2">
                 {{
                     t(
-                        route().current("register")
-                            ? "Create your nursery workspace"
-                            : "Welcome back",
+                        ({
+                            register: 'Create your nursery workspace',
+                            'password.request': 'Reset your password',
+                            'password.reset': 'Choose a new password',
+                            'password.confirm': 'Confirm your password',
+                            'verification.notice': 'Verify your email',
+                        })[route().current()] || 'Welcome back',
                     )
                 }}
             </h1>

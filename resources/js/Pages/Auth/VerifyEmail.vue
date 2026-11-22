@@ -30,7 +30,7 @@ const verificationLinkSent = computed(
         <div class="mb-4 text-sm text-gray-600">
             {{
                 t(
-                    "Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn't receive the email, we will gladly send you another.",
+                    "Verify your email using the link you receive. If no message arrives, contact the platform team.",
                 )
             }}
         </div>
@@ -41,7 +41,7 @@ const verificationLinkSent = computed(
         >
             {{
                 t(
-                    "A new verification link has been sent to the email address you provided during registration.",
+                    "Request received. Check your inbox, or contact the platform team if no message arrives.",
                 )
             }}
         </div>
@@ -58,10 +58,14 @@ const verificationLinkSent = computed(
                     :href="route('logout')"
                     method="post"
                     as="button"
-                    class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                    class="verification-logout rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                     >{{ t("Log Out") }}</Link
                 >
             </div>
         </form>
+        <a href="/#contact" class="mt-4 block text-sm text-gray-600 underline">{{ t('Contact the platform team') }}</a>
     </GuestLayout>
 </template>
+<style scoped>
+.verification-logout { background: transparent; color: #536258; padding: 8px 10px; border: 1px solid #dfe8e0; }
+</style>

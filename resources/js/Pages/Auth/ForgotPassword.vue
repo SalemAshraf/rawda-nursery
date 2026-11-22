@@ -30,13 +30,13 @@ const submit = () => {
         <div class="mb-4 text-sm text-gray-600">
             {{
                 t(
-                    "Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.",
+                    "Enter your account email to request a password reset link. If no message arrives, contact the platform team.",
                 )
             }}
         </div>
 
         <div v-if="status" class="mb-4 text-sm font-medium text-green-600">
-            {{ status }}
+            {{ t('Request received. Check your inbox, or contact the platform team if no message arrives.') }}
         </div>
 
         <form @submit.prevent="submit">
@@ -53,7 +53,7 @@ const submit = () => {
                     autocomplete="username"
                 />
 
-                <InputError class="mt-2" :message="form.errors.email" />
+                <InputError class="mt-2" :message="t(form.errors.email)" />
             </div>
 
             <div class="mt-4 flex items-center justify-end">
@@ -64,5 +64,6 @@ const submit = () => {
                 >
             </div>
         </form>
+        <a href="/#contact" class="mt-4 block text-sm text-gray-600 underline">{{ t('Contact the platform team') }}</a>
     </GuestLayout>
 </template>

@@ -1,17 +1,23 @@
 import { ref, watchEffect } from "vue";
 const locale = ref(localStorage.getItem("baraim-locale") || "ar");
 const ar = {
+    'Please wait before retrying.': 'يرجى الانتظار قليلاً قبل المحاولة مرة أخرى.',
+    'Reset your password': 'استعادة كلمة المرور',
+    'Choose a new password': 'اختر كلمة مرور جديدة',
+    'Confirm your password': 'تأكيد كلمة المرور',
+    'Verify your email': 'تأكيد البريد الإلكتروني',
     "Claude connection": "ربط Claude",
     "Setup guide": "دليل الإعداد",
-    "New accounts request manual activation. Registration does not take payment or promise a free trial.": "الحساب الجديد يبدأ بطلب تفعيل يدوي. التسجيل لا يحصّل مبلغاً ولا يعد بمدة تجربة مجانية.",
+    "Create your nursery account, then review a plan and request activation. Registration does not take payment.": "أنشئ حساب الحضانة، ثم راجع الباقة وأرسل طلب التفعيل. لا يتم تحصيل مبلغ عند التسجيل.",
     Subscription: "الاشتراك",
     "Profile Information": "بيانات الحساب",
     "Update your account's profile information and email address.":
         "حدث اسم الحساب وبريده الإلكتروني.",
     "Your email address is unverified.": "بريدك الإلكتروني غير مؤكد.",
     "Click here to re-send the verification email.": "طلب رسالة تحقق جديدة.",
-    "A new verification link has been sent to your email address.":
-        "تمت معالجة طلب رابط التحقق. يعتمد وصول الرسالة على إعداد البريد.",
+    "Request received. Check your inbox, or contact the platform team if no message arrives.":
+        "تم استلام طلبك. راجع بريدك، وتواصل مع إدارة المنصة إذا لم تصلك الرسالة.",
+    "Contact the platform team": "التواصل مع إدارة المنصة",
     "Saved.": "تم الحفظ.",
     "Update Password": "تغيير كلمة المرور",
     "Ensure your account is using a long, random password to stay secure.":
@@ -26,12 +32,10 @@ const ar = {
         "أدخل كلمة المرور لحذف حساب دخولك نهائياً. لا يحذف ذلك الحضانة أو سجلات الأطفال والتحصيل والرعاية.",
     "This is a secure area of the application. Please confirm your password before continuing.":
         "أكد كلمة المرور قبل المتابعة إلى هذه المنطقة المحمية.",
-    "Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn't receive the email, we will gladly send you another.":
-        "أكد بريدك الإلكتروني من رابط التحقق عند وصول الرسالة. يتطلب الإرسال إعداد خدمة البريد في النظام.",
-    "A new verification link has been sent to the email address you provided during registration.":
-        "تمت معالجة طلب رابط تحقق جديد إلى بريد التسجيل. يعتمد وصول الرسالة على إعداد البريد.",
-    "Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.":
-        "أدخل بريد الحساب لطلب رابط تغيير كلمة المرور. يتطلب وصول الرسالة إعداد خدمة البريد في النظام.",
+    "Verify your email using the link you receive. If no message arrives, contact the platform team.":
+        "أكد بريدك من الرابط الذي يصلك. تواصل مع إدارة المنصة إذا لم تصلك الرسالة.",
+    "Enter your account email to request a password reset link. If no message arrives, contact the platform team.":
+        "أدخل بريد حسابك لطلب رابط تغيير كلمة المرور. تواصل مع إدارة المنصة إذا لم تصلك الرسالة.",
     Reports: "التقارير",
     "Care activity and manually recorded collections. No tax or accounting certification is implied.":
         "نشاط الرعاية والتحصيل المسجل يدوياً. ليس تقريراً ضريبياً أو اعتماداً محاسبياً.",

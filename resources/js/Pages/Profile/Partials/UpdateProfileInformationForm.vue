@@ -95,7 +95,7 @@ const form = useForm({
                 >
                     {{
                         t(
-                            "A new verification link has been sent to your email address.",
+                            "Request received. Check your inbox, or contact the platform team if no message arrives.",
                         )
                     }}
                 </div>
