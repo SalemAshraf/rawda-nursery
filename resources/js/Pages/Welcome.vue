@@ -822,11 +822,34 @@ function submit() {
             <Link :href="route('login')">{{
                 L("دخول الحضانة", "Nursery login")
             }}</Link>
+            <div class="builder-credit">
+                <span>{{ L("تم تطوير هذا النظام بواسطة", "Built by") }}</span>
+                <a href="https://wa.me/201098971853" target="_blank" rel="noopener noreferrer" dir="ltr">Reviv Solutions</a>
+            </div>
         </footer>
     </div>
 </template>
 
 <style scoped>
+.landing-footer { flex-wrap: wrap; }
+.builder-credit {
+    flex-basis: 100%;
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.35em;
+    order: 4;
+    padding-top: 18px;
+    border-top: 1px solid #e0e5da;
+    font-size: 12px;
+    line-height: 1.9;
+    color: #63745e;
+}
+.builder-credit a { color: #35533d; font-weight: 650; text-decoration: underline; text-underline-offset: 3px; }
+.builder-credit a:hover { color: #172e1e; }
+.builder-credit a:focus-visible { outline: 2px solid #52705b; outline-offset: 4px; border-radius: 2px; }
+
 .nursery-ai {
     margin: 35px auto 80px;
     max-width: 1320px;
