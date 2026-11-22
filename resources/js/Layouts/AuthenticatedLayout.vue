@@ -9,6 +9,7 @@ const open = ref(false);
 const user = computed(() => page.props.auth.user);
 const nav = computed(() => [
     { label:'Overview', route:'dashboard', icon:'overview' },
+    ...(user.value.role !== 'teacher' ? [{ label:'Admissions', route:'admissions.index', icon:'children' }] : []),
     { label:'Classrooms', route:'classrooms.index', icon:'overview' },
     { label:'Children', route:'children.index', icon:'children' },
     { label:'Attendance', route:'attendance.index', icon:'attendance' },
@@ -32,7 +33,7 @@ const active = (n) => route().current(n.route === 'dashboard' ? 'dashboard' : n.
     </aside>
     <div class="workspace-body">
         <header class="topbar"><div class="flex min-w-0 items-center gap-3"><button class="mobile-menu" :aria-label="t('Menu')" :aria-expanded="open" @click="open=!open"><Icon name="menu" /></button><span class="topbar-title">{{ t('Nursery workspace') }}</span></div><div class="flex items-center gap-2"><button class="utility-button" @click="toggleLocale">{{ locale === 'ar' ? 'English' : 'العربية' }}</button><Link :href="route('logout')" method="post" as="button" class="utility-button">{{ t('Log out') }}</Link></div></header>
-        <main><header v-if="$slots.header" class="page-heading"><slot name="header" /></header><slot /></main>
+        <main><p v-if="page.props.flash?.success" role="status" class="mx-5 mt-5 rounded-lg border border-green-200 bg-green-50 p-4 text-sm text-green-800">{{ t(page.props.flash.success) }}</p><header v-if="$slots.header" class="page-heading"><slot name="header" /></header><slot /></main>
     </div>
 </div>
 </template>

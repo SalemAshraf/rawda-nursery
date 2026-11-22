@@ -65,7 +65,7 @@ Feature tests expect MySQL on `127.0.0.1:33306` and a `rawda_test` database
 php artisan test
 ```
 
-50 tests / 255 assertions passed in the latest upgrade verification on MariaDB 10.6.23 (PHP 8.4). The original MySQL 8 setup remains supported, but this upgrade was not re-run on MySQL 8. They cover tenant
+60 tests / 336 assertions passed in the latest upgrade verification on MariaDB 10.6.23 (PHP 8.4). The original MySQL 8 setup remains supported, but this upgrade was not re-run on MySQL 8. They cover tenant
 isolation, pickup authorization boundaries, attendance rules, role gates,
 the billing state machine, health-data visibility, and audit logging.
 
@@ -76,10 +76,12 @@ the billing state machine, health-data visibility, and audit logging.
 - Classroom capacity editing with over-capacity warnings. Capacity is nursery-entered operational data, not a claim of legal staffing or licensing compliance.
 - Care logs persist all entered fields and selected dates, show unsaved changes and validation errors, and record saves in activity history.
 - Child editing preserves the current classroom and allows reassignment within the same nursery.
+- Admissions now tracks inquiries, nursery visits, waitlists and staff-recorded follow-ups. Confirmed enrollment creates one child profile and primary guardian, without pickup permission, fees or outgoing messages. Retries of the same inquiry return the same child.
+- Payment recording rejects overpayments and invalid input leaves draft invoices unchanged. Invoice transitions and attendance handoffs use row-lock transactions. This is manual recordkeeping, not a payment processor.
 - Managers can inspect tenant-scoped, paginated activity history. Teachers never receive financial dashboard totals or general medical notes.
 - Responsive child cards on phone, mobile navigation, Arabic/English workspace and bundled Arabic font. No font CDN requests.
 
-This increment adds no migrations. For an existing install, keep its `.env` and database, run `composer install`, `npm ci`, and `npm run build` after switching to the reviewed upgrade code. Do not reset or seed an existing nursery database.
+The operational workspace has no schema changes. The admissions increment adds only the `admissions` table through a forward migration; run `php artisan migrate` on an existing install after backing up its database. For an existing install, keep its `.env` and database, run `composer install`, `npm ci`, and `npm run build` after switching to the reviewed upgrade code. Do not reset or seed an existing nursery database.
 
 ## Documentation
 
@@ -92,7 +94,7 @@ This increment adds no migrations. For an existing install, keep its `.env` and 
 
 Guardian portal/app, online payments (Paymob/Fawry for Egypt; ZATCA e-invoicing
 for Saudi needs official verification first), announcements and messaging,
-enrolment funnel, Excel import, multi-branch. The operational workspace now has an Arabic-first RTL interface with an English switch; server validation and some secondary profile/password screens remain English.
+Excel import, multi-branch. The operational workspace now has an Arabic-first RTL interface with an English switch; server validation and some secondary profile/password screens remain English.
 
 ## License
 

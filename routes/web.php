@@ -19,6 +19,10 @@ Route::get('/', function () {
 });
 
 Route::middleware('auth')->group(function () {
+    Route::get('/admissions', [\App\Http\Controllers\AdmissionController::class, 'index'])->name('admissions.index');
+    Route::post('/admissions', [\App\Http\Controllers\AdmissionController::class, 'store'])->name('admissions.store');
+    Route::put('/admissions/{admission}', [\App\Http\Controllers\AdmissionController::class, 'update'])->name('admissions.update');
+    Route::post('/admissions/{admission}/enroll', [\App\Http\Controllers\AdmissionController::class, 'enroll'])->name('admissions.enroll');
     Route::get('/audit', \App\Http\Controllers\AuditController::class)->name('audit.index');
     Route::get('/dashboard', DashboardController::class)->name('dashboard');
 

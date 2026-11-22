@@ -13,7 +13,7 @@ class AuditController extends Controller
     public function __invoke(Request $request): Response
     {
         Gate::authorize('manage-nursery');
-        $filters = $request->validate(['entity' => 'nullable|in:child,classroom,invoice,tuition_plan,incident,user', 'from' => 'nullable|date', 'to' => 'nullable|date|after_or_equal:from']);
+        $filters = $request->validate(['entity' => 'nullable|in:child,classroom,invoice,tuition_plan,incident,user,admission', 'from' => 'nullable|date', 'to' => 'nullable|date|after_or_equal:from']);
         $rows = AuditLog::with('user:id,name')->when($filters['entity'] ?? null, fn ($q, $v) => $q->where('entity', $v))
             ->when($filters['from'] ?? null, fn ($q, $v) => $q->whereDate('created_at', '>=', $v))
             ->when($filters['to'] ?? null, fn ($q, $v) => $q->whereDate('created_at', '<=', $v))

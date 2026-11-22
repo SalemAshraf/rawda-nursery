@@ -7,6 +7,7 @@ use App\Models\DailyLog;
 use App\Support\Audit;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -51,18 +52,17 @@ class DailyLogController extends Controller
         ]);
         $date = $data['date'] ?? $tenant->today();
 
-        $log = DailyLog::where('child_id', $child->id)->whereDate('date', $date)->first()
-            ?? new DailyLog(['child_id' => $child->id, 'date' => $date]);
-        $log->fill([
-            'meals' => $data['meals'] ?? '',
-            'naps' => $data['naps'] ?? '',
-            'mood' => $data['mood'] ?? '',
-            'activities' => $data['activities'] ?? '',
-            'notes' => $data['notes'] ?? '',
-            'created_by' => $request->user()->id,
-        ])->save();
-
-        Audit::record('save-daily-log', 'child', $child->id, 'Care log saved for '.$date);
+        DB::transaction(function () use ($child, $date, $data, $request) {
+            Child::lockForUpdate()->findOrFail($child->id);
+            $log = DailyLog::where('child_id', $child->id)->whereDate('date', $date)->first()
+                ?? new DailyLog(['child_id' => $child->id, 'date' => $date]);
+            $log->fill([
+                'meals' => $data['meals'] ?? '', 'naps' => $data['naps'] ?? '', 'mood' => $data['mood'] ?? '',
+                'activities' => $data['activities'] ?? '', 'notes' => $data['notes'] ?? '',
+                'created_by' => $request->user()->id,
+            ])->save();
+            Audit::record('save-daily-log', 'child', $child->id, 'Care log saved for '.$date);
+        });
 
         return redirect()->route('logs.index', ['date' => $date]);
     }

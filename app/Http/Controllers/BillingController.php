@@ -11,6 +11,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -106,30 +107,32 @@ class BillingController extends Controller implements HasMiddleware
 
     public function sendInvoice(Invoice $invoice): RedirectResponse
     {
-        abort_unless($invoice->status === 'draft', 422);
-        $invoice->update(['status' => 'sent']);
-        Audit::record('send', 'invoice', $invoice->id);
+        DB::transaction(function () use ($invoice) {
+            $locked = Invoice::lockForUpdate()->findOrFail($invoice->id);
+            abort_unless($locked->status === 'draft', 422);
+            $locked->update(['status' => 'sent']);
+            Audit::record('send', 'invoice', $locked->id);
+        });
 
         return redirect()->route('billing.index');
     }
 
     public function voidInvoice(Invoice $invoice): RedirectResponse
     {
-        abort_if($invoice->status === 'paid', 422);
-        abort_if($invoice->payments()->exists(), 422);
-        $invoice->update(['status' => 'void']);
-        Audit::record('void', 'invoice', $invoice->id);
+        DB::transaction(function () use ($invoice) {
+            $locked = Invoice::lockForUpdate()->findOrFail($invoice->id);
+            abort_if($locked->status === 'paid', 422);
+            abort_if($locked->payments()->exists(), 422);
+            $locked->update(['status' => 'void']);
+            Audit::record('void', 'invoice', $locked->id);
+        });
 
         return redirect()->route('billing.index');
     }
 
     public function storePayment(Request $request, Invoice $invoice): RedirectResponse
     {
-        abort_if(in_array($invoice->status, ['void', 'paid']), 422);
-        if ($invoice->status === 'draft') {
-            $invoice->update(['status' => 'sent']);
-        }
-
+        // Validate before any state change. Invalid input must not issue a draft.
         $data = $request->validate([
             'amount' => 'required|string|max:20',
             'method' => 'required|string|max:40',
@@ -137,19 +140,19 @@ class BillingController extends Controller implements HasMiddleware
         ]);
         $minor = Money::toMinor($data['amount']);
         throw_if($minor === null || $minor === 0, ValidationException::withMessages(['amount' => 'Enter a valid amount.']));
-
-        $invoice->payments()->create([
-            'paid_at' => now($request->user()->tenant->timezone),
-            'amount_minor' => $minor,
-            'method' => $data['method'],
-            'reference' => $data['reference'] ?? '',
-            'recorded_by' => $request->user()->id,
-        ]);
-        Audit::record('record-payment', 'invoice', $invoice->id, Money::format($minor, $request->user()->tenant->currency));
-
-        if ($invoice->fresh()->outstandingMinor() === 0) {
-            $invoice->update(['status' => 'paid']);
-        }
+        DB::transaction(function () use ($request, $invoice, $data, $minor) {
+            $locked = Invoice::lockForUpdate()->findOrFail($invoice->id);
+            abort_if(in_array($locked->status, ['void', 'paid']), 422);
+            // This ledger has no customer-credit model. Never silently swallow an excess payment.
+            throw_if($minor > $locked->outstandingMinor(), ValidationException::withMessages(['amount' => 'The payment exceeds the remaining invoice balance.']));
+            $locked->payments()->create([
+                'paid_at' => now($request->user()->tenant->timezone), 'amount_minor' => $minor,
+                'method' => $data['method'], 'reference' => $data['reference'] ?? '',
+                'recorded_by' => $request->user()->id,
+            ]);
+            $locked->update(['status' => $locked->outstandingMinor() === 0 ? 'paid' : 'sent']);
+            Audit::record('record-payment', 'invoice', $locked->id, Money::format($minor, $request->user()->tenant->currency));
+        });
 
         return redirect()->route('billing.index');
     }

@@ -102,3 +102,4 @@
 .auth-panel { width:calc(100% - 32px); max-width:460px; margin:30px auto; padding:30px; border:1px solid #e1e7e0; background:#fff; border-radius:17px; box-shadow:0 14px 50px #1f493009; }
 .auth-panel label { color:#64776a; font-size:12px; }.auth-panel input,.auth-panel select { border-color:#dfe5dd; border-radius:8px; font-size:13px; }.auth-panel button[type=submit],.auth-panel form button { background:#36775f; color:#fff; border-radius:8px; letter-spacing:0; }
 }
+@layer components { .admission-stages { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:12px; margin-bottom:22px; } @media(max-width:600px){ .admission-stages { grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; }.admission-stages .kpi-card { padding:12px; } } }
