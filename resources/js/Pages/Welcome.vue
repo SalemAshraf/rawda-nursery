@@ -174,10 +174,12 @@ function submit() {
                             }}</span
                             ><span>✳</span>
                         </div>
+                        <picture>
+                            <source media="(max-width: 700px)" :srcset="L('/images/dashboard-rich-mobile-ar.png', '/images/dashboard-rich-mobile-en.png')" width="390" height="1200" />
                         <img
-                            src="/images/workspace-preview.png"
+                            :src="L('/images/dashboard-rich-ar.png', '/images/dashboard-rich-en.png')"
                             width="1440"
-                            height="1000"
+                            height="1400"
                             :alt="
                                 L(
                                     'معاينة لوحة Nursery ببيانات تمثيلية',
@@ -185,6 +187,7 @@ function submit() {
                                 )
                             "
                         />
+                        </picture>
                     </div>
                     <div class="product-caption">
                         <span>✳</span
@@ -831,6 +834,10 @@ function submit() {
 </template>
 
 <style scoped>
+.product-window picture { display: block; }
+.product-window img { height: auto; }
+@media (max-width: 700px) { .product-window { transform: none; } }
+
 .landing-footer { flex-wrap: wrap; }
 .builder-credit {
     flex-basis: 100%;
