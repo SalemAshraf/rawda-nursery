@@ -1,37 +1,37 @@
 <script setup>
-import { useI18n } from '@/lib/i18n';
+import { useI18n } from "@/lib/i18n";
 const { t } = useI18n();
-import GuestLayout from '@/Layouts/GuestLayout.vue';
-import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
-import { Head, Link, useForm } from '@inertiajs/vue3';
+import GuestLayout from "@/Layouts/GuestLayout.vue";
+import InputError from "@/Components/InputError.vue";
+import InputLabel from "@/Components/InputLabel.vue";
+import PrimaryButton from "@/Components/PrimaryButton.vue";
+import TextInput from "@/Components/TextInput.vue";
+import { Head, Link, useForm } from "@inertiajs/vue3";
 
 const form = useForm({
-    nursery_name: '',
-    timezone: 'Africa/Cairo',
-    currency: 'EGP',
-    name: '',
-    email: '',
-    password: '',
-    password_confirmation: '',
+    nursery_name: "",
+    timezone: "Africa/Cairo",
+    currency: "EGP",
+    name: "",
+    email: "",
+    password: "",
+    password_confirmation: "",
 });
 
 const submit = () => {
-    form.post(route('register'), {
-        onFinish: () => form.reset('password', 'password_confirmation'),
+    form.post(route("register"), {
+        onFinish: () => form.reset("password", "password_confirmation"),
     });
 };
 </script>
 
 <template>
     <GuestLayout>
-        <Head :title='t("Register")' />
+        <Head :title="t('Register')" />
 
         <form @submit.prevent="submit">
             <div>
-                <InputLabel for="nursery_name" :value='t("Nursery name")' />
+                <InputLabel for="nursery_name" :value="t('Nursery name')" />
 
                 <TextInput
                     id="nursery_name"
@@ -46,7 +46,7 @@ const submit = () => {
 
             <div class="mt-4 grid grid-cols-2 gap-4">
                 <div>
-                    <InputLabel for="timezone" :value='t("Timezone")' />
+                    <InputLabel for="timezone" :value="t('Timezone')" />
                     <select
                         id="timezone"
                         v-model="form.timezone"
@@ -63,7 +63,7 @@ const submit = () => {
                     <InputError class="mt-2" :message="form.errors.timezone" />
                 </div>
                 <div>
-                    <InputLabel for="currency" :value='t("Currency")' />
+                    <InputLabel for="currency" :value="t('Currency')" />
                     <select
                         id="currency"
                         v-model="form.currency"
@@ -82,7 +82,7 @@ const submit = () => {
             </div>
 
             <div class="mt-4">
-                <InputLabel for="name" :value='t("Your name")' />
+                <InputLabel for="name" :value="t('Your name')" />
 
                 <TextInput
                     id="name"
@@ -98,7 +98,7 @@ const submit = () => {
             </div>
 
             <div class="mt-4">
-                <InputLabel for="email" :value='t("Email")' />
+                <InputLabel for="email" :value="t('Email')" />
 
                 <TextInput
                     id="email"
@@ -113,7 +113,7 @@ const submit = () => {
             </div>
 
             <div class="mt-4">
-                <InputLabel for="password" :value='t("Password")' />
+                <InputLabel for="password" :value="t('Password')" />
 
                 <TextInput
                     id="password"
@@ -130,7 +130,7 @@ const submit = () => {
             <div class="mt-4">
                 <InputLabel
                     for="password_confirmation"
-                    :value='t("Confirm Password")'
+                    :value="t('Confirm Password')"
                 />
 
                 <TextInput
@@ -152,13 +152,15 @@ const submit = () => {
                 <Link
                     :href="route('login')"
                     class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                >{{ t("Already registered?") }}</Link>
+                    >{{ t("Already registered?") }}</Link
+                >
 
                 <PrimaryButton
                     class="ms-4"
                     :class="{ 'opacity-25': form.processing }"
                     :disabled="form.processing"
-                >{{ t("Register") }}</PrimaryButton>
+                    >{{ t("Register") }}</PrimaryButton
+                >
             </div>
         </form>
     </GuestLayout>

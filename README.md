@@ -65,7 +65,7 @@ Feature tests expect MySQL on `127.0.0.1:33306` and a `rawda_test` database
 php artisan test
 ```
 
-60 tests / 336 assertions passed in the latest upgrade verification on MariaDB 10.6.23 (PHP 8.4). The original MySQL 8 setup remains supported, but this upgrade was not re-run on MySQL 8. They cover tenant
+66 tests / 389 assertions passed in the latest upgrade verification on MariaDB 10.6.23 (PHP 8.4). The original MySQL 8 setup remains supported, but this upgrade was not re-run on MySQL 8. They cover tenant
 isolation, pickup authorization boundaries, attendance rules, role gates,
 the billing state machine, health-data visibility, and audit logging.
 
@@ -77,7 +77,8 @@ the billing state machine, health-data visibility, and audit logging.
 - Care logs persist all entered fields and selected dates, show unsaved changes and validation errors, and record saves in activity history.
 - Child editing preserves the current classroom and allows reassignment within the same nursery.
 - Admissions now tracks inquiries, nursery visits, waitlists and staff-recorded follow-ups. Confirmed enrollment creates one child profile and primary guardian, without pickup permission, fees or outgoing messages. Retries of the same inquiry return the same child.
-- Payment recording rejects overpayments and invalid input leaves draft invoices unchanged. Invoice transitions and attendance handoffs use row-lock transactions. This is manual recordkeeping, not a payment processor.
+- Managers have date-ranged care/collection reports, daily ledgers, method breakdowns and current classroom enrollment. Date-ranged activity and current open fees are labeled separately to avoid misleading totals.
+- Payment recording rejects overpayments and invalid input leaves draft invoices unchanged. Invoice transitions and attendance handoffs use row-lock transactions. This is manual recordkeeping, not a payment processor. Amounts use this existing ledger's two-decimal storage, not full ISO currency precision; three-decimal Gulf currencies need a separately reviewed data migration before production use. The parser now rejects extra decimals, exponent syntax and values outside the database limit instead of silently rounding.
 - Managers can inspect tenant-scoped, paginated activity history. Teachers never receive financial dashboard totals or general medical notes.
 - Responsive child cards on phone, mobile navigation, Arabic/English workspace and bundled Arabic font. No font CDN requests.
 
@@ -94,7 +95,7 @@ The operational workspace has no schema changes. The admissions increment adds o
 
 Guardian portal/app, online payments (Paymob/Fawry for Egypt; ZATCA e-invoicing
 for Saudi needs official verification first), announcements and messaging,
-Excel import, multi-branch. The operational workspace now has an Arabic-first RTL interface with an English switch; server validation and some secondary profile/password screens remain English.
+Excel import, multi-branch. The operational workspace now has an Arabic-first RTL interface with an English switch; account/profile/password screens are localized too. Server validation messages still depend on the Laravel locale.
 
 ## License
 

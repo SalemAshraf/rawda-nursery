@@ -19,6 +19,7 @@ Route::get('/', function () {
 });
 
 Route::middleware('auth')->group(function () {
+    Route::get('/reports', \App\Http\Controllers\ReportsController::class)->name('reports');
     Route::get('/admissions', [\App\Http\Controllers\AdmissionController::class, 'index'])->name('admissions.index');
     Route::post('/admissions', [\App\Http\Controllers\AdmissionController::class, 'store'])->name('admissions.store');
     Route::put('/admissions/{admission}', [\App\Http\Controllers\AdmissionController::class, 'update'])->name('admissions.update');
