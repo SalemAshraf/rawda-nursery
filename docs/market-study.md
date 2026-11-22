@@ -88,3 +88,27 @@ multi-branch on Premium/Enterprise.
 - https://takwen.net/en
 - https://www.clayox.com/childcare-management-software-uae
 - https://dc-edux.com/en/nursery-management-system-saudi-arabia.html
+
+## Gulf research pass 2 (22 Nov 2026): Kuwait, Qatar, Bahrain, Oman
+
+Sources are vendor sites (features/published prices), not demand evidence. Licensing/tax requirements per country need official verification before any commitment.
+
+### Kuwait
+- Rawdah (https://rawdahapp.com, by KABSOOLA LLC): bilingual EN/AR with RTL, published pricing KWD 25/60/120 per month by branch/child/staff tiers, online payment via Checkout.com, SMS credits, admissions pipeline, health records. NOTE: the name "Rawdah" is taken by this Kuwaiti product; our working name must change before any launch.
+- TinyHub (https://tinyhubkw.com): daily record per child, admin review, branded PDF export for parents.
+- Tasdeed (https://tasdeed.app): Arabic cloud product, monthly child subscriptions in KWD, meals/transport/attendance/staff payroll; has country pages for Kuwait, Bahrain and Oman with local currencies.
+
+### Qatar
+- Bloomz Hub (https://bloomzhub.com): built in Qatar for Gulf nurseries, Arabic-first, enrollment/attendance/invoicing/parent communication plus double-entry accounting; also runs a nursery directory.
+- Nursery Pro (https://nurserypro.augmented-edu.com), Skooly (https://getskooly.com, Arabic+English, QR check-in), hoopooh (https://hoopooh.com, EYFS tagging).
+
+### Bahrain
+- EduX Bahrain page (https://dc-edux.com/en/nursery-management-system-bahrain.html): mentions MOE licensing and BHD fees (vendor claim, unverified).
+- Bounce (https://hellobounce.com): MENA childcare SaaS, announced Bahrain launch signing Madeleine's Preschool.
+- Pragma (https://pragma.bh): local ERP with a nursery offering (fees by terms, staff qualifications).
+
+### Oman
+- EduX Oman page (https://dc-edux.com/en/nursery-management-system-oman.html), Tasdeed with OMR pricing, STAK Muscat.
+
+### Cross-country pattern
+The same regional players (Bambini, EduX, Tasdeed, Skooly, Bounce) cover multiple Gulf states with localized currency pages. Arabic-first parent apps are the norm; published per-flat-fee monthly pricing (Rawdah KW) exists alongside per-child pricing (Kindaria EG).

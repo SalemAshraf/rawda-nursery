@@ -58,7 +58,7 @@ buyer asks.
 
 ## Open decisions for the owner
 
-1. Final product name (Rawda is provisional).
+1. Final product name (Rawda is provisional AND taken by an existing Kuwaiti nursery product, rawdahapp.com - a rename is required before launch).
 2. Arabic-first vs English-first UI. Competitors' parent apps are Arabic.
 3. Pricing: per-child-per-month (Kindaria's model) vs flat per-nursery. Needs
    buyer conversations, not assumption.
