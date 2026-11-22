@@ -1,4 +1,6 @@
 <script setup>
+import { useI18n } from '@/lib/i18n';
+const { t } = useI18n();
 import GuestLayout from '@/Layouts/GuestLayout.vue';
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
@@ -25,11 +27,11 @@ const submit = () => {
 
 <template>
     <GuestLayout>
-        <Head title="Register" />
+        <Head :title='t("Register")' />
 
         <form @submit.prevent="submit">
             <div>
-                <InputLabel for="nursery_name" value="Nursery name" />
+                <InputLabel for="nursery_name" :value='t("Nursery name")' />
 
                 <TextInput
                     id="nursery_name"
@@ -44,24 +46,24 @@ const submit = () => {
 
             <div class="mt-4 grid grid-cols-2 gap-4">
                 <div>
-                    <InputLabel for="timezone" value="Timezone" />
+                    <InputLabel for="timezone" :value='t("Timezone")' />
                     <select
                         id="timezone"
                         v-model="form.timezone"
                         class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                     >
-                        <option value="Africa/Cairo">Cairo</option>
-                        <option value="Asia/Riyadh">Riyadh</option>
-                        <option value="Asia/Dubai">Dubai</option>
-                        <option value="Asia/Kuwait">Kuwait</option>
-                        <option value="Asia/Qatar">Doha</option>
-                        <option value="Asia/Bahrain">Bahrain</option>
-                        <option value="Asia/Muscat">Muscat</option>
+                        <option value="Africa/Cairo">{{ t("Cairo") }}</option>
+                        <option value="Asia/Riyadh">{{ t("Riyadh") }}</option>
+                        <option value="Asia/Dubai">{{ t("Dubai") }}</option>
+                        <option value="Asia/Kuwait">{{ t("Kuwait") }}</option>
+                        <option value="Asia/Qatar">{{ t("Doha") }}</option>
+                        <option value="Asia/Bahrain">{{ t("Bahrain") }}</option>
+                        <option value="Asia/Muscat">{{ t("Muscat") }}</option>
                     </select>
                     <InputError class="mt-2" :message="form.errors.timezone" />
                 </div>
                 <div>
-                    <InputLabel for="currency" value="Currency" />
+                    <InputLabel for="currency" :value='t("Currency")' />
                     <select
                         id="currency"
                         v-model="form.currency"
@@ -80,7 +82,7 @@ const submit = () => {
             </div>
 
             <div class="mt-4">
-                <InputLabel for="name" value="Your name" />
+                <InputLabel for="name" :value='t("Your name")' />
 
                 <TextInput
                     id="name"
@@ -96,7 +98,7 @@ const submit = () => {
             </div>
 
             <div class="mt-4">
-                <InputLabel for="email" value="Email" />
+                <InputLabel for="email" :value='t("Email")' />
 
                 <TextInput
                     id="email"
@@ -111,7 +113,7 @@ const submit = () => {
             </div>
 
             <div class="mt-4">
-                <InputLabel for="password" value="Password" />
+                <InputLabel for="password" :value='t("Password")' />
 
                 <TextInput
                     id="password"
@@ -128,7 +130,7 @@ const submit = () => {
             <div class="mt-4">
                 <InputLabel
                     for="password_confirmation"
-                    value="Confirm Password"
+                    :value='t("Confirm Password")'
                 />
 
                 <TextInput
@@ -150,17 +152,13 @@ const submit = () => {
                 <Link
                     :href="route('login')"
                     class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                >
-                    Already registered?
-                </Link>
+                >{{ t("Already registered?") }}</Link>
 
                 <PrimaryButton
                     class="ms-4"
                     :class="{ 'opacity-25': form.processing }"
                     :disabled="form.processing"
-                >
-                    Register
-                </PrimaryButton>
+                >{{ t("Register") }}</PrimaryButton>
             </div>
         </form>
     </GuestLayout>

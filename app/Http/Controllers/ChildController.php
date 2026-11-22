@@ -73,6 +73,7 @@ class ChildController extends Controller
                 'dob' => $child->dob?->toDateString(),
                 'gender' => $child->gender,
                 'classroom' => $child->classroom?->name,
+                'classroom_id' => $child->classroom_id,
                 'status' => $child->status,
                 'enrolled_at' => $child->enrolled_at?->toDateString(),
                 'allergies' => $child->allergies,
@@ -94,6 +95,7 @@ class ChildController extends Controller
             ]),
             'canManage' => Gate::allows('manage-nursery'),
             'canSeeHealth' => $canSeeHealth,
+            'classrooms' => Classroom::orderBy('name')->get(['id', 'name']),
         ]);
     }
 

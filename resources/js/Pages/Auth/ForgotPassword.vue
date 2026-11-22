@@ -1,4 +1,6 @@
 <script setup>
+import { useI18n } from '@/lib/i18n';
+const { t } = useI18n();
 import GuestLayout from '@/Layouts/GuestLayout.vue';
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
@@ -23,7 +25,7 @@ const submit = () => {
 
 <template>
     <GuestLayout>
-        <Head title="Forgot Password" />
+        <Head :title='t("Forgot Password")' />
 
         <div class="mb-4 text-sm text-gray-600">
             Forgot your password? No problem. Just let us know your email
@@ -40,7 +42,7 @@ const submit = () => {
 
         <form @submit.prevent="submit">
             <div>
-                <InputLabel for="email" value="Email" />
+                <InputLabel for="email" :value='t("Email")' />
 
                 <TextInput
                     id="email"
@@ -59,9 +61,7 @@ const submit = () => {
                 <PrimaryButton
                     :class="{ 'opacity-25': form.processing }"
                     :disabled="form.processing"
-                >
-                    Email Password Reset Link
-                </PrimaryButton>
+                >{{ t("Email Password Reset Link") }}</PrimaryButton>
             </div>
         </form>
     </GuestLayout>

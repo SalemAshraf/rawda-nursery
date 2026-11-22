@@ -1,4 +1,6 @@
 <script setup>
+import { useI18n } from '@/lib/i18n';
+const { t } = useI18n();
 import GuestLayout from '@/Layouts/GuestLayout.vue';
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
@@ -19,7 +21,7 @@ const submit = () => {
 
 <template>
     <GuestLayout>
-        <Head title="Confirm Password" />
+        <Head :title='t("Confirm Password")' />
 
         <div class="mb-4 text-sm text-gray-600">
             This is a secure area of the application. Please confirm your
@@ -28,7 +30,7 @@ const submit = () => {
 
         <form @submit.prevent="submit">
             <div>
-                <InputLabel for="password" value="Password" />
+                <InputLabel for="password" :value='t("Password")' />
                 <TextInput
                     id="password"
                     type="password"
@@ -46,9 +48,7 @@ const submit = () => {
                     class="ms-4"
                     :class="{ 'opacity-25': form.processing }"
                     :disabled="form.processing"
-                >
-                    Confirm
-                </PrimaryButton>
+                >{{ t("Confirm") }}</PrimaryButton>
             </div>
         </form>
     </GuestLayout>

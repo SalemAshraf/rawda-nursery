@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Child;
 use App\Models\DailyLog;
+use App\Support\Audit;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -17,7 +18,7 @@ class DailyLogController extends Controller
         $date = $request->validate(['date' => 'nullable|date'])['date'] ?? $tenant->today();
 
         $children = Child::with('classroom')->where('status', 'active')->orderBy('first_name')->get();
-        $logs = DailyLog::where('date', $date)->get()->keyBy('child_id');
+        $logs = DailyLog::whereDate('date', $date)->get()->keyBy('child_id');
 
         return Inertia::render('Logs/Index', [
             'date' => $date,
@@ -40,7 +41,7 @@ class DailyLogController extends Controller
     public function upsert(Request $request, Child $child): RedirectResponse
     {
         $tenant = $request->user()->tenant;
-        $date = $request->validate([
+        $data = $request->validate([
             'date' => 'nullable|date',
             'meals' => 'nullable|string|max:500',
             'naps' => 'nullable|string|max:500',
@@ -50,17 +51,18 @@ class DailyLogController extends Controller
         ]);
         $date = $data['date'] ?? $tenant->today();
 
-        DailyLog::updateOrCreate(
-            ['child_id' => $child->id, 'date' => $date],
-            [
-                'meals' => $data['meals'] ?? '',
-                'naps' => $data['naps'] ?? '',
-                'mood' => $data['mood'] ?? '',
-                'activities' => $data['activities'] ?? '',
-                'notes' => $data['notes'] ?? '',
-                'created_by' => $request->user()->id,
-            ],
-        );
+        $log = DailyLog::where('child_id', $child->id)->whereDate('date', $date)->first()
+            ?? new DailyLog(['child_id' => $child->id, 'date' => $date]);
+        $log->fill([
+            'meals' => $data['meals'] ?? '',
+            'naps' => $data['naps'] ?? '',
+            'mood' => $data['mood'] ?? '',
+            'activities' => $data['activities'] ?? '',
+            'notes' => $data['notes'] ?? '',
+            'created_by' => $request->user()->id,
+        ])->save();
+
+        Audit::record('save-daily-log', 'child', $child->id, 'Care log saved for '.$date);
 
         return redirect()->route('logs.index', ['date' => $date]);
     }

@@ -1,6 +1,6 @@
 # Baraim — Nursery Management SaaS
 
-**Status:** v1 prototype. Functional and test-covered, not production-hardened.
+**Status:** Product upgrade in progress. Operational workspace implemented and tested, not a production-readiness claim.
 **Brand:** "Baraim" (براعم) is provisional and under review after same-category name collisions surfaced; the repo slug `rawda-nursery` is unchanged for now.
 
 Baraim is a multi-tenant web application that runs a nursery's day: children,
@@ -65,9 +65,21 @@ Feature tests expect MySQL on `127.0.0.1:33306` and a `rawda_test` database
 php artisan test
 ```
 
-42 tests / 138 assertions, all passing on MySQL 8. They cover tenant
+50 tests / 255 assertions passed in the latest upgrade verification on MariaDB 10.6.23 (PHP 8.4). The original MySQL 8 setup remains supported, but this upgrade was not re-run on MySQL 8. They cover tenant
 isolation, pickup authorization boundaries, attendance rules, role gates,
 the billing state machine, health-data visibility, and audit logging.
+
+## Operational workspace upgrade
+
+- Live daily overview with on-site, collected and not-arrived children, care-log gaps, pickup-list gaps, classroom capacity and incident follow-ups.
+- Search/filter attendance by name, room and state. Allergy details are visible at handoff. Checkout still requires an active authorized pickup person; physical identity verification remains the staff's responsibility.
+- Classroom capacity editing with over-capacity warnings. Capacity is nursery-entered operational data, not a claim of legal staffing or licensing compliance.
+- Care logs persist all entered fields and selected dates, show unsaved changes and validation errors, and record saves in activity history.
+- Child editing preserves the current classroom and allows reassignment within the same nursery.
+- Managers can inspect tenant-scoped, paginated activity history. Teachers never receive financial dashboard totals or general medical notes.
+- Responsive child cards on phone, mobile navigation, Arabic/English workspace and bundled Arabic font. No font CDN requests.
+
+This increment adds no migrations. For an existing install, keep its `.env` and database, run `composer install`, `npm ci`, and `npm run build` after switching to the reviewed upgrade code. Do not reset or seed an existing nursery database.
 
 ## Documentation
 
@@ -80,7 +92,7 @@ the billing state machine, health-data visibility, and audit logging.
 
 Guardian portal/app, online payments (Paymob/Fawry for Egypt; ZATCA e-invoicing
 for Saudi needs official verification first), announcements and messaging,
-enrolment funnel, Excel import, multi-branch, Arabic-first UI option.
+enrolment funnel, Excel import, multi-branch. The operational workspace now has an Arabic-first RTL interface with an English switch; server validation and some secondary profile/password screens remain English.
 
 ## License
 

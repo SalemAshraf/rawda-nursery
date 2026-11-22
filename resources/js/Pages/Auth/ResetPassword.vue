@@ -1,4 +1,6 @@
 <script setup>
+import { useI18n } from '@/lib/i18n';
+const { t } = useI18n();
 import GuestLayout from '@/Layouts/GuestLayout.vue';
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
@@ -33,11 +35,11 @@ const submit = () => {
 
 <template>
     <GuestLayout>
-        <Head title="Reset Password" />
+        <Head :title='t("Reset Password")' />
 
         <form @submit.prevent="submit">
             <div>
-                <InputLabel for="email" value="Email" />
+                <InputLabel for="email" :value='t("Email")' />
 
                 <TextInput
                     id="email"
@@ -53,7 +55,7 @@ const submit = () => {
             </div>
 
             <div class="mt-4">
-                <InputLabel for="password" value="Password" />
+                <InputLabel for="password" :value='t("Password")' />
 
                 <TextInput
                     id="password"
@@ -70,7 +72,7 @@ const submit = () => {
             <div class="mt-4">
                 <InputLabel
                     for="password_confirmation"
-                    value="Confirm Password"
+                    :value='t("Confirm Password")'
                 />
 
                 <TextInput
@@ -92,9 +94,7 @@ const submit = () => {
                 <PrimaryButton
                     :class="{ 'opacity-25': form.processing }"
                     :disabled="form.processing"
-                >
-                    Reset Password
-                </PrimaryButton>
+                >{{ t("Reset Password") }}</PrimaryButton>
             </div>
         </form>
     </GuestLayout>

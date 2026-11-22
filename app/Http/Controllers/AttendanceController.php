@@ -23,7 +23,7 @@ class AttendanceController extends Controller
             ->orderBy('first_name')
             ->get();
 
-        $rows = Attendance::where('date', $date)->get()->keyBy('child_id');
+        $rows = Attendance::whereDate('date', $date)->get()->keyBy('child_id');
 
         return Inertia::render('Attendance/Index', [
             'date' => $date,
@@ -35,6 +35,7 @@ class AttendanceController extends Controller
                     'id' => $c->id,
                     'name' => $c->fullName(),
                     'classroom' => $c->classroom?->name,
+                    'allergies' => $c->allergies,
                     'check_in_at' => $a?->check_in_at?->format('H:i'),
                     'check_out_at' => $a?->check_out_at?->format('H:i'),
                     'picked_up_by' => $a?->pickupPerson?->name,
@@ -50,7 +51,8 @@ class AttendanceController extends Controller
         $tenant = $request->user()->tenant;
         $today = $tenant->today();
 
-        $attendance = Attendance::firstOrNew(['child_id' => $child->id, 'date' => $today]);
+        $attendance = Attendance::where('child_id', $child->id)->whereDate('date', $today)->first()
+            ?? new Attendance(['child_id' => $child->id, 'date' => $today]);
         if ($attendance->check_in_at === null) {
             $attendance->fill([
                 'check_in_at' => now($tenant->timezone),
@@ -81,7 +83,7 @@ class AttendanceController extends Controller
             'pickup_person_id' => 'This person is not an active authorized pickup for this child.',
         ]));
 
-        $attendance = Attendance::where(['child_id' => $child->id, 'date' => $today])->first();
+        $attendance = Attendance::where('child_id', $child->id)->whereDate('date', $today)->first();
         throw_unless($attendance && $attendance->check_in_at, ValidationException::withMessages([
             'pickup_person_id' => 'The child is not checked in today.',
         ]));

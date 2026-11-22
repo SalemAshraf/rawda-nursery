@@ -19,6 +19,7 @@ Route::get('/', function () {
 });
 
 Route::middleware('auth')->group(function () {
+    Route::get('/audit', \App\Http\Controllers\AuditController::class)->name('audit.index');
     Route::get('/dashboard', DashboardController::class)->name('dashboard');
 
     Route::get('/children', [ChildController::class, 'index'])->name('children.index');
@@ -30,6 +31,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/children/{child}/pickups', [PickupPersonController::class, 'store'])->name('pickups.store');
     Route::delete('/pickups/{pickupPerson}', [PickupPersonController::class, 'destroy'])->name('pickups.destroy');
 
+    Route::get('/classrooms', [ClassroomController::class, 'index'])->name('classrooms.index');
+    Route::put('/classrooms/{classroom}', [ClassroomController::class, 'update'])->name('classrooms.update');
     Route::post('/classrooms', [ClassroomController::class, 'store'])->name('classrooms.store');
 
     Route::get('/attendance', [AttendanceController::class, 'index'])->name('attendance.index');

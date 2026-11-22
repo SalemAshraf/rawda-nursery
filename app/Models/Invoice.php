@@ -35,7 +35,7 @@ class Invoice extends Model
 
     public function paidMinor(): int
     {
-        return (int) $this->payments()->sum('amount_minor');
+        return (int) ($this->relationLoaded('payments') ? $this->payments->sum('amount_minor') : $this->payments()->sum('amount_minor'));
     }
 
     public function outstandingMinor(): int
