@@ -47,7 +47,7 @@ const active = (n) =>
             <Link :href="route('dashboard')" class="brand"
                 ><span class="brand-mark">✳</span
                 ><span
-                    >{{ t("Baraim")
+                    >{{ t("Nursery")
                     }}<small>{{ t("Nursery workspace") }}</small></span
                 ></Link
             >

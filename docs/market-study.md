@@ -94,7 +94,7 @@ multi-branch on Premium/Enterprise.
 Sources are vendor sites (features/published prices), not demand evidence. Licensing/tax requirements per country need official verification before any commitment.
 
 ### Kuwait
-- Rawdah (https://rawdahapp.com, by KABSOOLA LLC): bilingual EN/AR with RTL, published pricing KWD 25/60/120 per month by branch/child/staff tiers, online payment via Checkout.com, SMS credits, admissions pipeline, health records. NOTE: the name "Rawdah" is taken by this Kuwaiti product. RESOLVED 22 Nov 2026: product renamed Baraim (براعم), approved by the owner.
+- Rawdah (https://rawdahapp.com, by KABSOOLA LLC): bilingual EN/AR with RTL, published pricing KWD 25/60/120 per month by branch/child/staff tiers, online payment via Checkout.com, SMS credits, admissions pipeline, health records. NOTE: the name "Rawdah" is taken by this Kuwaiti product. RESOLVED 22 Nov 2026: final product name is Nursery, selected November 22, 2026.
 - TinyHub (https://tinyhubkw.com): daily record per child, admin review, branded PDF export for parents.
 - Tasdeed (https://tasdeed.app): Arabic cloud product, monthly child subscriptions in KWD, meals/transport/attendance/staff payroll; has country pages for Kuwait, Bahrain and Oman with local currencies.
 

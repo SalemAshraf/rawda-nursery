@@ -73,7 +73,7 @@ const complete = (i) =>
                     <h1>
                         {{
                             L(
-                                "لنجهز يومك الأول في براعم",
+                                "لنجهز يومك الأول في Nursery",
                                 "Let’s prepare your first nursery day",
                             )
                         }}
@@ -81,8 +81,8 @@ const complete = (i) =>
                     <p>
                         {{
                             L(
-                                "تُحفظ خطوتك تلقائياً. ارجع هنا من القائمة في أي وقت. الاسم الحالي للمنتج مؤقت.",
-                                "Your place is saved. Return from the menu any time. The current product name is provisional.",
+                                "تُحفظ خطوتك تلقائياً. ارجع هنا من القائمة في أي وقت.",
+                                "Your place is saved. Return from the menu any time.",
                             )
                         }}
                     </p>
@@ -132,7 +132,8 @@ const complete = (i) =>
                 </nav>
                 <section class="saas-card setup-content">
                     <p class="eyebrow">
-                        {{ L("الخطوة", "Step") }} {{ current + 1 }} / 5
+                        {{ L("الخطوة", "Step") }} {{ current + 1 }}
+                        {{ L("من", "of") }} 5
                     </p>
                     <h2>{{ steps[current] }}</h2>
                     <template v-if="current === 0"

@@ -99,7 +99,7 @@ function filter() {
         ><header class="ops-heading">
             <div>
                 <p class="eyebrow">
-                    {{ L("براعم / إدارة البيع", "Baraim / Sales operations") }}
+                    {{ L("Nursery / إدارة البيع", "Nursery / Sales operations") }}
                 </p>
                 <h1>
                     {{ L("مساحة نمو المنصة", "Platform growth workspace") }}

@@ -78,8 +78,8 @@ function submit() {
     <Head
         :title="
             L(
-                'براعم | يوم حضانة أهدأ، وإدارة أوضح',
-                'Baraim | A calmer nursery day',
+                'Nursery | يوم حضانة أهدأ، وإدارة أوضح',
+                'Nursery | A calmer nursery day',
             )
         "
         ><meta
@@ -96,23 +96,25 @@ function submit() {
             <Link href="/" class="brand"
                 ><span class="brand-mark">✳</span
                 ><span
-                    >{{ L("براعم", "Baraim")
+                    >{{ L("Nursery", "Nursery")
                     }}<small>{{
                         L("مساحة إدارة الحضانة", "Nursery workspace")
                     }}</small></span
                 ></Link
             >
             <nav class="landing-links">
-                <a href="#features">{{ L("داخل براعم", "Inside Baraim") }}</a
-                ><a href="#plans">{{ L("الباقات", "Plans") }}</a
+                <a href="#features">{{
+                    L("داخل Nursery", "Inside Nursery")
+                }}</a><a href="#plans">{{ L("الباقات", "Plans") }}</a
                 ><a href="#questions">{{ L("أسئلة شائعة", "Questions") }}</a>
             </nav>
             <div class="landing-nav-actions">
                 <button @click="toggleLocale" class="landing-language">
-                    {{ locale === "ar" ? "English" : "العربية" }}</button
-                ><Link :href="route('login')" class="saas-secondary">{{
-                    L("دخول الحضانة", "Nursery login")
-                }}</Link>
+                    {{ locale === "ar" ? "English" : "العربية" }}</button><Link
+                    :href="route('login')"
+                    class="saas-secondary"
+                    >{{ L("دخول الحضانة", "Nursery login") }}</Link
+                >
             </div>
         </header>
         <main>
@@ -172,7 +174,7 @@ function submit() {
                         <div class="window-bar">
                             <span class="window-dots">● ● ●</span
                             ><span>{{
-                                L("براعم / نظرة عامة", "Baraim / Overview")
+                                L("Nursery / نظرة عامة", "Nursery / Overview")
                             }}</span
                             ><span>✳</span>
                         </div>
@@ -182,8 +184,8 @@ function submit() {
                             height="1000"
                             :alt="
                                 L(
-                                    'معاينة لوحة براعم ببيانات تمثيلية',
-                                    'Baraim dashboard preview with synthetic data',
+                                    'معاينة لوحة Nursery ببيانات تمثيلية',
+                                    'Nursery dashboard preview with synthetic data',
                                 )
                             "
                         />
@@ -213,8 +215,9 @@ function submit() {
                         }}
                     </p>
                 </div>
-                <span>{{ L("الحضور والاستلام", "Attendance & pickup") }}</span
-                ><span>{{ L("اليوميات والرعاية", "Daily care") }}</span
+                <span>{{
+                    L("الحضور والاستلام", "Attendance & pickup")
+                }}</span><span>{{ L("اليوميات والرعاية", "Daily care") }}</span
                 ><span>{{ L("القبول والرسوم", "Admissions & fees") }}</span>
             </section>
             <section id="features" class="landing-section">
@@ -458,8 +461,8 @@ function submit() {
                         <summary>
                             {{
                                 L(
-                                    "هل تحصّل براعم الرسوم أونلاين؟",
-                                    "Does Baraim collect fees online?",
+                                    "هل تحصّل Nursery الرسوم أونلاين؟",
+                                    "Does Nursery collect fees online?",
                                 )
                             }}
                         </summary>
@@ -522,8 +525,8 @@ function submit() {
                     <p>
                         {{
                             L(
-                                "شارك بيانات التواصل واحتياجات الفريق. يُحفظ الطلب لدى إدارة منصة براعم للمراجعة، دون دفع أو تفعيل تلقائي.",
-                                "Share your contact details and team needs. The Baraim platform team receives the request for review, without a payment or automatic activation.",
+                                "شارك بيانات التواصل واحتياجات الفريق. يُحفظ الطلب لدى إدارة منصة Nursery للمراجعة، دون دفع أو تفعيل تلقائي.",
+                                "Share your contact details and team needs. The Nursery platform team receives the request for review, without a payment or automatic activation.",
                             )
                         }}
                     </p>
@@ -621,8 +624,8 @@ function submit() {
                                 required
                             />{{
                                 L(
-                                    "أوافق على حفظ هذه البيانات لدى إدارة براعم لمراجعة طلبي. لا أدرج بيانات أطفال أو معلومات صحية هنا.",
-                                    "I agree to these details being stored by Baraim’s platform team to review my request. I will not include child or health information here.",
+                                    "أوافق على حفظ هذه البيانات لدى إدارة Nursery لمراجعة طلبي. لا أدرج بيانات أطفال أو معلومات صحية هنا.",
+                                    "I agree to these details being stored by Nursery’s platform team to review my request. I will not include child or health information here.",
                                 )
                             }}</label
                         >
@@ -654,13 +657,13 @@ function submit() {
         <footer class="landing-footer">
             <Link href="/" class="brand"
                 ><span class="brand-mark">✳</span
-                ><span>{{ L("براعم", "Baraim") }}</span></Link
+                ><span>{{ L("Nursery", "Nursery") }}</span></Link
             >
             <p>
                 {{
                     L(
-                        "اسم براعم مؤقت أثناء التطوير. يوم حضانة أهدأ، وإدارة أوضح.",
-                        "Baraim is a working name during development. A calmer nursery day.",
+                        "يوم حضانة أهدأ، وإدارة أوضح.",
+                        "A calmer nursery day. A clearer view.",
                     )
                 }}
             </p>

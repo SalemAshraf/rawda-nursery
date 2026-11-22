@@ -1,6 +1,6 @@
 # Commercial platform and first-run setup
 
-Verified locally on November 22, 2026. Product name is provisional.
+Verified locally on November 22, 2026. Product name: Nursery.
 
 ## Safe upgrade
 

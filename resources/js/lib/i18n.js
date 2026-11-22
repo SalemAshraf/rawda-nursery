@@ -248,7 +248,7 @@ const ar = {
     void: "ملغاة",
     Acknowledged: "تم توثيق الإبلاغ",
     "No classroom": "بدون فصل",
-    Baraim: "براعم",
+    Nursery: "Nursery",
     "Nursery workspace": "إدارة الحضانة",
     Overview: "نظرة عامة",
     Children: "الأطفال",

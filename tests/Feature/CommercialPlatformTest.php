@@ -105,6 +105,24 @@ class CommercialPlatformTest extends TestCase
         $this->assertDatabaseHas('classrooms', ['name' => 'Active']);
         $s->update(['status' => 'suspended']);
         $this->post(route('classrooms.store'), ['name' => 'Suspended'])->assertRedirect(route('dashboard'));
-        $this->assertDatabaseMissing('classrooms',['name' => 'Suspended']);
+        $this->assertDatabaseMissing('classrooms', ['name' => 'Suspended']);
+    }
+
+    public function test_platform_administrator_is_not_a_nursery_staff_login(): void
+    {
+        $this->actingAs($this->admin(), 'platform')->get(route('dashboard'))->assertRedirect(route('login'));
+    }
+
+    public function test_pending_owner_keeps_password_security_logout_and_sales_request_access(): void
+    {
+        $t = $this->createTenant();
+        $u = $this->createUser($t);
+        TenantSubscription::create(['tenant_id' => $t->id, 'status' => 'pending']);
+        $this->actingAs($u, 'web')->get(route('profile.edit'))->assertOk();
+        $this->put(route('password.update'), ['current_password' => 'password', 'password' => 'synthetic-replacement-password', 'password_confirmation' => 'synthetic-replacement-password'])->assertSessionHasNoErrors();
+        $this->assertTrue(Hash::check('synthetic-replacement-password', $u->fresh()->password));
+        $this->post(route('sales.inquiry'), ['nursery_name' => 'Synthetic nursery', 'name' => 'Test owner', 'email' => 'owner@example.test', 'consent' => true])->assertSessionHasNoErrors();
+        $this->post(route('logout'))->assertRedirect('/');
+        $this->assertGuest('web');
     }
 }

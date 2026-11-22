@@ -1,9 +1,9 @@
-# Baraim — Nursery Management SaaS
+# Nursery — Nursery Management SaaS
 
 **Status:** Product upgrade in progress. Operational workspace implemented and tested, not a production-readiness claim.
-**Brand:** "Baraim" (براعم) is provisional and under review after same-category name collisions surfaced; the repo slug `rawda-nursery` is unchanged for now.
+**Brand:** Nursery, selected November 22, 2026. Repository slug `rawda-nursery` is unchanged.
 
-Baraim is a multi-tenant web application that runs a nursery's day: children,
+Nursery is a multi-tenant web application that runs a nursery's day: children,
 guardians, attendance with authorized pickup, daily logs, incident reports,
 tuition billing, and a full audit trail. It is built for private nurseries and
 preschools in Egypt and the Gulf, with per-tenant timezone and currency.
@@ -65,7 +65,7 @@ Feature tests expect MySQL on `127.0.0.1:33306` and a `rawda_test` database
 php artisan test
 ```
 
-78 tests / 498 assertions passed in the latest upgrade verification on MariaDB 10.6.23 (PHP 8.4). The original MySQL 8 setup remains supported, but this upgrade was not re-run on MySQL 8. They cover tenant
+80 tests / 507 assertions passed in the latest upgrade verification on MariaDB 10.6.23 (PHP 8.4). The original MySQL 8 setup remains supported, but this upgrade was not re-run on MySQL 8. They cover tenant
 isolation, pickup authorization boundaries, attendance rules, role gates,
 the billing state machine, health-data visibility, and audit logging.
 

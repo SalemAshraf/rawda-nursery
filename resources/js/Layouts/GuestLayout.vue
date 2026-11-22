@@ -11,7 +11,7 @@ const { t, locale, toggleLocale } = useI18n();
             <Link href="/" class="brand"
                 ><span class="brand-mark">✳</span
                 ><span
-                    >{{ t("Baraim")
+                    >{{ t("Nursery")
                     }}<small>{{ t("Nursery workspace") }}</small></span
                 ></Link
             ><button class="utility-button" @click="toggleLocale">

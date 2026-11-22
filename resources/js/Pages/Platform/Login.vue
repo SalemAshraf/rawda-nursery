@@ -18,7 +18,7 @@ const form = useForm({ email: "", password: "" });
                 }}
             </p>
             <h1>
-                {{ L("إدارة منصة براعم", "Baraim platform administration") }}
+                {{ L("إدارة منصة Nursery", "Nursery platform administration") }}
             </h1>
             <p>
                 {{

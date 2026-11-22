@@ -10,7 +10,7 @@ const page = usePage();
             <Link href="/" class="brand"
                 ><span class="brand-mark">✳</span
                 ><span
-                    >{{ locale === "ar" ? "براعم" : "Baraim"
+                    >{{ locale === "ar" ? "Nursery" : "Nursery"
                     }}<small>{{
                         locale === "ar"
                             ? "إدارة منصة البيع"
