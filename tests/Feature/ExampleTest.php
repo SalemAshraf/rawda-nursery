@@ -3,11 +3,13 @@
 namespace Tests\Feature;
 
 use Tests\TestCase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ExampleTest extends TestCase
 {
-    public function test_root_redirects_to_dashboard(): void
+    use RefreshDatabase;
+    public function test_root_displays_the_public_product_page(): void
     {
-        $this->get('/')->assertRedirect(route('dashboard', absolute: false));
+        $this->get('/')->assertOk();
     }
 }

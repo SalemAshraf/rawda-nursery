@@ -14,11 +14,15 @@ use App\Http\Controllers\StaffController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('/', function () {
-    return redirect()->route('dashboard');
-});
+Route::get('/', [\App\Http\Controllers\CommercialController::class, 'landing'])->name('home');
+Route::post('/sales-inquiries', [\App\Http\Controllers\CommercialController::class, 'inquiry'])->middleware('throttle:5,10')->name('sales.inquiry');
+require __DIR__.'/platform.php';
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth:web', \App\Http\Middleware\SubscriptionAccess::class])->group(function () {
+    Route::get('/setup', [\App\Http\Controllers\SetupController::class,'index'])->name('setup.index');
+    Route::post('/setup', [\App\Http\Controllers\SetupController::class,'update'])->name('setup.update');
+    Route::get('/subscription', [\App\Http\Controllers\CommercialController::class,'subscription'])->name('subscription.index');
+    Route::post('/subscription/request', [\App\Http\Controllers\CommercialController::class,'requestPlan'])->middleware('throttle:5,10')->name('subscription.request');
     Route::get('/reports', \App\Http\Controllers\ReportsController::class)->name('reports');
     Route::get('/admissions', [\App\Http\Controllers\AdmissionController::class, 'index'])->name('admissions.index');
     Route::post('/admissions', [\App\Http\Controllers\AdmissionController::class, 'store'])->name('admissions.store');

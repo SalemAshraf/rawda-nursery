@@ -49,7 +49,10 @@ class RegisteredUserController extends Controller
                 'slug' => $this->uniqueSlug($request->nursery_name),
                 'timezone' => $request->timezone,
                 'currency' => strtoupper($request->currency),
+                'setup_pending' => true,
             ]);
+
+            \App\Models\TenantSubscription::create(['tenant_id'=>$tenant->id,'status'=>'pending']);
 
             return User::create([
                 'tenant_id' => $tenant->id,

@@ -16,9 +16,10 @@ use Inertia\Response;
 
 class DashboardController extends Controller
 {
-    public function __invoke(Request $request): Response
+    public function __invoke(Request $request): Response|\Illuminate\Http\RedirectResponse
     {
         $tenant = $request->user()->tenant;
+        if ($request->user()->role === 'owner' && $tenant->setup_pending && !$tenant->setup_completed_at) return redirect()->route('setup.index');
         $today = $tenant->today();
         $canManage = Gate::allows('manage-nursery');
         $children = Child::with('classroom')->withCount('activePickupPersons')->where('status', 'active')->orderBy('first_name')->get();

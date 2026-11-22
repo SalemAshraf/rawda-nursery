@@ -27,7 +27,7 @@ const nav = computed(() => [
         ? [{ label: "Activity history", route: "audit.index", icon: "logs" }]
         : []),
     ...(user.value.role === "owner"
-        ? [{ label: "Staff", route: "staff.index", icon: "staff" }]
+        ? [{ label: "Staff", route: "staff.index", icon: "staff" }, { label: "Subscription", route: "subscription.index", icon: "billing" }, { label: "Setup guide", route: "setup.index", icon: "overview" }]
         : []),
 ]);
 const active = (n) =>
@@ -119,6 +119,7 @@ const active = (n) =>
                 </div>
             </header>
             <main>
+                <p v-if="page.props.auth.subscription === false" class="subscription-banner" role="status">{{ locale === 'ar' ? 'مساحة العمل للعرض فقط حالياً. على المالك مراجعة الاشتراك لطلب التفعيل.' : 'This workspace is currently read-only. The owner can request activation from Subscription.' }}</p>
                 <p
                     v-if="page.props.flash?.success"
                     role="status"

@@ -6,7 +6,7 @@
     body {
         background: #f5f6f8;
         color: #243341;
-        font-family: "IBM Plex Sans Arabic", "Segoe UI", Tahoma, sans-serif;
+        font-family: "Cairo", "Segoe UI", Tahoma, sans-serif;
     }
     button,
     a,
@@ -788,4 +788,1064 @@
             display: none;
         }
     }
+}
+/* Commercial surfaces share the product's typography without using its internal shell. */
+.saas-primary,
+.saas-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    padding: 13px 22px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.5;
+    transition: background 0.15s;
+    cursor: pointer;
+}
+.saas-primary {
+    background: #285b4c;
+    color: #fff;
+    border: 1px solid #285b4c;
+}
+.saas-primary:hover {
+    background: #1b4438;
+}
+.saas-primary:disabled {
+    opacity: 0.5;
+    cursor: wait;
+}
+.saas-secondary {
+    background: #fff;
+    border: 1px solid #d9e1db;
+    color: #315c4d;
+}
+.saas-card {
+    padding: 26px;
+    background: #fff;
+    border: 1px solid #e3e8e2;
+    border-radius: 14px;
+    min-width: 0;
+}
+.saas-card h2 {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 16px;
+}
+.saas-card > p {
+    font-size: 14px;
+    line-height: 1.9;
+}
+.saas-form {
+    display: grid;
+    gap: 18px;
+    margin-top: 20px;
+}
+.saas-form label {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    font-size: 13px;
+    font-weight: 500;
+}
+.saas-form input:not([type="checkbox"]),
+.saas-form select,
+.saas-form textarea,
+.platform-filter input,
+.platform-filter select,
+.platform-inquiry select {
+    width: 100%;
+    border: 1px solid #d7dfd8;
+    border-radius: 7px;
+    padding: 11px 12px;
+    font-size: 14px;
+    background: #fff;
+    min-width: 0;
+}
+.saas-form .saas-check {
+    flex-direction: row;
+    align-items: flex-start;
+    font-size: 12px;
+    line-height: 1.8;
+    font-weight: 400;
+}
+.saas-check input {
+    margin-top: 5px;
+    flex-shrink: 0;
+}
+.saas-two {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+.saas-muted {
+    font-size: 12px !important;
+    color: #728078;
+    line-height: 1.9;
+    margin: 16px 0;
+}
+.saas-notice,
+.subscription-banner {
+    padding: 16px 20px;
+    background: #eaf3ed;
+    border: 1px solid #cbded0;
+    color: #28533c;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    line-height: 1.9;
+}
+.subscription-banner {
+    margin: 20px;
+}
+.saas-pill {
+    display: inline-block;
+    padding: 7px 12px;
+    background: #eff4ee;
+    color: #385b43;
+    font-size: 12px;
+    border-radius: 20px;
+    margin-bottom: 16px;
+}
+.subscription-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 24px;
+    margin-top: 24px;
+}
+.platform-shell {
+    min-height: 100vh;
+    background: #f5f7f4;
+}
+.platform-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #fff;
+    border-bottom: 1px solid #e4e9e3;
+    padding: 20px 4%;
+}
+.platform-main {
+    max-width: 1280px;
+    padding: 40px 28px;
+    margin: auto;
+}
+.platform-login {
+    max-width: 500px;
+    margin: 50px auto;
+}
+.platform-login h1 {
+    font-size: 27px;
+    font-weight: 700;
+    margin: 14px 0;
+}
+.platform-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin: 30px 0;
+}
+.platform-stats strong {
+    font-size: 36px;
+    color: #2e5b47;
+}
+.platform-tabs {
+    display: flex;
+    gap: 8px;
+    border-bottom: 1px solid #dce5dc;
+    margin-bottom: 24px;
+    overflow: auto;
+}
+.platform-tabs button {
+    padding: 15px 16px;
+    white-space: nowrap;
+    font-size: 14px;
+}
+.platform-tabs button.selected {
+    color: #285b4c;
+    border-bottom: 3px solid #285b4c;
+    font-weight: 700;
+}
+.platform-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    border-bottom: 1px solid #edf0eb;
+    padding: 18px 0;
+    font-size: 13px;
+    min-width: 0;
+}
+.platform-row strong {
+    display: block;
+}
+.platform-row small {
+    display: block;
+    color: #718075;
+    margin-top: 5px;
+    line-height: 1.8;
+}
+.platform-row .saas-secondary {
+    font-size: 12px;
+    padding: 9px 12px;
+    flex-shrink: 0;
+}
+.platform-filter {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 14px;
+}
+.platform-filter input {
+    flex: 1;
+}
+.platform-filter select {
+    max-width: 210px;
+}
+.platform-pagination {
+    display: flex;
+    gap: 12px;
+    padding-top: 20px;
+    flex-wrap: wrap;
+}
+.platform-pagination a {
+    padding: 6px 10px;
+    border: 1px solid #dce5dc;
+    border-radius: 5px;
+}
+.platform-pagination [aria-current="page"] {
+    background: #285b4c;
+    color: white;
+}
+.platform-inquiry {
+    padding: 12px 0 20px;
+    border-bottom: 1px solid #e3e8e2;
+    font-size: 14px;
+    line-height: 2;
+}
+.platform-inquiry select {
+    max-width: 160px;
+}
+.platform-inquiry > p {
+    margin-top: 12px;
+}
+.platform-inquiry > small {
+    color: #758175;
+}
+.saas-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    background: #19332977;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    overflow: auto;
+}
+.saas-modal > .saas-card {
+    width: 560px;
+    max-width: 100%;
+    max-height: 90vh;
+    overflow: auto;
+}
+.saas-close {
+    float: inline-end;
+    font-size: 28px;
+    line-height: 1;
+}
+.landing {
+    background: #faf9f5;
+    color: #243e34;
+    overflow: hidden;
+}
+.landing-nav {
+    max-width: 1360px;
+    margin: auto;
+    padding: 26px 5%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 25px;
+}
+.landing-nav .brand {
+    padding: 0;
+}
+.landing-links {
+    display: flex;
+    gap: 28px;
+    font-size: 13px;
+}
+.landing-nav-actions {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    font-size: 13px;
+}
+.landing-nav-actions .saas-secondary {
+    background: transparent;
+    font-size: 12px;
+    padding: 11px 18px;
+}
+.landing-hero {
+    max-width: 1360px;
+    margin: auto;
+    padding: 70px 5% 90px;
+    display: grid;
+    grid-template-columns: 0.95fr 1.1fr;
+    gap: 55px;
+    align-items: center;
+    min-height: 650px;
+}
+.landing-eyebrow {
+    font-size: 12px;
+    font-weight: 600;
+    color: #66816c;
+    letter-spacing: 0.04em;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin-bottom: 22px;
+}
+.landing-eyebrow > span {
+    width: 7px;
+    height: 7px;
+    background: #bb805c;
+    border-radius: 50%;
+}
+.landing h1 {
+    font-size: clamp(36px, 3.7vw, 56px);
+    font-weight: 600;
+    line-height: 1.55;
+    letter-spacing: 0;
+}
+.landing h1 em {
+    font-style: normal;
+    color: #ac7153;
+}
+.hero-description {
+    font-size: 15px;
+    line-height: 2.1;
+    color: #69786a;
+    margin-top: 24px;
+    max-width: 500px;
+}
+.hero-actions {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    flex-wrap: wrap;
+    margin-top: 30px;
+}
+.hero-text-link {
+    font-size: 13px;
+    text-decoration: underline;
+    text-underline-offset: 6px;
+    line-height: 2;
+}
+.hero-footnote {
+    font-size: 11px;
+    color: #82907e;
+    margin-top: 24px;
+}
+.hero-product {
+    position: relative;
+    padding: 25px 0;
+}
+.product-window {
+    position: relative;
+    z-index: 2;
+    background: #fff;
+    border-radius: 13px;
+    overflow: hidden;
+    border: 1px solid #dde4d9;
+    box-shadow: 0 22px 60px #26473812;
+    transform: rotate(-1.5deg);
+}
+[dir="rtl"] .product-window {
+    transform: rotate(1.5deg);
+}
+.window-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 13px 16px;
+    background: #fff;
+    border-bottom: 1px solid #e4e9e2;
+    color: #81917f;
+    font-size: 9px;
+}
+.window-dots {
+    color: #d7decf;
+    font-size: 8px;
+    letter-spacing: 3px;
+    direction: ltr;
+}
+.product-window img {
+    width: 100%;
+    height: 345px;
+    object-fit: cover;
+    object-position: top;
+    display: block;
+}
+.product-caption {
+    position: relative;
+    z-index: 3;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-top: 18px;
+    font-size: 10px;
+    color: #70836d;
+    justify-content: center;
+}
+.product-caption > span {
+    font-size: 23px;
+    color: #ac7153;
+}
+.hero-orbit {
+    position: absolute;
+    border: 1px solid #dfe5d7;
+    border-radius: 50%;
+    width: 450px;
+    height: 450px;
+    inset-inline-start: 25px;
+    top: -5px;
+}
+.orbit-two {
+    width: 520px;
+    height: 520px;
+    inset-inline-start: -10px;
+    top: -40px;
+}
+.landing-principles {
+    background: #eff1e7;
+    border-block: 1px solid #e4e8db;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 28px;
+    padding: 30px max(5%, calc((100% - 1224px) / 2));
+    font-size: 13px;
+}
+.landing-principles strong {
+    font-size: 18px;
+}
+.landing-principles p {
+    font-size: 11px;
+    color: #7b8b75;
+    margin-top: 8px;
+}
+.landing-principles > span {
+    border-inline-start: 1px solid #d1dac6;
+    padding-inline-start: 30px;
+    white-space: nowrap;
+}
+.landing-section {
+    max-width: 1224px;
+    margin: auto;
+    padding: 100px 0;
+}
+.section-heading {
+    max-width: 600px;
+    margin-bottom: 48px;
+}
+.section-heading h2,
+.landing-workflow h2,
+.landing-contact h2 {
+    font-size: clamp(30px, 3vw, 42px);
+    font-weight: 500;
+    line-height: 1.6;
+    letter-spacing: 0;
+}
+.section-heading > p:last-child {
+    font-size: 14px;
+    line-height: 2;
+    color: #788570;
+    margin-top: 20px;
+}
+.landing-feature-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 35px;
+}
+.landing-feature-grid article {
+    border-top: 1px solid #d9e0d1;
+    padding-top: 24px;
+}
+.feature-number {
+    font-size: 12px;
+    color: #b78a6b;
+    direction: ltr;
+    display: block;
+}
+.landing-feature-grid h3 {
+    font-size: 20px;
+    font-weight: 500;
+    margin: 20px 0 13px;
+}
+.landing-feature-grid p {
+    font-size: 13px;
+    color: #77836f;
+    line-height: 2;
+}
+.landing-workflow {
+    background: #e9eddf;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 95px;
+    padding: 75px max(5%, calc((100% - 1224px) / 2));
+    align-items: center;
+}
+.landing-workflow p:not(.landing-eyebrow) {
+    font-size: 14px;
+    color: #708169;
+    line-height: 2.1;
+    margin: 20px 0 28px;
+}
+.landing-workflow ol {
+    display: grid;
+    gap: 25px;
+}
+.landing-workflow li {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+    border-bottom: 1px solid #d3ddc5;
+    padding-bottom: 26px;
+}
+.landing-workflow li > b {
+    font-size: 36px;
+    color: #b2bda1;
+    font-weight: 400;
+}
+.landing-workflow strong {
+    font-size: 19px;
+    font-weight: 500;
+}
+.landing-workflow small {
+    font-size: 12px;
+    color: #7a896f;
+    display: block;
+    margin-top: 10px;
+    line-height: 1.9;
+}
+.landing-plan-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 24px;
+}
+.landing-plan {
+    background: #fff;
+    border: 1px solid #e1e6da;
+    border-radius: 10px;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+}
+.landing-plan h3 {
+    font-size: 27px;
+    font-weight: 600;
+}
+.landing-plan > p {
+    font-size: 13px;
+    color: #7e8977;
+    line-height: 2;
+    margin: 18px 0;
+}
+.landing-plan ul {
+    font-size: 13px;
+    line-height: 2.4;
+    flex: 1;
+    margin-bottom: 22px;
+}
+.landing-plan > small {
+    font-size: 12px;
+    color: #84917d;
+    margin-top: 8px;
+}
+.quote-card {
+    display: flex;
+    justify-content: space-between;
+    gap: 35px;
+    align-items: center;
+    border: 1px solid #dce3d4;
+    border-radius: 10px;
+    padding: 40px;
+    background: #f2f3eb;
+}
+.quote-card h3 {
+    font-size: 23px;
+    font-weight: 500;
+}
+.quote-card p {
+    font-size: 13px;
+    color: #7a876e;
+    line-height: 2;
+    margin-top: 15px;
+}
+.quote-card .saas-primary {
+    flex-shrink: 0;
+}
+.landing-faq {
+    border-top: 1px solid #e3e8da;
+    display: grid;
+    grid-template-columns: 0.8fr 1.2fr;
+    gap: 70px;
+}
+.landing-faq details {
+    padding: 24px 0;
+    border-bottom: 1px solid #e0e5d8;
+}
+.landing-faq summary {
+    font-size: 17px;
+    cursor: pointer;
+    line-height: 1.9;
+}
+.landing-faq details p {
+    font-size: 13px;
+    line-height: 2;
+    color: #7b886f;
+    padding-top: 20px;
+}
+.landing-contact {
+    background: #e9eddf;
+    display: grid;
+    grid-template-columns: 0.9fr 1fr;
+    gap: 100px;
+    padding: 80px max(5%, calc((100% - 1224px) / 2));
+}
+.landing-contact > div > p:not(.landing-eyebrow) {
+    font-size: 14px;
+    line-height: 2.2;
+    color: #73836a;
+    margin-top: 25px;
+}
+.contact-mark {
+    font-size: 100px;
+    font-weight: 200;
+    color: #9eb18d;
+    line-height: 1.6;
+    margin: 25px 0;
+}
+.contact-form-card {
+    background: #fff;
+    border: 1px solid #dde4d5;
+    border-radius: 12px;
+    padding: 32px;
+}
+.contact-form-card .saas-form {
+    margin: 0;
+}
+.contact-form-card .saas-primary {
+    justify-content: space-between;
+}
+.landing-footer {
+    max-width: 1360px;
+    margin: auto;
+    padding: 35px 5%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+}
+.landing-footer p,
+.landing-footer > a:last-child {
+    font-size: 12px;
+    color: #7b8972;
+}
+@media (max-width: 1300px) {
+    .landing-section {
+        margin-inline: 5%;
+    }
+    .landing-hero {
+        gap: 35px;
+    }
+    .landing h1 {
+        font-size: 42px;
+    }
+}
+@media (max-width: 1000px) {
+    .landing-links {
+        display: none;
+    }
+    .landing-hero {
+        grid-template-columns: 1fr;
+        gap: 60px;
+        padding-top: 45px;
+    }
+    .hero-copy {
+        max-width: 650px;
+    }
+    .hero-product {
+        max-width: 720px;
+        width: 100%;
+        margin: auto;
+    }
+    .product-window img {
+        height: 390px;
+    }
+    .landing-principles {
+        flex-wrap: wrap;
+    }
+    .landing-principles > div {
+        width: 100%;
+    }
+    .landing-feature-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .landing-contact,
+    .landing-workflow {
+        gap: 45px;
+    }
+    .platform-stats {
+        grid-template-columns: 1fr 1fr;
+    }
+    .subscription-grid {
+        grid-template-columns: 1fr;
+    }
+}
+@media (max-width: 600px) {
+    .landing-nav {
+        padding: 20px 5%;
+        gap: 12px;
+    }
+    .landing-nav .brand {
+        font-size: 22px;
+        gap: 7px;
+    }
+    .landing-nav .brand small {
+        font-size: 8px;
+    }
+    .landing-nav .brand-mark {
+        width: 35px;
+        height: 37px;
+        font-size: 28px;
+        border-radius: 10px;
+    }
+    .landing-nav-actions {
+        gap: 12px;
+    }
+    .landing-nav-actions .saas-secondary {
+        padding: 8px 10px;
+        font-size: 10px;
+    }
+    .landing-language {
+        font-size: 10px;
+    }
+    .landing-hero {
+        padding: 35px 5% 55px;
+        gap: 50px;
+        min-height: 0;
+    }
+    .landing h1 {
+        font-size: 34px;
+        letter-spacing: 0;
+        line-height: 1.65;
+    }
+    .hero-description {
+        font-size: 13px;
+        line-height: 2;
+    }
+    .hero-actions {
+        gap: 20px;
+    }
+    .hero-actions .saas-primary {
+        padding: 12px 18px;
+        font-size: 13px;
+    }
+    .hero-footnote {
+        font-size: 10px;
+    }
+    .hero-product {
+        padding: 0;
+    }
+    .product-window img {
+        height: 220px;
+    }
+    .hero-orbit {
+        width: 300px;
+        height: 300px;
+        inset-inline-start: 0;
+    }
+    .orbit-two {
+        width: 340px;
+        height: 340px;
+    }
+    .product-caption {
+        font-size: 9px;
+    }
+    .landing-principles {
+        gap: 19px;
+        padding: 25px 5%;
+    }
+    .landing-principles > span {
+        font-size: 10px;
+        padding-inline-start: 12px;
+    }
+    .landing-section {
+        padding: 65px 0;
+    }
+    .section-heading {
+        margin-bottom: 32px;
+    }
+    .section-heading h2,
+    .landing-contact h2,
+    .landing-workflow h2 {
+        font-size: 30px;
+    }
+    .landing-feature-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+    .landing-feature-grid h3 {
+        font-size: 21px;
+        margin-top: 14px;
+    }
+    .landing-feature-grid p {
+        font-size: 13px;
+    }
+    .landing-workflow,
+    .landing-contact {
+        grid-template-columns: 1fr;
+        padding: 55px 5%;
+        gap: 35px;
+    }
+    .landing-workflow li > b {
+        font-size: 30px;
+    }
+    .landing-faq {
+        display: block;
+    }
+    .landing-faq .section-heading {
+        margin-bottom: 5px;
+    }
+    .landing-faq summary {
+        font-size: 15px;
+    }
+    .quote-card {
+        display: block;
+        padding: 25px;
+    }
+    .quote-card h3 {
+        font-size: 22px;
+    }
+    .quote-card .saas-primary {
+        margin-top: 22px;
+    }
+    .contact-mark {
+        display: none;
+    }
+    .landing-contact .hero-text-link {
+        display: inline-block;
+        margin-top: 20px;
+    }
+    .contact-form-card {
+        padding: 24px 18px;
+    }
+    .saas-two {
+        grid-template-columns: 1fr;
+    }
+    .landing-footer {
+        flex-wrap: wrap;
+        padding: 26px 5%;
+    }
+    .landing-footer .brand {
+        font-size: 22px;
+    }
+    .landing-footer p {
+        width: 100%;
+        order: 3;
+    }
+    .platform-main {
+        padding: 24px 16px;
+    }
+    .platform-top {
+        padding: 18px 16px;
+    }
+    .platform-top .brand {
+        font-size: 21px;
+        padding: 0;
+    }
+    .platform-stats {
+        gap: 10px;
+        margin: 24px 0;
+    }
+    .platform-stats .saas-card {
+        padding: 18px 13px;
+    }
+    .platform-stats .saas-card > p {
+        font-size: 11px;
+    }
+    .platform-stats strong {
+        font-size: 30px;
+    }
+    .saas-card {
+        padding: 20px 16px;
+    }
+    .platform-filter {
+        flex-wrap: wrap;
+    }
+    .platform-filter input {
+        flex: auto;
+    }
+    .platform-filter select {
+        max-width: none;
+        flex: 1;
+    }
+    .platform-row {
+        align-items: start;
+        gap: 12px;
+    }
+    .platform-row strong {
+        overflow-wrap: anywhere;
+    }
+    .platform-row .saas-secondary {
+        font-size: 10px;
+        padding: 8px;
+    }
+    .saas-modal {
+        padding: 12px;
+    }
+    .platform-inquiry .platform-row {
+        flex-wrap: wrap;
+    }
+    .platform-tabs button {
+        font-size: 12px;
+        padding: 12px 8px;
+    }
+}
+.setup-page {
+    max-width: 1250px;
+    margin: auto;
+}
+.setup-layout {
+    display: grid;
+    grid-template-columns: 250px 1fr;
+    gap: 28px;
+    margin-top: 30px;
+}
+.setup-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.setup-steps button {
+    display: flex;
+    gap: 14px;
+    padding: 18px 14px;
+    align-items: center;
+    text-align: start;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    font-size: 13px;
+    color: #768577;
+}
+.setup-steps button > span {
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: #e9eee7;
+    flex-shrink: 0;
+}
+.setup-steps small {
+    display: block;
+    font-size: 10px;
+    margin-top: 5px;
+    color: #8d9a8b;
+}
+.setup-steps .current {
+    background: #fff;
+    border-color: #d9e4d5;
+    color: #285b4c;
+    font-weight: 600;
+}
+.setup-steps .current > span {
+    background: #285b4c;
+    color: #fff;
+}
+.setup-steps .done:not(.current) > span {
+    color: #285b4c;
+    background: #dfe9d9;
+}
+.setup-content {
+    min-height: 430px;
+}
+.setup-content > p {
+    line-height: 2.1;
+}
+.setup-metric {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    font-size: 14px;
+    background: #f2f5ee;
+    padding: 22px;
+    border-radius: 9px;
+    margin: 25px 0;
+    color: #688060;
+}
+.setup-metric strong {
+    font-size: 35px;
+    color: #285b4c;
+}
+.setup-footer {
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid #e7ece2;
+    padding-top: 24px;
+    margin-top: 30px;
+}
+@media (max-width: 850px) {
+    .setup-layout {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    .setup-steps {
+        flex-direction: row;
+        overflow: auto;
+        padding-bottom: 8px;
+    }
+    .setup-steps button {
+        min-width: 150px;
+        padding: 12px 8px;
+        font-size: 11px;
+    }
+    .setup-steps small {
+        display: none;
+    }
+    .setup-steps button > span {
+        width: 24px;
+        height: 24px;
+    }
+    .setup-content {
+        min-height: 0;
+    }
+}
+
+.landing {
+    font-family: "Cairo", "Segoe UI", Tahoma, sans-serif;
+}
+.landing h1 {
+    font-weight: 700;
+    line-height: 1.65;
+}
+.landing h2,
+.landing h3 {
+    font-weight: 600;
+}
+.landing .hero-description {
+    font-size: 15px;
+    line-height: 2.2;
+}
+.landing .landing-eyebrow {
+    font-weight: 700;
+    letter-spacing: 0;
+}
+.landing-feature-grid p,
+.landing-faq details p {
+    color: #66745e;
 }

@@ -38,6 +38,7 @@ return [
     */
 
     'guards' => [
+        'platform' => ['driver' => 'session', 'provider' => 'platform_admins'],
         'web' => [
             'driver' => 'session',
             'provider' => 'users',
@@ -62,6 +63,7 @@ return [
     */
 
     'providers' => [
+        'platform_admins' => ['driver' => 'eloquent', 'model' => \App\Models\PlatformAdmin::class],
         'users' => [
             'driver' => 'eloquent',
             'model' => env('AUTH_MODEL', User::class),

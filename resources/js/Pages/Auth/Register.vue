@@ -29,7 +29,7 @@ const submit = () => {
     <GuestLayout>
         <Head :title="t('Register')" />
 
-        <form @submit.prevent="submit">
+        <p class="mb-5 text-xs leading-7 text-gray-500">{{t('New accounts request manual activation. Registration does not take payment or promise a free trial.')}}</p><form @submit.prevent="submit">
             <div>
                 <InputLabel for="nursery_name" :value="t('Nursery name')" />
 
