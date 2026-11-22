@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\Child;
 use App\Models\Classroom;
+use App\Models\Guardian;
 use App\Models\Invoice;
 use App\Models\PickupPerson;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -44,7 +45,8 @@ class SetupGuideTest extends TestCase
         $room = Classroom::create(['name' => 'Test room', 'capacity' => 12]);
         $c = Child::create(['first_name' => 'Test', 'last_name' => 'Child', 'classroom_id' => $room->id, 'status' => 'active']);
         $this->post(route('setup.update'), ['action' => 'finish', 'safety_review' => true])->assertSessionHasErrors('setup');
-        $g=\App\Models\Guardian::create(['name'=>'Test guardian','relation'=>'parent']);$c->guardians()->attach($g->id,['is_primary'=>true]);
+        $g = Guardian::create(['name' => 'Test guardian', 'relation' => 'parent', 'phone' => '0000000000']);
+        $c->guardians()->attach($g->id, ['is_primary' => true]);
         PickupPerson::create(['child_id' => $c->id, 'name' => 'Test pickup', 'relation' => 'guardian', 'active' => true]);
         $this->post(route('setup.update'), ['action' => 'finish', 'safety_review' => true])->assertRedirect(route('dashboard'));
         $this->assertNotNull($t->fresh()->setup_completed_at);
