@@ -10,6 +10,14 @@ import 'package:nursery_family/api.dart';
 import 'package:nursery_family/main.dart';
 
 void main() {
+  test('Known labels translate without rewriting staff free text', () {
+    String ar(String a, String e) => a;
+    expect(moodLabel('happy', ar), 'سعيد');
+    expect(moodLabel('happy after drawing', ar), 'happy after drawing');
+    expect(moodLabel(' HAPPY ', ar), ' HAPPY ');
+    expect(statusLabel('sent', ar), 'صادرة');
+    expect(statusLabel('custom status', ar), 'custom status');
+  });
   setUp(() => FlutterSecureStorage.setMockInitialValues({}));
   test('Only secure server URLs are accepted in release configuration', () {
     expect(

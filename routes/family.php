@@ -17,6 +17,7 @@ Route::prefix('family')->name('family.')->group(function () {
         Route::post('children/{child}/incidents/{incident}/acknowledge', [PortalController::class, 'acknowledge'])->name('acknowledge');
         Route::post('children/{child}/tasks/{task}/complete', [PortalController::class, 'complete'])->name('complete');
         Route::post('children/{child}/absences', [PortalController::class, 'absence'])->middleware('throttle:10,1')->name('absence');
+        Route::post('children/{child}/absences/{absence}/cancel', [PortalController::class, 'cancelAbsence'])->middleware('throttle:10,1,family-absence-cancel')->name('absence.cancel');
         Route::post('children/{child}/pickup-token', [PortalController::class, 'pickup'])->middleware('throttle:6,1')->name('pickup');
     });
 });

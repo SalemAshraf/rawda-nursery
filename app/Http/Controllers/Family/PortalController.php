@@ -9,6 +9,7 @@ use App\Services\FamilyWorkspace;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 
 class PortalController extends Controller
@@ -77,6 +78,26 @@ class PortalController extends Controller
         $s->child($p, $child);
         $d = $r->validate(['starts_on' => 'required|date_format:Y-m-d|after_or_equal:'.$p->tenant->today(), 'ends_on' => 'required|date_format:Y-m-d|after_or_equal:starts_on|before_or_equal:'.now($p->tenant->timezone)->addYear()->toDateString(), 'reason' => 'nullable|string|max:500']);
         DB::table('family_absences')->insert($d + ['tenant_id' => $p->tenant_id, 'family_account_id' => $p->id, 'child_id' => $child, 'created_at' => now(), 'updated_at' => now()]);
+
+        return $this->done($r);
+    }
+
+    public function cancelAbsence(Request $r, int $child, int $absence, FamilyWorkspace $s)
+    {
+        $p = $this->parent($r);
+        $s->child($p, $child);
+        $r->validate(['confirmed' => 'accepted']);
+        DB::transaction(function () use ($p, $child, $absence) {
+            $row = DB::table('family_absences')->where('tenant_id', $p->tenant_id)->where('family_account_id', $p->id)->where('child_id', $child)->where('id', $absence)->lockForUpdate()->first();
+            abort_unless($row, 404);
+            if ($row->cancelled_at) {
+                return;
+            }
+            if ($row->ends_on < $p->tenant->today()) {
+                throw ValidationException::withMessages(['absence' => 'A completed absence needs nursery review, not retroactive cancellation.']);
+            }
+            DB::table('family_absences')->where('id', $row->id)->update(['cancelled_at' => now(), 'updated_at' => now()]);
+        }, 3);
 
         return $this->done($r);
     }

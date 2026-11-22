@@ -2,6 +2,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 import 'api.dart';
@@ -9,6 +10,37 @@ import 'api.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(FamilyApp(api: FamilyApi()));
+}
+
+String moodLabel(String value, Copy l) {
+  final labels = <String, List<String>>{
+    'happy': ['سعيد', 'Happy'],
+    'calm': ['هادئ', 'Calm'],
+    'tired': ['متعب', 'Tired'],
+    'sad': ['حزين', 'Sad'],
+    'unsettled': ['غير مستقر', 'Unsettled'],
+    'sleepy': ['يشعر بالنعاس', 'Sleepy'],
+    'good': ['جيد', 'Good'],
+  };
+  final label = labels[value];
+  return label == null ? value : l(label[0], label[1]);
+}
+
+String statusLabel(String value, Copy l) {
+  final labels = <String, List<String>>{
+    'active': ['نشط', 'Active'],
+    'inactive': ['غير نشط', 'Inactive'],
+    'sent': ['صادرة', 'Issued'],
+    'paid': ['مدفوعة', 'Paid'],
+    'draft': ['مسودة', 'Draft'],
+    'void': ['ملغاة', 'Void'],
+    'minor': ['بسيط', 'Minor'],
+    'moderate': ['متوسط', 'Moderate'],
+    'serious': ['خطير', 'Serious'],
+    'severe': ['شديد', 'Severe'],
+  };
+  final label = labels[value];
+  return label == null ? value : l(label[0], label[1]);
 }
 
 const green = Color(0xFF285D4D);
@@ -53,6 +85,9 @@ class _FamilyAppState extends State<FamilyApp> {
       navigatorKey: navigatorKey,
       debugShowCheckedModeBanner: false,
       title: 'Nursery Family',
+      locale: Locale(arabic ? 'ar' : 'en'),
+      supportedLocales: const [Locale('ar'),Locale('en')],
+      localizationsDelegates: const [GlobalMaterialLocalizations.delegate,GlobalWidgetsLocalizations.delegate,GlobalCupertinoLocalizations.delegate],
       theme: ThemeData(
         visualDensity: VisualDensity.standard,
         materialTapTargetSize: MaterialTapTargetSize.padded,
@@ -469,7 +504,8 @@ class _ChildPageState extends State<ChildPage>
     setState(() => busy = true);
     try {
       await widget.api.request('$path/$suffix', body: data);
-      message.clear();
+      if (!mounted) return;
+      if (suffix == 'messages') message.clear();
       refresh();
     } catch (e) {
       if (mounted) {
@@ -479,6 +515,33 @@ class _ChildPageState extends State<ChildPage>
     } finally {
       if (mounted) setState(() => busy = false);
     }
+  }
+
+  Future<void> cancelAbsence(int id) async {
+    final l = widget.l;
+    final yes = await showDialog<bool>(
+      context: context,
+      builder: (c) => AlertDialog(
+        title: Text(l('إلغاء إخطار الغياب', 'Cancel absence notice')),
+        content: Text(
+          l(
+            'لن يتغير الحضور أو الرسوم. يمكنك إضافة إخطار جديد لتغيير المواعيد.',
+            'Attendance and fees will not change. Add a new notice to change the dates.',
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(c, false),
+            child: Text(l('رجوع', 'Keep notice')),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.pop(c, true),
+            child: Text(l('إلغاء الإخطار', 'Cancel notice')),
+          ),
+        ],
+      ),
+    );
+    if (yes == true) await action('absences/$id/cancel', {'confirmed': true});
   }
 
   Future<void> ack(int id) async {
@@ -511,6 +574,8 @@ class _ChildPageState extends State<ChildPage>
   }
 
   Future<void> pickup() async {
+    if (busy) return;
+    setState(() => busy = true);
     final l = widget.l;
     try {
       final d = await widget.api.request('$path/pickup-token', body: {});
@@ -528,14 +593,18 @@ class _ChildPageState extends State<ChildPage>
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text(e.toString())));
       }
+    } finally {
+      if (mounted) setState(() => busy = false);
     }
   }
 
-  Future<void> pickDate(bool start) async {
-    final now = DateTime.now();
+  Future<void> pickDate(bool start, String today) async {
+    final now = DateTime.parse(today);
+    var initial = (start ? from : to) ?? now;
+    if (initial.isBefore(now)) initial = now;
     final d = await showDatePicker(
       context: context,
-      initialDate: (start ? from : to) ?? now,
+      initialDate: initial,
       firstDate: DateTime(now.year, now.month, now.day),
       lastDate: now.add(const Duration(days: 365)),
     );
@@ -580,7 +649,7 @@ class _ChildPageState extends State<ChildPage>
                       (k) => Padding(
                         padding: const EdgeInsets.only(top: 10),
                         child: Text(
-                          '${{'meals': l('الوجبات', 'Meals'), 'naps': l('النوم', 'Naps'), 'mood': l('المزاج', 'Mood'), 'activities': l('الأنشطة', 'Activities'), 'notes': l('ملاحظات', 'Notes')}[k]}: ${a[k]}',
+                          '${{'meals': l('الوجبات', 'Meals'), 'naps': l('النوم', 'Naps'), 'mood': l('المزاج', 'Mood'), 'activities': l('الأنشطة', 'Activities'), 'notes': l('ملاحظات', 'Notes')}[k]}: ${k == 'mood' ? moodLabel(a[k].toString(), l) : a[k]}',
                         ),
                       ),
                     ),
@@ -589,6 +658,7 @@ class _ChildPageState extends State<ChildPage>
           ),
         ),
         section(l('الحضور المسجل', 'Recorded attendance')),
+        Text('${l('بتوقيت الحضانة', 'In nursery time')}: ${d['timezone']}'),
         ...(d['attendance'] as List).map(
           (a) => Panel(
             child: Column(
@@ -610,7 +680,9 @@ class _ChildPageState extends State<ChildPage>
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(i['occurred_at']),
+                Text(
+                  '${statusLabel(i['severity']?.toString() ?? '', l)} · ${i['occurred_at']}',
+                ),
                 const SizedBox(height: 8),
                 Text(i['description']),
                 const SizedBox(height: 12),
@@ -728,6 +800,9 @@ class _ChildPageState extends State<ChildPage>
                 Text('${l('المبلغ', 'Amount')}: ${i['amount']}'),
                 Text('${l('المتبقي', 'Outstanding')}: ${i['outstanding']}'),
                 Text('${l('الاستحقاق', 'Due')}: ${i['due_date']}'),
+                Text(
+                  '${l('الحالة', 'Status')}: ${statusLabel(i['status'].toString(), l)}',
+                ),
                 ...(i['payments'] as List).map(
                   (p) => Padding(
                     padding: const EdgeInsets.only(top: 12),
@@ -766,7 +841,7 @@ class _ChildPageState extends State<ChildPage>
                 ),
                 const SizedBox(height: 16),
                 FilledButton(
-                  onPressed: pickup,
+                  onPressed: busy ? null : pickup,
                   child: Text(l('إنشاء الرمز', 'Create code')),
                 ),
               ],
@@ -805,11 +880,11 @@ class _ChildPageState extends State<ChildPage>
           runSpacing: 12,
           children: [
             OutlinedButton(
-              onPressed: () => pickDate(true),
+              onPressed: () => pickDate(true, d['today']),
               child: Text(from == null ? l('من', 'From') : date(from!)),
             ),
             OutlinedButton(
-              onPressed: () => pickDate(false),
+              onPressed: () => pickDate(false, d['today']),
               child: Text(to == null ? l('إلى', 'To') : date(to!)),
             ),
           ],
@@ -839,6 +914,13 @@ class _ChildPageState extends State<ChildPage>
               children: [
                 Text('${a['starts_on']} · ${a['ends_on']}'),
                 Text(a['reason'] ?? ''),
+                if (a['can_cancel'] == true)
+                  TextButton(
+                    onPressed: busy ? null : () => cancelAbsence(a['id']),
+                    child: Text(
+                      l('إلغاء إخطار الغياب', 'Cancel absence notice'),
+                    ),
+                  ),
               ],
             ),
           ),

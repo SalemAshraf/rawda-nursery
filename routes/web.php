@@ -6,6 +6,7 @@ use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\AuditController;
 use App\Http\Controllers\BillingController;
 use App\Http\Controllers\ChildController;
+use App\Http\Controllers\ClassroomBatchController;
 use App\Http\Controllers\ClassroomController;
 use App\Http\Controllers\CommercialController;
 use App\Http\Controllers\DailyLogController;
@@ -30,6 +31,9 @@ Route::post('/sales-inquiries', [CommercialController::class, 'inquiry'])->middl
 require __DIR__.'/platform.php';
 
 Route::middleware(['auth:web', SubscriptionAccess::class])->group(function () {
+    Route::get('/classroom-batches', [ClassroomBatchController::class, 'index'])->name('classroom-batches.index');
+    Route::post('/classroom-batches/preview', [ClassroomBatchController::class, 'preview'])->middleware('throttle:12,1,classroom-preview')->name('classroom-batches.preview');
+    Route::post('/classroom-batches/{batch}/apply', [ClassroomBatchController::class, 'apply'])->middleware('throttle:12,1,classroom-apply')->name('classroom-batches.apply');
     Route::get('/pickup-scan', [PickupController::class, 'page'])->name('pickup.scan');
     Route::post('/pickup-scan/verify', [PickupController::class, 'verify'])->middleware('throttle:20,1')->name('pickup.verify');
     Route::post('/pickup-scan/checkout', [PickupController::class, 'checkout'])->middleware('throttle:10,1')->name('pickup.checkout');

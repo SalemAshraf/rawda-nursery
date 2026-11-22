@@ -9,6 +9,9 @@ This is an additive implementation increment, not completion of every competitor
 - Explicit child/guardian grants. Guardian linkage and email are checked on every child read. Billing and pickup permissions are separate. Revocation stops child access and invalidates outstanding pickup codes.
 - Family web portal and Flutter client: linked children, published care and incidents, attendance, issued invoices, recorded-payment receipts, private account threads, announcements, tasks and planned absence notices.
 - Historical care and incidents remain private by default. Editing a care entry hides it until management reviews and shares it again. Family incident acknowledgments are distinct from the pre-existing staff/offline acknowledgment field.
+- Management review uses exact content snapshots for care and incidents. Changed text, severity or incident time cannot be published from a stale screen. Filters find older records by child and day without discarding an unsaved invitation draft.
+- Classroom batches preview exact changes, expire after ten minutes, reject stale records and replay safely. Care fills missing fields by default. Only management can replace existing values; changes become private again. Arrival requires physical-presence confirmation, skips existing arrivals and refuses checked-out children. There is no bulk checkout.
+- Families can cancel their own active absence notices after confirmation. Cancelled history is retained, with no attendance or fee change. To change dates, cancel and create a new notice.
 - One-use, two-minute pickup QR. Generation never creates pickup authorization. Staff review the current approved person and must confirm physical identity before checkout. Checkout locks and rechecks authorization, child status and current attendance. Camera starts only on request; paste fallback is available.
 - Arabic/English layouts. Server-readable landing metadata, canonical and language alternate URLs, software structured data without fabricated ratings or prices, sitemap and private-page noindex/no-store headers.
 
@@ -27,13 +30,16 @@ Base: `/api/v1/family`. JSON requests require `Accept: application/json`. All en
 | POST | `/children/{id}/incidents/{incident}/acknowledge` | confirmed=true |
 | POST | `/children/{id}/tasks/{task}/complete` | Empty object |
 | POST | `/children/{id}/absences` | starts_on, ends_on, optional reason, maximum 500 characters |
+| POST | `/children/{id}/absences/{absence}/cancel` | confirmed=true; own non-past notice only, idempotent |
 | POST | `/children/{id}/pickup-token` | Empty object; token, expires_at, identity_check_required |
+
+Child details include the nursery civil date in `today` and `can_cancel` for absence notices.
 
 Dates are YYYY-MM-DD. Attendance clock strings use the nursery's configured timezone, not the device timezone. Money strings are formatted server-side from integer minor units. A payment receipt reports a recorded payment, not independent bank confirmation.
 
 Errors: 401 missing/expired token or disabled account; 403 wrong identity/ability or missing pickup permission; 404 inaccessible child/record; 422 validation or expired/used pickup; 423 nursery read-only; 429 throttled. General API and per-action rate limits use distinct keys. Reads never consume the smaller pickup counter.
 
-Family browser paths start at `/family/login`. Staff management is `/families`; QR verification is `/pickup-scan`. Scanning/review is read-only. Only the explicit checkout POST records a handover.
+Family browser paths start at `/family/login`. Staff management is `/families`; QR verification is `/pickup-scan`. Scanning/review is read-only. Only the explicit checkout POST records a handover. Classroom operations are at `/classroom-batches`, with staff-authenticated preview and explicit apply POSTs. Publishing visible=true to `/families/publish/{type}/{record}` requires the `review_hash` supplied with the displayed record. Hiding does not require review proof.
 
 ## Flutter
 
@@ -55,18 +61,19 @@ Android release network permission and backup exclusion are configured. Android/
 
 ## Qualification
 
-- PHP 8.3 with real MariaDB: 112 tests, 828 assertions passing before final formatting.
-- Flutter analysis: no issues. Five unit/widget tests passing. Compiled web build successful.
+- PHP 8.3 with real MariaDB: 127 tests, 909 assertions passing after final formatting.
+- Flutter analysis: no issues. Six unit/widget tests passing. Compiled web build successful.
 - Real local synthetic API, not response mocks for UI proof: bearer login, linked-child reads, private message POST, fees/receipt and QR generation exercised in Arabic/English at 360px.
 - Family web care/messages/fees/planning plus staff family/scanner pages checked in Arabic/English at 360, 768 and 1440px, no document overflow or JavaScript page errors.
+- Additional connected UI proof: confirmed classroom care/arrival saves, stale-batch rejection, Vue and Flutter absence cancellation, Arabic calendar, known-mood localization with free text unchanged, stale-publication rejection followed by fresh explicit review, and child/day review filters preserving unrelated unsaved form state.
 - All browser records used for qualification are synthetic copies. Original preview data, production records and .env remain unchanged.
 
 ## Safe deployment
 
-Use the central host writer. Back up database and files, retain existing .env/storage and run only forward `php artisan migrate --force`. Never run migrate:fresh or seeders on an existing nursery. Deploy the complete Vite public/build output and the changed PHP/Vue/config/routes together. Confirm HTTPS and correct APP_URL for invitations, canonical URLs and sitemap. New records remain unpublished until management opts in.
+Use the central host writer. Back up database and files, retain existing .env/storage and run only forward `php artisan migrate --force`. Never run migrate:fresh or seeders on an existing nursery. Deploy the complete Vite public/build output and the changed PHP/Vue/config/routes together. Confirm HTTPS and correct APP_URL for invitations, canonical URLs and sitemap. New records remain unpublished until management opts in. Apply both additive migrations `2026_11_22_000005_create_family_workspace.php` and `2026_11_22_000006_create_classroom_batches.php`. This increment supersedes the earlier family archive, which lacked the exact-snapshot publication guard.
 
 Do not automatically email invitations, expose historical notes or enable external payment/notification delivery. Live family testing requires specifically authorized accounts and records.
 
 ## Still open from the broader assignment
 
-Recurring invoicing and reminders; downloadable/full receipt workflows; provider outbox and consent/delivery state; Paymob/Fawry merchant integration and reconciliation; bulk classroom care/attendance; richer absence changes/cancellation; medication consent and administration records without dosage advice; branches, scheduling and transport. Native Android/iOS builds, actual devices and any app-store publication also remain open. Other products and the Reviv articles are outside this repository's scope.
+Recurring invoicing and reminders; downloadable/full receipt workflows; provider outbox and consent/delivery state; Paymob/Fawry merchant integration and reconciliation; absence amendments beyond cancel-and-new; medication consent and administration records without dosage advice; branches, scheduling and transport. Native Android/iOS builds, actual devices and any app-store publication also remain open. Other products and the Reviv articles are outside this repository's scope.

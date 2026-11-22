@@ -2,6 +2,8 @@ import { ref, watchEffect } from "vue";
 const urlLocale = new URLSearchParams(window.location.search).get('lang');
 const locale = ref(['ar','en'].includes(urlLocale) ? urlLocale : (localStorage.getItem("baraim-locale") || "ar"));
 const ar = {
+    'Classroom batch': 'تسجيل الفصل',
+    happy:'سعيد', calm:'هادئ', tired:'متعب', sad:'حزين', unsettled:'غير مستقر', sleepy:'يشعر بالنعاس', good:'جيد',
     "Families": "مساحة الأسرة",
     "Pickup QR": "رمز الاستلام",
     'Please wait before retrying.': 'يرجى الانتظار قليلاً قبل المحاولة مرة أخرى.',

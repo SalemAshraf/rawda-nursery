@@ -61,7 +61,7 @@ class FamilyWorkspace
         }
 
         return ['child' => ['id' => $c->id, 'name' => $c->fullName(), 'status' => $c->status], 'range' => compact('from', 'to'),
-            'timezone' => $p->tenant->timezone, 'can_view_billing' => (bool) $grant->share_billing, 'can_request_pickup' => (bool) $grant->pickup_person_id,
+            'timezone' => $p->tenant->timezone, 'today' => $p->tenant->today(), 'can_view_billing' => (bool) $grant->share_billing, 'can_request_pickup' => (bool) $grant->pickup_person_id,
             'attendance' => $base('attendance')->whereDate('date', '>=', $from)->whereDate('date', '<=', $to)->orderByDesc('date')->get(['date', 'check_in_at', 'check_out_at'])->map(function ($a) {
                 $a->date = substr($a->date, 0, 10);
                 $a->check_in_at = $a->check_in_at ? substr($a->check_in_at, 11, 5) : null;
@@ -81,8 +81,12 @@ class FamilyWorkspace
             }),
             'invoices' => $invoices,
             'tasks' => $base('family_tasks')->orderByDesc('id')->limit(50)->get(['id', 'title', 'due_date', 'completed_at']),
-            'absences' => $base('family_absences')->where('family_account_id', $p->id)->whereNull('cancelled_at')->orderByDesc('starts_on')->limit(30)->get(['id', 'starts_on', 'ends_on', 'reason']),
-            'messages' => $base('family_messages')->where('family_account_id',$p->id)->orderByDesc('id')->limit(50)->get(['id', 'body', 'staff_id', 'created_at'])->reverse()->values(),
+            'absences' => $base('family_absences')->where('family_account_id', $p->id)->whereNull('cancelled_at')->orderByDesc('starts_on')->limit(30)->get(['id', 'starts_on', 'ends_on', 'reason'])->map(function ($a) use ($p) {
+                $a->can_cancel = $a->ends_on >= $p->tenant->today();
+
+                return $a;
+            }),
+            'messages' => $base('family_messages')->where('family_account_id', $p->id)->orderByDesc('id')->limit(50)->get(['id', 'body', 'staff_id', 'created_at'])->reverse()->values(),
         ];
     }
 }

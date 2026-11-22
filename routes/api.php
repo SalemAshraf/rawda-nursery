@@ -15,6 +15,7 @@ Route::prefix('v1/family')->name('family.api.')->group(function () {
         Route::post('children/{child}/incidents/{incident}/acknowledge', [PortalController::class, 'acknowledge']);
         Route::post('children/{child}/tasks/{task}/complete', [PortalController::class, 'complete']);
         Route::post('children/{child}/absences', [PortalController::class, 'absence'])->middleware('throttle:10,1,family-api-absences');
+        Route::post('children/{child}/absences/{absence}/cancel', [PortalController::class, 'cancelAbsence'])->middleware('throttle:10,1,family-api-absence-cancel');
         Route::post('children/{child}/pickup-token', [PortalController::class, 'pickup'])->middleware('throttle:6,1,family-api-pickup');
     });
 });

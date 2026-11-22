@@ -13,6 +13,7 @@ Disallow: /staff
 Disallow: /reports
 Disallow: /audit
 Disallow: /admissions
+Disallow: /classroom-batches
 Disallow: /pickup-scan
 Disallow: /profile
 Disallow: /setup

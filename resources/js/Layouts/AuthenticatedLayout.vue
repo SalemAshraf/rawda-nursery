@@ -18,6 +18,7 @@ const nav = computed(() => [
     { label: "Attendance", route: "attendance.index", icon: "attendance" },
     { label: "Pickup QR", route: "pickup.scan", icon: "attendance" },
     { label: "Daily log", route: "logs.index", icon: "logs" },
+    { label: "Classroom batch", route: "classroom-batches.index", icon: "logs" },
     { label: "Incidents", route: "incidents.index", icon: "incidents" },
     ...(user.value.role !== "teacher"
         ? [{ label: "Billing", route: "billing.index", icon: "billing" }]

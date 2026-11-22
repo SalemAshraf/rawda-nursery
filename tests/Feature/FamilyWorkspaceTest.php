@@ -231,14 +231,120 @@ class FamilyWorkspaceTest extends TestCase
         $this->assertEquals(1, DB::table('family_pickup_tokens')->whereNull('consumed_at')->count());
     }
 
+    public function test_staff_reply_stays_with_the_authorized_family_account(): void
+    {
+        extract($this->fixture());
+        $this->actingAs($u, 'web');
+        $this->post('/families/reply', ['family_account_id' => $p->id, 'child_id' => $c->id, 'body' => 'Approved staff reply'])->assertRedirect();
+        $this->assertDatabaseHas('family_messages', ['family_account_id' => $p->id, 'child_id' => $c->id, 'staff_id' => $u->id, 'body' => 'Approved staff reply']);
+        DB::table('family_access')->update(['active' => false]);
+        $this->post('/families/reply', ['family_account_id' => $p->id, 'child_id' => $c->id, 'body' => 'Must not be sent'])->assertNotFound();
+        $this->assertDatabaseMissing('family_messages', ['body' => 'Must not be sent']);
+    }
+
+    public function test_family_can_cancel_own_current_absence_without_erasing_attendance_or_fees(): void
+    {
+        extract($this->fixture());
+        $base = '/api/v1/family/children/'.$c->id;
+        $this->withToken($token)->postJson($base.'/absences', ['starts_on' => $t->today(), 'ends_on' => $t->today(), 'reason' => 'Original notice'])->assertOk();
+        $id = DB::table('family_absences')->value('id');
+        $url = $base.'/absences/'.$id.'/cancel';
+        $this->getJson($base)->assertJsonPath('absences.0.can_cancel', true);
+        $this->postJson($url, [])->assertUnprocessable();
+        $this->postJson($url, ['confirmed' => true])->assertOk();
+        $this->postJson($url, ['confirmed' => true])->assertOk();
+        $this->assertDatabaseCount('family_absences', 1);
+        $this->assertNotNull(DB::table('family_absences')->value('cancelled_at'));
+        $this->getJson($base)->assertJsonCount(0, 'absences');
+        $this->assertDatabaseCount('attendance', 0);
+        $this->assertDatabaseCount('invoices', 0);
+    }
+
+    public function test_completed_absences_and_another_account_cannot_be_cancelled(): void
+    {
+        extract($this->fixture());
+        $old = DB::table('family_absences')->insertGetId(['tenant_id' => $t->id, 'family_account_id' => $p->id, 'child_id' => $c->id, 'starts_on' => now()->subDays(2)->toDateString(), 'ends_on' => now()->subDay()->toDateString(), 'created_at' => now(), 'updated_at' => now()]);
+        $base = '/api/v1/family/children/'.$c->id.'/absences/';
+        $this->withToken($token)->postJson($base.$old.'/cancel', ['confirmed' => true])->assertUnprocessable();
+        $other = FamilyAccount::create(['tenant_id' => $t->id, 'name' => 'Other guardian', 'email' => 'other@example.test', 'password' => 'Synthetic-other-fixture-2026']);
+        $g2 = Guardian::create(['name' => 'Other guardian', 'email' => $other->email, 'phone' => 'SYNTHETIC', 'relation' => 'parent']);
+        $c->guardians()->attach($g2);
+        DB::table('family_access')->insert(['tenant_id' => $t->id, 'family_account_id' => $other->id, 'child_id' => $c->id, 'guardian_id' => $g2->id, 'approved_by' => $u->id, 'created_at' => now(), 'updated_at' => now()]);
+        $otherToken = $other->createToken('test', ['family'], now()->addDay())->plainTextToken;
+        $this->app['auth']->forgetGuards();
+        $this->withToken($otherToken)->postJson($base.$old.'/cancel', ['confirmed' => true])->assertNotFound();
+        $this->assertNull(DB::table('family_absences')->where('id', $old)->value('cancelled_at'));
+    }
+
+    public function test_stale_publication_does_not_share_a_new_unreviewed_care_text(): void
+    {
+        extract($this->fixture());
+        $this->actingAs($u, 'web');
+        $log = DailyLog::create(['child_id' => $c->id, 'date' => $t->today(), 'meals' => 'Reviewed text', 'notes' => 'Original note', 'created_by' => $u->id]);
+        $raw = DB::table('daily_logs')->find($log->id);
+        $hash = hash('sha256', json_encode(['care', $raw->id, $raw->date, $raw->meals, $raw->naps, $raw->mood, $raw->activities, $raw->notes]));
+        $log->update(['notes' => 'A newer internal note']);
+        $this->postJson('/families/publish/care/'.$log->id, ['visible' => true, 'review_hash' => $hash])->assertUnprocessable();
+        $this->assertFalse((bool) $log->fresh()->family_visible);
+    }
+
+    public function test_current_publication_requires_exact_review_proof_and_hiding_does_not(): void
+    {
+        extract($this->fixture());
+        $this->actingAs($u, 'web');
+        $log = DailyLog::create(['child_id' => $c->id, 'date' => $t->today(), 'meals' => 'Current reviewed text', 'created_by' => $u->id]);
+        $url = '/families/publish/care/'.$log->id;
+        $this->postJson($url, ['visible' => true])->assertUnprocessable();
+        $row = DB::table('daily_logs')->find($log->id);
+        $hash = hash('sha256', json_encode(['care', $row->id, $row->date, $row->meals, $row->naps, $row->mood, $row->activities, $row->notes]));
+        $this->postJson($url, ['visible' => true, 'review_hash' => $hash])->assertRedirect();
+        $this->assertTrue((bool) $log->fresh()->family_visible);
+        $this->postJson($url, ['visible' => false])->assertRedirect();
+        $this->assertFalse((bool) $log->fresh()->family_visible);
+        $teacher = $this->createUser($t, 'teacher');
+        $this->actingAs($teacher, 'web');
+        $this->postJson($url, ['visible' => true, 'review_hash' => $hash])->assertForbidden();
+    }
+
+    public function test_incident_review_proof_covers_description_time_and_severity(): void
+    {
+        extract($this->fixture());
+        $this->actingAs($u, 'web');
+        $i = Incident::create(['child_id' => $c->id, 'occurred_at' => now(), 'severity' => 'minor', 'description' => 'Initial sample', 'reported_by' => $u->id]);
+        $row = DB::table('incidents')->find($i->id);
+        $old = hash('sha256', json_encode(['incident', $row->id, $row->occurred_at, $row->severity, $row->description]));
+        $i->update(['severity' => 'moderate']);
+        $url = '/families/publish/incident/'.$i->id;
+        $this->postJson($url, ['visible' => true, 'review_hash' => $old])->assertUnprocessable();
+        $this->assertFalse((bool) $i->fresh()->family_visible);
+        $row = DB::table('incidents')->find($i->id);
+        $fresh = hash('sha256', json_encode(['incident', $row->id, $row->occurred_at, $row->severity, $row->description]));
+        $this->postJson($url, ['visible' => true, 'review_hash' => $fresh])->assertRedirect();
+        $this->assertTrue((bool) $i->fresh()->family_visible);
+    }
+
+    public function test_review_filters_find_exact_child_day_without_exposing_another_tenant(): void
+    {
+        extract($this->fixture());
+        $this->actingAs($u, 'web');
+        DailyLog::create(['child_id' => $c->id, 'date' => $t->today(), 'notes' => 'Current review text', 'created_by' => $u->id]);
+        DailyLog::create(['child_id' => $c->id, 'date' => now($t->timezone)->subDay()->toDateString(), 'notes' => 'Another day text', 'created_by' => $u->id]);
+        $this->get('/families?review_child='.$c->id.'&review_date='.$t->today())->assertOk()->assertSee('Current review text')->assertSee('review_hash')->assertDontSee('Another day text');
+        $other = $this->createTenant('Other review tenant');
+        $this->actingAs($this->createUser($other), 'web');
+        $private = Child::create(['first_name' => 'Other', 'last_name' => 'Child', 'status' => 'active']);
+        $this->actingAs($u, 'web');
+        $this->get('/families?review_child='.$private->id)->assertNotFound();
+    }
+
     public function test_planned_absence_does_not_change_attendance_or_fees(): void
     {
         extract($this->fixture());
         $base = '/api/v1/family/children/'.$c->id;
         $this->withToken($token)->postJson($base.'/absences', ['starts_on' => $t->today(), 'ends_on' => $t->today(), 'reason' => 'Family plan'])->assertOk();
-        $this->assertDatabaseCount('family_absences',1);
-        $this->assertDatabaseCount('attendance',0);
-        $this->assertDatabaseCount('invoices',0);
+        $this->assertDatabaseCount('family_absences', 1);
+        $this->assertDatabaseCount('attendance', 0);
+        $this->assertDatabaseCount('invoices', 0);
         $this->getJson($base.'?from=2020-01-01&to=2026-11-22')->assertUnprocessable();
     }
 }
