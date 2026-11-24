@@ -1444,17 +1444,47 @@
 .landing-footer {
     max-width: 1360px;
     margin: auto;
-    padding: 35px 5%;
+    padding: 40px 5% 24px;
+}
+.footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 32px;
+}
+.footer-brand p {
+    font-size: 13px;
+    color: #7b8972;
+    line-height: 1.7;
+    margin-top: 10px;
+    max-width: 260px;
+}
+.footer-col h3 {
+    font-size: 13px;
+    font-weight: 700;
+    color: #193e30;
+    margin-bottom: 12px;
+}
+.footer-col a {
+    display: block;
+    width: fit-content;
+    font-size: 13px;
+    color: #52705b;
+    margin-top: 8px;
+}
+.footer-col a:hover { color: #193e30; }
+.footer-bar {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 24px;
-}
-.landing-footer p,
-.landing-footer > a:last-child {
+    flex-wrap: wrap;
+    gap: 10px;
+    border-top: 1px solid #e0e5da;
+    margin-top: 28px;
+    padding-top: 16px;
     font-size: 12px;
     color: #7b8972;
 }
+.footer-bar .builder-credit a { color: #193e30; font-weight: 600; }
 @media (max-width: 1300px) {
     .landing-section {
         margin-inline: 5%;
@@ -1647,17 +1677,9 @@
     .saas-two {
         grid-template-columns: 1fr;
     }
-    .landing-footer {
-        flex-wrap: wrap;
-        padding: 26px 5%;
-    }
-    .landing-footer .brand {
-        font-size: 22px;
-    }
-    .landing-footer p {
-        width: 100%;
-        order: 3;
-    }
+    .footer-grid { grid-template-columns: 1fr; gap: 24px; }
+    .footer-bar { flex-direction: column; align-items: flex-start; }
+    .landing-footer { padding: 30px 5% 20px; }
     .platform-main {
         padding: 24px 16px;
     }

@@ -805,21 +805,36 @@ function submit() {
             </section>
         </main>
         <footer class="landing-footer">
-            <Link href="/" class="brand"><ApplicationLogo /></Link>
-            <p>
-                {{
-                    L(
-                        "يوم حضانة أهدأ، وإدارة أوضح.",
-                        "A calmer nursery day. A clearer view.",
-                    )
-                }}
-            </p>
-            <Link :href="route('login')">{{
-                L("دخول الحضانة", "Nursery login")
-            }}</Link>
-            <div class="builder-credit">
-                <span>{{ L("تم تطوير هذا النظام بواسطة", "Built by") }}</span>
-                <a href="https://wa.me/201098971853" target="_blank" rel="noopener noreferrer" dir="ltr">Reviv Solutions</a>
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <Link href="/" class="brand"><ApplicationLogo /></Link>
+                    <p>{{ L("يوم حضانة أهدأ، وإدارة أوضح.", "A calmer nursery day. A clearer view.") }}</p>
+                </div>
+                <nav class="footer-col" :aria-label="L('المنتج', 'Product')">
+                    <h3>{{ L("المنتج", "Product") }}</h3>
+                    <a href="#features">{{ L("داخل Nursery", "Inside Nursery") }}</a>
+                    <a href="#ai">{{ L("الذكاء الاصطناعي", "AI insights") }}</a>
+                    <a href="#plans">{{ L("الباقات", "Plans") }}</a>
+                    <a href="#questions">{{ L("أسئلة شائعة", "Questions") }}</a>
+                </nav>
+                <nav class="footer-col" :aria-label="L('الحساب', 'Account')">
+                    <h3>{{ L("الحساب", "Account") }}</h3>
+                    <Link :href="route('login')">{{ L("دخول الحضانة", "Nursery login") }}</Link>
+                    <Link :href="route('register')">{{ L("إنشاء حساب", "Create account") }}</Link>
+                </nav>
+                <div class="footer-col">
+                    <h3>{{ L("تواصل", "Contact") }}</h3>
+                    <a href="#contact">{{ L("اطلب عرضاً لحضانتك", "Request a walkthrough") }}</a>
+                    <a href="https://wa.me/201098971853" target="_blank" rel="noopener noreferrer"><span dir="ltr">+20 109 897 1853</span></a>
+                    <a href="https://www.facebook.com/RevivSolutions" target="_blank" rel="noopener noreferrer">Facebook</a>
+                </div>
+            </div>
+            <div class="footer-bar">
+                <p>© {{ new Date().getFullYear() }} Nursery. {{ L("جميع الحقوق محفوظة.", "All rights reserved.") }}</p>
+                <p class="builder-credit">
+                    <span>{{ L("تم تطوير هذا النظام بواسطة", "Built by") }}</span>
+                    <a href="https://wa.me/201098971853" target="_blank" rel="noopener noreferrer" dir="ltr">Reviv Solutions</a>
+                </p>
             </div>
         </footer>
     </div>
