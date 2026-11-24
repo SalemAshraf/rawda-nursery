@@ -190,15 +190,6 @@ function submit() {
                         />
                         </picture>
                     </div>
-                    <div class="product-caption">
-                        <span>✳</span
-                        >{{
-                            L(
-                                "لقطة من المنتج. بيانات تمثيلية فقط.",
-                                "A real product screen. Synthetic data only.",
-                            )
-                        }}
-                    </div>
                 </div>
             </section>
             <section class="landing-principles">
